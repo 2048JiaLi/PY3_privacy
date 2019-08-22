@@ -10,6 +10,7 @@ ___
 + rename: 如果元素名称中含有 python 的关键字，则必须设置为 rename=True
 + verbose: 默认就好
 
+___
 **下面来看看声明一个具名元组及其实例化的方法：**
 ```
 import collections
