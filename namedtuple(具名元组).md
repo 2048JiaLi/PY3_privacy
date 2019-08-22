@@ -12,7 +12,7 @@ ___
 
 ___
 **下面来看看声明一个具名元组及其实例化的方法：**
-(```)
+```
 import collections
 
 # 两种方法来给 namedtuple 定义方法名
@@ -22,4 +22,4 @@ user = User('tester', '22', '464643123')
 
 print(user)
 >>>User(name='tester', age='22', id='464643123')
-(```)
+```
