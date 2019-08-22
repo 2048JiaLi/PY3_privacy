@@ -38,3 +38,45 @@ user.id
 + 类属性 **_fields**：包含这个类所有字段名的元组 
 + 类方法 **_make(iterable)**：接受一个可迭代对象来生产这个类的实例 
 + 实例方法 **_asdict()**：把具名元组以 *collections.OrdereDict* 的形式返回，可以利用它来把元组里的信息友好的展示出来
+
+___
+`from collections import namedtuple`
+
+**定义一个namedtuple类型User，并包含name，sex和age属性。**
+`User = namedtuple('User', ['name', 'sex', 'age'])`
+
+**创建一个User对象**
+`user = User(name='Runoob', sex='male', age=12)`
+
+**获取所有字段名**
+```
+print( user._fields )
+>>>('name', 'sex', 'age')
+```
+**也可以通过一个list来创建一个User对象，这里注意需要使用***"_make"***方法**
+```
+user = User._make(['Runoob', 'male', 12])
+
+print( user )
+>>>User(name='Runoob', sex='male', age=12)
+```
+**获取用户的属性**
+```
+print( user.name )
+>>>'Runoob'
+print( user.sex )
+>>>'male'
+print( user.age )
+>>>12
+```
+**修改对象属性，注意要使用***"_replace"***方法**
+```
+user = user._replace(age=22)
+print( user )
+>>>User(name='Runoob', sex='male', age=22)
+```
+**将User对象转换成字典，注意要使用***"_asdict"*** **
+```
+print( user._asdict() )
+>>>OrderedDict([('name', 'Runoob'), ('sex', 'male'), ('age', 22)])
+```
