@@ -15,7 +15,7 @@ ___
 ```
 import collections
 
-# 两种方法来给 namedtuple 定义方法名
+# 两种方法来给 namedtuple 定义方法名, 且两种方法效果相同
 #User = collections.namedtuple('User', ['name', 'age', 'id'])
 User = collections.namedtuple('User', 'name age id')
 user = User('tester', '22', '464643123')
@@ -23,3 +23,4 @@ user = User('tester', '22', '464643123')
 print(user)
 >>>User(name='tester', age='22', id='464643123')
 ```
+***collections.namedtuple('User', 'name age id')*** 创建一个具名元组，需要**两个参数**，一个是类名，另一个是类的各个字段名。**后者可以是有多个字符串组成的可迭代对象**，或者是有空格分隔开的字段名组成的字符串（比如本示例）。具名元组可以通过字段名或者位置来获取一个字段的信息。
