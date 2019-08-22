@@ -81,5 +81,5 @@ print( user._asdict() )
 >>>OrderedDict([('name', 'Runoob'), ('sex', 'male'), ('age', 22)])
 ```
 
-简书
+教程
 >https://www.runoob.com/note/25726
