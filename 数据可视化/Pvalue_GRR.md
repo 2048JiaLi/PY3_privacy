@@ -2,7 +2,7 @@
 
 **plt.xticks(range(0,100,5))**
 + 设置x轴刻度，range(0,100,5)表示0-100内每5格出现一次
-**plt.yticks()是设置y轴刻度
+**plt.yticks()是设置y轴刻度**
 
 **plt.xlabel('Domain')**
 + 设置x轴标签
