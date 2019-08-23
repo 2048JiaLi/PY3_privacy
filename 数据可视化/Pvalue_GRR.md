@@ -1,6 +1,7 @@
 ## 绘制GRR算法中概率p与域大小d的关系折线图，Epsilon=2.0
 
-+ ***plt.xticks(range(0,100,5))***      设置x轴刻度，range(0,100,5)表示0-100内每5格出现一次
++ ***plt.xticks(range(0,100,5))***      
+设置x轴刻度，range(0,100,5)表示0-100内每5格出现一次
 + ***plt.yticks(range(0,1,0.05))***     设置y轴刻度
 + ***plt.xlabel('Domain')***            设置x轴标签
 + ***plt.ylabel('p')***                 设置y轴标签
