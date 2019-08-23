@@ -2,7 +2,7 @@
 
 + ***plt.xticks(range(0,100,5))***      
 设置x轴刻度，range(0,100,5)表示0-100内每5格出现一次
-+ ***plt.yticks()***     
++ ***plt.yticks([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0])***     
 设置y轴刻度
 + ***plt.xlabel('Domain')***            
 设置x轴标签
@@ -25,7 +25,8 @@ p = [exp(Epsilon) / (exp(Epsilon) + d - 1) for d in range(1,100)]
 ts = pd.Series(p,index=range(1,100))
 plt.plot(ts)
 plt.xticks(range(0,100,5))
-#plt.grid()
+plt.yticks([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0])
+plt.grid()
 plt.xlabel('Domain')
 plt.ylabel('p')
 plt.title('Epsilon=2.0')
