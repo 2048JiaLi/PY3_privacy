@@ -5,6 +5,4 @@
 + [可视化](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96)
 
 ___
-### [MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)
-<font face='微软雅黑'>[MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)</font>
-<font color='#00FF7F' size=5 face = '微软雅黑'>[MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)</font>
+<font color='#FOFFFO' size=5 face = '微软雅黑'>[MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)</font>
