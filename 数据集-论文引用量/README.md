@@ -5,3 +5,5 @@
 数据库简介：https://journals.plos.org/plosbiology/article?id=10.1371/journal.pbio.3000384
 数据库下载地址：https://data.mendeley.com/datasets/btchxktzyw/1
 ```
+
+![image](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E6%95%B0%E6%8D%AE%E9%9B%86-%E8%AE%BA%E6%96%87%E5%BC%95%E7%94%A8%E9%87%8F/%E8%AE%BA%E6%96%87%E5%BC%95%E7%94%A8%E9%87%8F%E7%9A%84%E6%95%B0%E6%8D%AE%E9%9B%86.jpg)
