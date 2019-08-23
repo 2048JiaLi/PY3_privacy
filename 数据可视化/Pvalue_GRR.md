@@ -24,6 +24,8 @@ Epsilon = 2.0
 p = [exp(Epsilon) / (exp(Epsilon) + d - 1) for d in range(1,100)]
 ts = pd.Series(p,index=range(1,100))
 plt.plot(ts)
+#或者不将p转化为Series结构，直接可视化
+
 plt.xticks(range(0,100,5))
 plt.yticks([0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0])
 plt.grid()
