@@ -14,7 +14,7 @@
 添加网格
 
 
-
+___
 ```
 from math import exp
 import pandas as pd
@@ -32,5 +32,5 @@ plt.title('Epsilon=2.0')
 plt.show()
 ```
 
-## 可视图
+### 结果
 ![image](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/images/Pvalue_GRR.png)
