@@ -9,7 +9,7 @@ def PowerSetsBinary(items):
         #print(combo)
         res.append(combo)
     return res
-
+#使用itertools模块
 if __name__ == '__main__':
     X = ['a','b','d','e']
     tmp = PowerSetsBinary(X)
