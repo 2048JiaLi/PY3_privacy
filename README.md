@@ -8,6 +8,7 @@ ___
 ### [MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)
 ### [Git命令](https://www.cnblogs.com/chris0710/p/8925977.html)
 + 通过Git提交更新代码的两种方法
+   + git push origin 当前分支    当前分支为master直接更新仓库，为分支dev需执行合并
 ```
 pull：是下拉代码，相等于将远程的代码下载到你本地，与你本地的代码合并
 push：是推代码，将你的代码上传到远程的动作
