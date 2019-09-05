@@ -5,6 +5,7 @@
 + [可视化](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96)
 
 ___
+### [Linux Shell常用命令](https://github.com/2048JiaLi/PY3_privacy/blob/master/LinuxShell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)
 ### [MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)
 ### [Git命令](https://www.cnblogs.com/chris0710/p/8925977.html)
 + 通过Git提交更新代码的两种方法
