@@ -10,6 +10,8 @@
 
 + ***cd [dir]*** 进入目录
 
++ ***mkdir newfolder*** 创建目录
+
 + ***mv [OPTION] SOURCE DIRECTORY*** 移动文件 / 重命名
    + ***-f*** 强制
    + ***-i*** 文件存在时再次确认
