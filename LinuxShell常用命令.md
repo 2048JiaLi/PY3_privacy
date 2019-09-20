@@ -1,3 +1,5 @@
+## [常用命令](https://blog.csdn.net/xulong_08/article/details/81463054)
+
 + ***ls [OPTION] [FILE]*** 显示目录内容
    + ***-a*** 显示以 . 开头的文件（root 用户默认带此参数
    + ***-l*** 列出文件具体信息
