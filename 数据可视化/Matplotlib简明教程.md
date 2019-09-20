@@ -1,4 +1,4 @@
-## Matplotlib简介
+## [Matplotlib](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/matplotlib.ipynb)简介
 信息可视化是数据分析中一个重要的部分。它也可能是探索数据的一部分，比如，帮助我们找到离群点或需要进行变换的数据，或帮助我们思考选择哪种模型更合适。Python有很多库能用来制作统计或动态可视化，但这里我们重点关注matplotlib pandas searborn等库。Matplotlib是一个非常强大的画图工具，对数据的可视化起着很大的作用。Maplotlib可以画图线图，散点图，等高线图，条形图，柱形图，3D图形，图形动画等。
 ```
 import matplotlib.pyplot as plt  
