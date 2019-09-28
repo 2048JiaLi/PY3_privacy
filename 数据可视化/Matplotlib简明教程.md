@@ -46,7 +46,7 @@ plt.xticks(new_ticks)  #进行替换新下标
 plt.yticks([-2,-1,0,1,2,],
           [r'$really\ bad$','$bad$','$0$','$well$','$really\ well$'])
 ```
-+ ### [作子图](https://github.com/2048JiaLi/the-code-LDPpaper/blob/master/result/code/%E5%8F%AF%E8%A7%86%E7%BB%93%E6%9E%9C.py)
++ ### [作子图](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E7%94%BB%E5%AD%90%E5%9B%BE.py)
 ```
 ax1 = plt.subplot(311) #建立一个3×1的图，并选择第1个图
 ax2 = plt.subplot(312) #建立一个3×1的图，并选择第2个图
