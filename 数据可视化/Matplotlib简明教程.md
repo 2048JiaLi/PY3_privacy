@@ -47,7 +47,6 @@ plt.yticks([-2,-1,0,1,2,],
           [r'$really\ bad$','$bad$','$0$','$well$','$really\ well$'])
 ```
 + ### [作子图](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96/%E7%94%BB%E5%AD%90%E5%9B%BE.py)
-![image](https://github.com/2048JiaLi/the-code-LDPpaper/blob/master/result/image/1.0%20%200.05%20%20%E5%A4%9A%E5%9B%BErecall%20%E4%B8%8E%20precisionv%20%E7%9A%84%E5%85%B7%E4%BD%93%E5%80%BC%E5%AF%B9%E6%AF%94.png)
 ```
 ax1 = plt.subplot(311) #建立一个3×1的图，并选择第1个图
 ax2 = plt.subplot(312) #建立一个3×1的图，并选择第2个图
