@@ -46,6 +46,20 @@ plt.xticks(new_ticks)  #进行替换新下标
 plt.yticks([-2,-1,0,1,2,],
           [r'$really\ bad$','$bad$','$0$','$well$','$really\ well$'])
 ```
++ ### [作子图](https://github.com/2048JiaLi/the-code-LDPpaper/blob/master/result/code/%E5%8F%AF%E8%A7%86%E7%BB%93%E6%9E%9C.py)
+```
+ax1 = plt.subplot(311) #建立一个3×1的图，并选择第1个图
+ax2 = plt.subplot(312) #建立一个3×1的图，并选择第2个图
+ax3 = plt.subplot(313) #建立一个3×1的图，并选择第3个图
+
+# 在三个图中分布画图---
+ax1.plot(·)
+--图1的设置：坐标轴，线条等等--
+图2、图3类似
+
+#最后只需要一个显示即可
+plt.show()
+```
 + ### 设置边框--不显示/显示
 ```
 ax=plt.gca()  #get current axis
