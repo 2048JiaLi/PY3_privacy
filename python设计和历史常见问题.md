@@ -1,5 +1,5 @@
 ### [27 个问题，告诉你 Python 为什么如此设计？](https://docs.python.org/zh-cn/3.7/faq/design.html)
-![image]()
+![image](https://github.com/2048JiaLi/PY3_privacy/blob/master/image/python%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%8E%86%E5%8F%B2%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.png)
 
 ## 为什么Python使用缩进来分组语句？
 Guido van Rossum 认为使用缩进进行分组非常优雅，并且大大提高了普通Python程序的清晰度。大多数人在一段时间后就学会并喜欢上这个功能。   
