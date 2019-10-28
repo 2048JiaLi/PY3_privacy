@@ -1,9 +1,8 @@
 # *PY3_personal*
 ### [爬虫](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E7%88%AC%E8%99%AB)
 ### [面试](https://github.com/2048JiaLi/PY3_privacy/tree/master/Python%E9%9D%A2%E8%AF%95)
++ [python设计和历史常见问题](https://github.com/2048JiaLi/PY3_privacy/blob/master/python%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%8E%86%E5%8F%B2%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)
 ### [Py3学习资源](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90.md)
-
-
 + [collection.nametuple具名元组](https://github.com/2048JiaLi/PY3_privacy/blob/master/namedtuple(%E5%85%B7%E5%90%8D%E5%85%83%E7%BB%84).md)
 + [re正则化符号](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
 + [可视化](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96)
