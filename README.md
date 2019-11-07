@@ -13,6 +13,7 @@ ___
 ### [Linux Shell常用命令](https://github.com/2048JiaLi/PY3_privacy/blob/master/LinuxShell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)
 ### [Vim指令](https://github.com/2048JiaLi/PY3_privacy/blob/master/Vim%E6%8C%87%E4%BB%A4.md)
 ### [MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)
+### [vs code操作github](https://blog.csdn.net/jiangyu1013/article/details/84031418)
 ### [Git命令](https://www.cnblogs.com/chris0710/p/8925977.html)
 + 通过Git提交更新代码的两种方法
    + ***git push origin 当前分支***    当前分支为master直接更新仓库，为分支dev需执行合并
