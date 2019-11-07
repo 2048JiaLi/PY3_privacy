@@ -1,25 +1,5 @@
 # *PY3_personal*
-```
-Beautiful is better than ugly.
-Explicit is better than implicit.
-Simple is better than complex.
-Complex is better than complicated.
-Flat is better than nested.
-Sparse is better than dense.
-Readability counts.
-Special cases aren't special enough to break the rules.
-Although practicality beats purity.
-Errors should never pass silently.
-Unless explicitly silenced.
-In the face of ambiguity, refuse the temptation to guess.
-There should be one-- and preferably only one --obvious way to do it.
-Although that way may not be obvious at first unless you're Dutch.
-Now is better than never.
-Although never is often better than *right* now.
-If the implementation is hard to explain, it's a bad idea.
-If the implementation is easy to explain, it may be a good idea.
-Namespaces are one honking great idea -- let's do more of those!
-```
+
 ### [爬虫](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E7%88%AC%E8%99%AB)
 ### [面试](https://github.com/2048JiaLi/PY3_privacy/tree/master/Python%E9%9D%A2%E8%AF%95)
 + [python设计和历史常见问题](https://github.com/2048JiaLi/PY3_privacy/blob/master/python%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%8E%86%E5%8F%B2%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)
