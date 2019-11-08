@@ -1,11 +1,20 @@
 # *PY3_personal*
 
+### [数据分析常用的Matplotlib图](https://mp.weixin.qq.com/s?__biz=MzU1MjYzNjQwOQ==&mid=2247486636&idx=2&sn=44ff6554408a5252bed8fd97bbcbfdf5&chksm=fbfe563acc89df2c36eedfd84671f4435994bb7509a025533c008d710f3da6de1335963184fa&mpshare=1&scene=23&srcid=&sharer_sharetime=1573120171389&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
+### [爬虫](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E7%88%AC%E8%99%AB)
+### [面试](https://github.com/2048JiaLi/PY3_privacy/tree/master/Python%E9%9D%A2%E8%AF%95)
++ [python设计和历史常见问题](https://github.com/2048JiaLi/PY3_privacy/blob/master/python%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%8E%86%E5%8F%B2%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)
+### [Py3学习资源](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E5%AD%A6%E4%B9%A0%E8%B5%84%E6%BA%90.md)
 + [collection.nametuple具名元组](https://github.com/2048JiaLi/PY3_privacy/blob/master/namedtuple(%E5%85%B7%E5%90%8D%E5%85%83%E7%BB%84).md)
 + [re正则化符号](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F.md)
 + [可视化](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96)
++ [简短的代码片段，直接可用](https://github.com/2048JiaLi/PY3_privacy/blob/master/%E7%AE%80%E7%9F%AD%E4%BB%A3%E7%A0%81%E7%89%87%E6%AE%B5.md)
 
 ___
+### [Linux Shell常用命令](https://github.com/2048JiaLi/PY3_privacy/blob/master/LinuxShell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4.md)
+### [Vim指令](https://github.com/2048JiaLi/PY3_privacy/blob/master/Vim%E6%8C%87%E4%BB%A4.md)
 ### [MarkDown语法详解](https://blog.csdn.net/u014061630/article/details/81359144)
+### [vs code操作github](https://blog.csdn.net/jiangyu1013/article/details/84031418)
 ### [Git命令](https://www.cnblogs.com/chris0710/p/8925977.html)
 + 通过Git提交更新代码的两种方法
    + ***git push origin 当前分支***    当前分支为master直接更新仓库，为分支dev需执行合并

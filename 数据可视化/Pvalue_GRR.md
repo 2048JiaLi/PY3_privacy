@@ -12,7 +12,53 @@
 设置标题
 + ***plt.grid()***                      
 添加网格
++ ***plt.legend(loc='lower right') #loc显示位置***
 
+
+`plt.plot(ts1,color='r',linestyle=':',marker='o',label='Error(default)')`
++ **color参数**
+```
+'b'        blue 蓝
+'g'        green 绿
+'r'        red 红
+'c'        cyan 蓝绿
+'m'        magenta 洋红
+'y'        yellow 黄
+'k'        black 黑
+'w'        white 白
+```
++ **marker**
+```
+'.'        point marker
+','        pixel marker
+'o'        circle marker
+'v'        triangle_down marker
+'^'        triangle_up marker
+'<'        triangle_left marker
+'>'        triangle_right marker
+'1'        tri_down marker
+'2'        tri_up marker
+'3'        tri_left marker
+'4'        tri_right marker
+'s'        square marker
+'p'        pentagon marker
+'*'        star marker
+'h'        hexagon1 marker
+'H'        hexagon2 marker
+'+'        plus marker
+'x'        x marker
+'D'        diamond marker
+'d'        thin_diamond marker
+'|'        vline marker
+'_'        hline marker
+```
++ **linestyle**
+```
+'-'        solid line style 实线
+'--'       dashed line style 虚线
+'-.'       dash-dot line style 点画线
+':'        dotted line style 点线
+```
 
 ___
 ```
