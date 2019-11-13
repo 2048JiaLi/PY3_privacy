@@ -1,0 +1,13 @@
+## Python常问的面试题
+### 1. [Python 和其他语言的区别？](./谈谈Python和其他语言的区别.md)
+### 2. [Python3 和 Python2 的区别？](./Python3和Python2的区别.md)
+
+[更多](https://mp.weixin.qq.com/s?__biz=MzA5NzgzODI5NA==&mid=2454038411&idx=4&sn=4f58527fc56e4f14a06d793498102673&chksm=872bb232b05c3b24b4074a91aa471ed1ed352ac1252423947590074500596e064355b1ddb600&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634707986&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
+
+[面试中8个必考问题](https://mp.weixin.qq.com/s?__biz=MzAwOTQ4MzY1Nw==&mid=2247489178&idx=2&sn=08d53566b3aab7c17b3435d30cab2332&chksm=9b5fb27cac283b6a8cfdfcbac89800875d29ff3743c298a5575ff721224fab418140bff161c0&mpshare=1&scene=23&srcid=&sharer_sharetime=1573635038624&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
+
+【协议森林】从理论到实践，全方位认识DNS（理论篇）(https://mp.weixin.qq.com/s?__biz=MzIwNTc4NTEwOQ==&mid=2247487494&idx=1&sn=69bbf1351b7273cbe9d31c2b75d0e6bd&chksm=972ac17ca05d486a07638867d73bd5b329dd5b006d7f8200e2c42fb7b587f5c9d043450053fe&mpshare=1&scene=23&srcid=&sharer_sharetime=1573635125267&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
+
+[读写锁](https://mp.weixin.qq.com/s?__biz=MzU0OTE4MzYzMw==&mid=2247487666&idx=2&sn=26c83c020bc4a7d6525e280ead59b2b3&chksm=fbb2994cccc5105a5eb00b89125e5370068d38b635fb8ecad6d469cb0008940ac438b75c6950&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634845437&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
+
+select count(*) 底层到底干了啥 [](https://mp.weixin.qq.com/s?__biz=MzAwMjk5Mjk3Mw==&mid=2247487345&idx=2&sn=d05ff4d544961a94e079a70380746f7a&chksm=9ac0b153adb73845db6a8d048bf3712d98322e175bc09f55484944d7778b6a9a17780ab7e98d&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634926435&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
