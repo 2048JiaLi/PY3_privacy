@@ -1,8 +1,14 @@
 ## Python常问的面试题
 ### 1. [Python 和其他语言的区别？](./谈谈Python和其他语言的区别.md)
 ### 2. [Python3 和 Python2 的区别？](./Python3和Python2的区别.md)
+### 3. [python的优缺点](./python的优点和特点.md)
+### 4. [python解释器种类及特点](./python解释器种类及特点.md)
+### 5. [常见编码方式及其区别](./常用编码及其区别.md)
+### 6. [python面向对象三大特性](./python面向对象三大特性.md)
+### 7. [python数据类型](./python中数据类型.md)
+### 8. [xrange和range区别](./xrange和range区别.md)
 
-[更多](https://mp.weixin.qq.com/s?__biz=MzA5NzgzODI5NA==&mid=2454038411&idx=4&sn=4f58527fc56e4f14a06d793498102673&chksm=872bb232b05c3b24b4074a91aa471ed1ed352ac1252423947590074500596e064355b1ddb600&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634707986&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
+[更多-未完成](https://mp.weixin.qq.com/s?__biz=MzA5NzgzODI5NA==&mid=2454038411&idx=4&sn=4f58527fc56e4f14a06d793498102673&chksm=872bb232b05c3b24b4074a91aa471ed1ed352ac1252423947590074500596e064355b1ddb600&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634707986&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
 
 [面试中8个必考问题](https://mp.weixin.qq.com/s?__biz=MzAwOTQ4MzY1Nw==&mid=2247489178&idx=2&sn=08d53566b3aab7c17b3435d30cab2332&chksm=9b5fb27cac283b6a8cfdfcbac89800875d29ff3743c298a5575ff721224fab418140bff161c0&mpshare=1&scene=23&srcid=&sharer_sharetime=1573635038624&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
 
