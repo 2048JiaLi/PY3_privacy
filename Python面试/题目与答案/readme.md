@@ -7,6 +7,10 @@
 ### 6. [python面向对象三大特性](./python面向对象三大特性.md)
 ### 7. [python数据类型](./python中数据类型.md)
 ### 8. [xrange和range区别](./xrange和range区别.md)
+### 9. [python变量、函数、类的命名规则](https://github.com/2048JiaLi/PY3_privacy/blob/master/Python%E9%9D%A2%E8%AF%95/%E5%8F%98%E9%87%8F%E3%80%81%E5%87%BD%E6%95%B0%E3%80%81%E7%B1%BB%E7%9A%84%E5%91%BD%E5%90%8D%E8%A7%84%E5%88%99.md)
+### 10 [python可变与不可变数据类型](./python可变与不可变数据类型.md)
+### 11 [python模块分类：系统内置、第三方、字定义](./python模块分哪三类.md)
+### 12 [python标准异常类](./python标准异常类.md)
 
 [更多-未完成](https://mp.weixin.qq.com/s?__biz=MzA5NzgzODI5NA==&mid=2454038411&idx=4&sn=4f58527fc56e4f14a06d793498102673&chksm=872bb232b05c3b24b4074a91aa471ed1ed352ac1252423947590074500596e064355b1ddb600&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634707986&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
 
