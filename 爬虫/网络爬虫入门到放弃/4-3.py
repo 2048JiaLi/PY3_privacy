@@ -1,0 +1,1 @@
+# selenium 的安装之后，以谷歌浏览器为例，需要下载[chromedriver](https://npm.taobao.org/mirrors/chromedriver)，到环境中，才能狗正常运行
