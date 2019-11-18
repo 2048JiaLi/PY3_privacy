@@ -11,6 +11,12 @@
 ### 10 [python可变与不可变数据类型](./python可变与不可变数据类型.md)
 ### 11 [python模块分类：系统内置、第三方、字定义](./python模块分哪三类.md)
 ### 12 [python标准异常类](./python标准异常类.md)
+### 13 [python深拷贝与浅拷贝](./python深拷贝和浅拷贝.md)
+### 14 [生成器与迭代器区别](./迭代器与生成器区别.md)
+### 15 [可迭代对象获取迭代器方法](./python可迭代对象怎么获取迭代器.md)
+### 16 [python之禅](./python之禅.md)
+### 17 [python字典操作](./python字典及操作.md)
+
 
 [更多-未完成](https://mp.weixin.qq.com/s?__biz=MzA5NzgzODI5NA==&mid=2454038411&idx=4&sn=4f58527fc56e4f14a06d793498102673&chksm=872bb232b05c3b24b4074a91aa471ed1ed352ac1252423947590074500596e064355b1ddb600&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634707986&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
 
