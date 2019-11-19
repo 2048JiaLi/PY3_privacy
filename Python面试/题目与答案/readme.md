@@ -18,6 +18,7 @@
 ### 17 [python字典操作](./python字典及操作.md)
 ### 18 [python字符串格式化](./python字符串格式化.md)
 ### 19 [多线程与多进程区别](./python多线程与多进程.md)
+### 20 [http常见状态码](./http常见响应状态码.md)
 
 
 [更多-未完成](https://mp.weixin.qq.com/s?__biz=MzA5NzgzODI5NA==&mid=2454038411&idx=4&sn=4f58527fc56e4f14a06d793498102673&chksm=872bb232b05c3b24b4074a91aa471ed1ed352ac1252423947590074500596e064355b1ddb600&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634707986&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
