@@ -24,6 +24,9 @@
 ### 23 [python垃圾回收：引用计数 + (标记清楚、分代回收)](./python垃圾回收.md)
 ### 24 [Python交换变量的方法](./交换变量的方法.md)
 ### 25 [位运算](./位运算符.md)
+### 26 [python类型转换方法](./python类型转换方法.md)
+### 27 [python循环和递归实现二分查找.md](./python循环和递归实现二分查找.md)
+
 
 [更多-未完成](https://mp.weixin.qq.com/s?__biz=MzA5NzgzODI5NA==&mid=2454038411&idx=4&sn=4f58527fc56e4f14a06d793498102673&chksm=872bb232b05c3b24b4074a91aa471ed1ed352ac1252423947590074500596e064355b1ddb600&mpshare=1&scene=23&srcid=&sharer_sharetime=1573634707986&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
 
