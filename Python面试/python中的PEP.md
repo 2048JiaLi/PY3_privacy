@@ -2,7 +2,7 @@
 
 PEP的全称是Python Enhancement Proposals，其中Enhancement是增强改进的意思，Proposals则可译为提案或建议书，所以合起来，比较常见的翻译是Python增强提案或Python改进建议书。
 
-PEP的官网是：https://www.python.org/dev/peps/，这也就是PEP 0 的地址。其它PEP的地址是将编号拼接在后面，例如：https://www.python.org/dev/peps/pep-0020/ 就是PEP 20 的链接，以此类推。
+PEP的官网是：https://www.python.org/dev/peps/， 这也就是PEP 0 的地址。其它PEP的地址是将编号拼接在后面，例如：https://www.python.org/dev/peps/pep-0020/ 就是PEP 20 的链接，以此类推。
 
 第一个PEP诞生于2000年。
 
@@ -84,7 +84,7 @@ PEP 3333 -- Python Web Server Gateway Interface v1.0.1，Web开发
 PEP 8000 -- Python Language Governance Proposal Overview，GvR老爹推出决策层后，事关新决策方案
 ```
 
-> 关于PEP，知乎上有两个问题，推荐大家关注：哪些PEP值得阅读（https://dwz.cn/7CHMBlLu），如何看待PEP 572（https://dwz.cn/L46jpzMB）。
+> 关于PEP，知乎上有两个问题，推荐大家关注：[哪些PEP值得阅读](https://dwz.cn/7CHMBlLu)，[如何看待PEP 572](https://dwz.cn/L46jpzMB)。
 
 
 ## PEP的中文翻译
