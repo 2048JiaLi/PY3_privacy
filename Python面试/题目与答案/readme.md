@@ -32,6 +32,10 @@
 ### 30 [Python删除list重复元素的几种方法](./删除list重复元素方法.md)
 ### 31 [python中的__new__和__init__区别](./python中的__new__和__init__.md)
 ### 32 [python中的help和dir函数](./python中的help和dir函数.md)
+### 33 [python的GIL介绍](./python中的GIL.md)
+### 34 [提高python运行效率的技巧](./提高python运行效率的技巧.md)
+### 35 [python装饰器的详解](./python装饰器的理解.md)
+
 
 [更多-未完成](https://mp.weixin.qq.com/s/WWIaJmuY-Q1HGixFVFaAKg)
 
