@@ -35,6 +35,8 @@
 ### 33 [python的GIL介绍](./python中的GIL.md)
 ### 34 [提高python运行效率的技巧](./提高python运行效率的技巧.md)
 ### 35 [python装饰器的详解](./python装饰器的理解.md)
+### 36 [Python异常捕获](./异常捕获.md)
+### 37 [单例模式（Singleton Pattern）软件设计模式](./单例软件设计模式.md)
 
 
 [更多-未完成](https://mp.weixin.qq.com/s/WWIaJmuY-Q1HGixFVFaAKg)
