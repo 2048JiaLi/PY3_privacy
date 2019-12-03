@@ -37,7 +37,9 @@
 ### 35 [python装饰器的详解](./python装饰器的理解.md)
 ### 36 [Python异常捕获](./异常捕获.md)
 ### 37 [单例模式（Singleton Pattern）软件设计模式](./单例软件设计模式.md)
-
+### 38 [python魔术方法](./魔术方法.md)
+### 39 [python自省方法](./实现自省的方法.md)
+### 40 [参数\*args和\*\*kwargs的含义](./参数args和kwargs含义.md)
 
 [更多-未完成](https://mp.weixin.qq.com/s/WWIaJmuY-Q1HGixFVFaAKg)
 
