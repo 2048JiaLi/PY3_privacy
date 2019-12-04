@@ -40,6 +40,7 @@
 ### 38 [python魔术方法](./魔术方法.md)
 ### 39 [python自省方法](./实现自省的方法.md)
 ### 40 [参数\*args和\*\*kwargs的含义](./参数args和kwargs含义.md)
+### 41 [正则表达式](./正则表达式.md)
 
 [更多-未完成](https://mp.weixin.qq.com/s/WWIaJmuY-Q1HGixFVFaAKg)
 
