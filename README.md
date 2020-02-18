@@ -1,3 +1,5 @@
+> 使用git bash时最直接的方法是利用https链接克隆仓库
+
 # *PY3_personal*
 
 ### [数据分析常用的Matplotlib图](https://mp.weixin.qq.com/s?__biz=MzU1MjYzNjQwOQ==&mid=2247486636&idx=2&sn=44ff6554408a5252bed8fd97bbcbfdf5&chksm=fbfe563acc89df2c36eedfd84671f4435994bb7509a025533c008d710f3da6de1335963184fa&mpshare=1&scene=23&srcid=&sharer_sharetime=1573120171389&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
