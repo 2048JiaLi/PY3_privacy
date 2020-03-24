@@ -1,0 +1,40 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\title{LDP}
+\author{Wang}
+\date{\today}
+
+\begin{document}
+    \maketitle
+    This is the context of the article.
+    这就是文章的所有内容
+    \begin{algorithm}
+        \caption{A}
+        \label{alg:A}
+        \begin{algorithmic}
+            \STATE {set $r(t)=x(t)$} 
+            \REPEAT 
+                \STATE set $h(t)=r(t)$ 
+                \REPEAT
+                    \STATE set $h(t)=r(t)$ 
+                \UNTIL{B} 
+            \UNTIL{B}
+        \end{algorithmic}
+    \end{algorithm}
+
+
+\begin{table}[!htbp]
+		\centering
+		\begin{tabular}{l|ccc}\hline
+			k&\multicolumn{3}{c}{计算开销}\\\hline
+			&对比方案(固定值)&POS数据集&Kosarak数据集\\
+			50&2369885.0&6214.9&5479.5\\
+			100&1271427795.0&23032.8&17139.5\\
+			150&309019152705.0&46690.55&34918.0\\\hline
+		\end{tabular}
+		\caption{开销对比}
+		\label{tab:computation}
+\end{table}
+
+\end{document}

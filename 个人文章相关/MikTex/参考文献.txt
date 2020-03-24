@@ -1,0 +1,164 @@
+@inproceedings{agrawal1993mining,
+  title={Mining association rules between sets of items in large databases},
+  author={Agrawal, Rakesh and Imieli{\'n}ski, Tomasz and Swami, Arun},
+  booktitle={Acm sigmod record},
+  volume={22},
+  number={2},
+  pages={207--216},
+  year={1993},
+  organization={ACM}
+}
+
+@inproceedings{agrawal1994fast,
+  title={Fast algorithms for mining association rules},
+  author={Agrawal, Rakesh and Srikant, Ramakrishnan and others},
+  booktitle={Proc. 20th int. conf. very large data bases, VLDB},
+  volume={1215},
+  pages={487--499},
+  year={1994}
+}
+
+@inproceedings{han2000mining,
+  title={Mining frequent patterns without candidate generation},
+  author={Han, Jiawei and Pei, Jian and Yin, Yiwen},
+  booktitle={ACM sigmod record},
+  volume={29},
+  number={2},
+  pages={1--12},
+  year={2000},
+  organization={ACM}
+}
+
+@article{zeng2012differentially,
+  title={On differentially private frequent itemset mining},
+  author={Zeng, Chen and Naughton, Jeffrey F and Cai, Jin-Yi},
+  journal={Proceedings of the VLDB Endowment},
+  volume={6},
+  number={1},
+  pages={25--36},
+  year={2012},
+  publisher={VLDB Endowment}
+}
+
+@inproceedings{wang2018locally,
+  title={Locally differentially private frequent itemset mining},
+  author={Wang, Tianhao and Li, Ninghui and Jha, Somesh},
+  booktitle={2018 IEEE Symposium on Security and Privacy (SP)},
+  pages={127--143},
+  year={2018},
+  organization={IEEE}
+}
+
+@article{hay2010boosting,
+  title={Boosting the accuracy of differentially private histograms through consistency},
+  author={Hay, Michael and Rastogi, Vibhor and Miklau, Gerome and Suciu, Dan},
+  journal={Proceedings of the VLDB Endowment},
+  volume={3},
+  number={1-2},
+  pages={1021--1032},
+  year={2010},
+  publisher={VLDB Endowment}
+}
+
+@inproceedings{wang2017locally,
+  title={Locally differentially private protocols for frequency estimation},
+  author={Wang, Tianhao and Blocki, Jeremiah and Li, Ninghui and Jha, Somesh},
+  booktitle={26th $\{$USENIX$\}$ Security Symposium ($\{$USENIX$\}$ Security 17)},
+  pages={729--745},
+  year={2017}
+}
+
+@article{holohan2017optimal,
+  title={Optimal differentially private mechanisms for randomised response},
+  author={Holohan, Naoise and Leith, Douglas J and Mason, Oliver},
+  journal={IEEE Transactions on Information Forensics and Security},
+  volume={12},
+  number={11},
+  pages={2726--2735},
+  year={2017},
+  publisher={IEEE}
+}
+
+@inproceedings{wang2018privset,
+  title={PrivSet: Set-valued data analyses with locale differential privacy},
+  author={Wang, Shaowei and Huang, Liusheng and Nie, Yiwen and Wang, Pengzhan and Xu, Hongli and Yang, Wei},
+  booktitle={IEEE INFOCOM 2018-IEEE Conference on Computer Communications},
+  pages={1088--1096},
+  year={2018},
+  organization={IEEE}
+}
+
+@inproceedings{wang2018privtrie,
+  title={PrivTrie: Effective frequent term discovery under local differential privacy},
+  author={Wang, Ning and Xiao, Xiaokui and Yang, Yin and Hoang, Ta Duy and Shin, Hyejin and Shin, Junbum and Yu, Ge},
+  booktitle={2018 IEEE 34th International Conference on Data Engineering (ICDE)},
+  pages={821--832},
+  year={2018},
+  organization={IEEE}
+}
+
+@inproceedings{qin2016heavy,
+  title={Heavy hitter estimation over set-valued data with local differential privacy},
+  author={Qin, Zhan and Yang, Yin and Yu, Ting and Khalil, Issa and Xiao, Xiaokui and Ren, Kui},
+  booktitle={Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security},
+  pages={192--203},
+  year={2016},
+  organization={ACM}
+}
+
+@article{warner1965randomized,
+  title={Randomized response: A survey technique for eliminating evasive answer bias},
+  author={Warner, Stanley L},
+  journal={Journal of the American Statistical Association},
+  volume={60},
+  number={309},
+  pages={63--69},
+  year={1965},
+  publisher={Taylor \& Francis}
+}
+
+@inproceedings{erlingsson2014rappor,
+  title={Rappor: Randomized aggregatable privacy-preserving ordinal response},
+  author={Erlingsson, {\'U}lfar and Pihur, Vasyl and Korolova, Aleksandra},
+  booktitle={Proceedings of the 2014 ACM SIGSAC conference on computer and communications security},
+  pages={1054--1067},
+  year={2014},
+  organization={ACM}
+}
+
+@inproceedings{ding2017collecting,
+  title={Collecting telemetry data privately},
+  author={Ding, Bolin and Kulkarni, Janardhan and Yekhanin, Sergey},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={3571--3580},
+  year={2017}
+}
+
+@inproceedings{bhaskar2010discovering,
+  title={Discovering frequent patterns in sensitive data},
+  author={Bhaskar, Raghav and Laxman, Srivatsan and Smith, Adam and Thakurta, Abhradeep},
+  booktitle={Proceedings of the 16th ACM SIGKDD international conference on Knowledge discovery and data mining},
+  pages={503--512},
+  year={2010},
+  organization={ACM}
+}
+
+@article{li2012privbasis,
+  title={Privbasis: Frequent itemset mining with differential privacy},
+  author={Li, Ninghui and Qardaji, Wahbeh and Su, Dong and Cao, Jianneng},
+  journal={Proceedings of the VLDB Endowment},
+  volume={5},
+  number={11},
+  pages={1340--1351},
+  year={2012},
+  publisher={VLDB Endowment}
+}
+
+@inproceedings{lee2014top,
+  title={Top-k frequent itemsets via differentially private fp-trees},
+  author={Lee, Jaewoo and Clifton, Christopher W},
+  booktitle={Proceedings of the 20th ACM SIGKDD international conference on Knowledge discovery and data mining},
+  pages={931--940},
+  year={2014},
+  organization={ACM}
+}
