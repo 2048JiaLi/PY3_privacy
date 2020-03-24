@@ -18,7 +18,7 @@
 
 ### 具体介绍:
 1. 多线程
-> [多线程学习](https://github.com/2048JiaLi/my-learning-100days/tree/master/python%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0)
+> [多线程学习](https://github.com/2048JiaLi/my-python-learning/tree/master/python%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%AD%A6%E4%B9%A0)
 
 在Python的标准库中提供了两个模块：`_thread`和`threading`，`_thread`是低级模块不支持守护线程，当主线程退出时，所有子线程都会被强行退出。而`threading`是高级模块，用于对`_thread`进行了封装支持守护线程。在大多数情况下我们只需要使用`threading`这个高级模块即可。
 
