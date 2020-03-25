@@ -79,7 +79,13 @@ this is abstract
 			 正整数$k$;\\
 			 频繁$1-itemset$集合$\tilde{S_k}$;
 			 \ENSURE $top-k$的挖掘结果$\tilde{IS_k}$
-                 \STATE 将数据集$DB_2$按比例分为互斥的两组$transaction_1$和$transaction_2$;
+                 \FOR{each $t_i \in DB_2$}
+                 \STATE //预处理数据集
+                 \STATE $trans = t_i \cap \tilde{S_k}$；
+                 \STATE $sort(trans,key=\tilde{S_k})$；  //以$\tilde{S_k}$的项目顺序对$t$中项目进行排序；
+                 \STATE 将$trans$中记录保留作为该用户的隐私记录$t_i$；
+                 \ENDFOR
+                 \STATE 将$DB_2$按比例分为互斥的两组$transaction_1$和$transaction_2$;
                  \label{minefp:group}
 			 \STATE $iterNum = FO\_MaxIter(transaction_1,\epsilon)$; \\ //FO协议聚合transaction\_1中用户记录长度的信息,%详见算法\ref{alg:FO_MaxIter}
 			 \label{minefp:iterNum}
@@ -95,7 +101,7 @@ this is abstract
 
 %对上述算法简单介绍，引出下文
 
-算法\ref{alg:minefp}所述minefp方案主要是层次建立模式树tree：
+算法\ref{alg:minefp}描述了minefp方案的总体框架，其中最主要是层次建立模式树tree（步骤\ref{minefp:tree}）。
 
 步骤\ref{minefp:iterNum}是以LDP方式聚合得到树的最大层次iterNum，用于层次建树时更好的分配隐私预算，详见\ref{section:MaxIter}节；
 
