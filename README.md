@@ -4,7 +4,7 @@
 
 ### [数据分析常用的Matplotlib图](https://mp.weixin.qq.com/s?__biz=MzU1MjYzNjQwOQ==&mid=2247486636&idx=2&sn=44ff6554408a5252bed8fd97bbcbfdf5&chksm=fbfe563acc89df2c36eedfd84671f4435994bb7509a025533c008d710f3da6de1335963184fa&mpshare=1&scene=23&srcid=&sharer_sharetime=1573120171389&sharer_shareid=146e00a5d117656b5e8159f8890e708c#rd)
 ### [爬虫](https://github.com/2048JiaLi/PY3_privacy/tree/master/%E7%88%AC%E8%99%AB)
-### [面试](https://github.com/2048JiaLi/PY3_privacy/tree/master/Python%E9%9D%A2%E8%AF%95)
+### [面试](./Python面试/README.md)
 + [python设计和历史常见问题](https://github.com/2048JiaLi/PY3_privacy/blob/master/python%E8%AE%BE%E8%AE%A1%E5%92%8C%E5%8E%86%E5%8F%B2%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98.md)
 - [算法学习](./算法学习/readme.md)
 
