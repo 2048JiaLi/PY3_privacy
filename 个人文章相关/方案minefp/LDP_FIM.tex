@@ -1,6 +1,7 @@
 \documentclass[UTF8]{ctexart}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{graphicx}  %插入图片
 \renewcommand{\algorithmicrequire}{ \textbf{Input:}} %Use Input in the format of Algorithm
 \renewcommand{\algorithmicensure}{ \textbf{Output:}} %UseOutput in the format of Algorithm
 
@@ -64,6 +65,12 @@ this is abstract
 
 根据分析，整个机制是满足$\epsilon-LDP$的，不会泄露用户隐私。
 
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{123.pdf}
+    \caption{模式树}
+    \label{fig:fptree}
+  \end{figure}
 
 \subsection{minefp方案介绍}
 \label{section:minefp}
@@ -79,17 +86,16 @@ this is abstract
 			 正整数$k$;\\
 			 频繁$1-itemset$集合$\tilde{S_k}$;
 			 \ENSURE $top-k$的挖掘结果$\tilde{IS_k}$
-                 \FOR{each $t_i \in DB_2$}
-                 \STATE //预处理数据集
-                 \STATE $trans = t_i \cap \tilde{S_k}$；
-                 \STATE $sort(trans,key=\tilde{S_k})$；  //以$\tilde{S_k}$的项目顺序对$t$中项目进行排序；
-                 \STATE 将$trans$中记录保留作为该用户的隐私记录$t_i$；
-                 \ENDFOR
-                 \STATE 将$DB_2$按比例分为互斥的两组$transaction_1$和$transaction_2$;
-                 \label{minefp:group}
-			 \STATE $iterNum = FO\_MaxIter(transaction_1,\epsilon)$; \\ //FO协议聚合transaction\_1中用户记录长度的信息,%详见算法\ref{alg:FO_MaxIter}
+
+                 \STATE 预处理数据集$DB_2$，删除用户记录中的非频繁项目并重新排序； \\ //预处理数据集，$\tilde{S_k}$中的项目为频繁项目，并以其中项目顺序进行排序   
+                 \label{minefp:preprocessing} 
+                 \STATE 分配隐私预算$\epsilon_1 + \epsilon_2 = \epsilon$；
+                 \label{minefp:epsilon}            
+                 %\STATE 将$DB_2$按比例分为互斥的两组$transaction_1$和$transaction_2$；
+                 %\label{minefp:group}
+			 \STATE $iterNum = FO\_MaxIter(transaction_1,\epsilon_1)$； \\ //FO协议聚合transaction\_1中用户记录长度的信息,%详见算法\ref{alg:FO_MaxIter}
 			 \label{minefp:iterNum}
-			 \STATE $tree = build\_fpTree(transaction_2,\tilde{S_k},\epsilon,iterNum)$; \\ //层次构建频繁模式树，%详见算法\ref{alg:build_fpTree}
+			 \STATE $tree = build\_fpTree(transaction_2,\tilde{S_k},\epsilon_2,iterNum)$； \\ //层次构建频繁模式树，%详见算法\ref{alg:build_fpTree}
 			 \label{minefp:tree}
 			 \STATE $\tilde{IS} = FP\-growth(tree)$； \\ //FP-growth方法挖掘模式树tree
                  \label{minefp:fpgrowth}
@@ -101,19 +107,24 @@ this is abstract
 
 %对上述算法简单介绍，引出下文
 
-算法\ref{alg:minefp}描述了minefp方案的总体框架，其中最主要是层次建立模式树tree（步骤\ref{minefp:tree}）。
+算法\ref{alg:minefp}描述了minefp方案的总体框架，首先对整个用户数据进行预处理并分配隐私预算（步骤\ref{minefp:preprocessing}、\ref{minefp:epsilon}）；然后为了建立频繁模式树，先聚合用户记录长度估计出树的最大层次（步骤\ref{minefp:iterNum}），最后以最大层次进行频繁模式树的层次建立（步骤\ref{minefp:tree}）；在建立模式树之后，挖掘出有效的频繁项集并且对结果进行一定的优化处理后发布（步骤\ref{minefp:fpgrowth}、\ref{minefp:optimize}）。
 
-步骤\ref{minefp:iterNum}是以LDP方式聚合得到树的最大层次iterNum，用于层次建树时更好的分配隐私预算，详见\ref{section:MaxIter}节；
 
-步骤\ref{minefp:tree}用于建立频繁模式树，详见\ref{section:buildTree}节；
 
-步骤\ref{minefp:fpgrowth}是FP-growth的挖掘方法，更多细节参见文献\cite{han2000mining}；
+%其中最主要是层次建立模式树tree（步骤\ref{minefp:tree}）。
 
-步骤\ref{minefp:optimize}为后处理步骤，用以优化最终发布结果，能够使结果更加准确。
+%步骤\ref{minefp:iterNum}是以LDP方式聚合得到树的最大层次iterNum，用于层次建树时更好的分配隐私预算，详见\ref{section:MaxIter}节；
+
+%步骤\ref{minefp:tree}用于建立频繁模式树，详见\ref{section:buildTree}节；
+
+%步骤\ref{minefp:fpgrowth}是FP-growth的挖掘方法，更多细节参见文献\cite{han2000mining}；
+
+%步骤\ref{minefp:optimize}为后处理步骤，用以优化最终发布结果，能够使结果更加准确。
 
 
 \subsection{最大树层次}
 \label{section:MaxIter}
+由于本文是在LDP场景下层次建立频繁模式树，树的最大层次与隐私预算的分配直接相关
 
 \subsection{层次建树}
 \label{section:buildTree}
