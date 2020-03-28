@@ -89,13 +89,13 @@ this is abstract
 
                  \STATE 预处理数据集$DB_2$，删除用户记录中的非频繁项目并重新排序； \\ //预处理数据集，$\tilde{S_k}$中的项目为频繁项目，并以其中项目顺序进行排序   
                  \label{minefp:preprocessing} 
-                 \STATE 分配隐私预算$\epsilon_1 + \epsilon_2 = \epsilon$；
-                 \label{minefp:epsilon}            
-                 %\STATE 将$DB_2$按比例分为互斥的两组$transaction_1$和$transaction_2$；
-                 %\label{minefp:group}
-			 \STATE $iterNum = FO\_MaxIter(transaction_1,\epsilon_1)$； \\ //FO协议聚合transaction\_1中用户记录长度的信息,%详见算法\ref{alg:FO_MaxIter}
+                 %\STATE 分配隐私预算$\epsilon_1 + \epsilon_2 = \epsilon$；
+                 %\label{minefp:epsilon}            
+                 \STATE 将$DB_2$按比例分为互斥的两组$transaction_1$和$transaction_2$；
+                 \label{minefp:group}
+			 \STATE $iterNum = FO\_MaxIter(transaction_1,\epsilon)$； \\ //FO协议聚合transaction\_1中用户记录长度的信息,%详见算法\ref{alg:FO_MaxIter}
 			 \label{minefp:iterNum}
-			 \STATE $tree = build\_fpTree(transaction_2,\tilde{S_k},\epsilon_2,iterNum)$； \\ //层次构建频繁模式树，%详见算法\ref{alg:build_fpTree}
+			 \STATE $tree = build\_fpTree(transaction_2,\tilde{S_k},\epsilon,iterNum)$； \\ //层次构建频繁模式树，%详见算法\ref{alg:build_fpTree}
 			 \label{minefp:tree}
 			 \STATE $\tilde{IS} = FP\-growth(tree)$； \\ //FP-growth方法挖掘模式树tree
                  \label{minefp:fpgrowth}
@@ -107,7 +107,7 @@ this is abstract
 
 %对上述算法简单介绍，引出下文
 
-算法\ref{alg:minefp}描述了minefp方案的总体框架，首先对整个用户数据进行预处理并分配隐私预算（步骤\ref{minefp:preprocessing}、\ref{minefp:epsilon}）；然后为了建立频繁模式树，先聚合用户记录长度估计出树的最大层次（步骤\ref{minefp:iterNum}），最后以最大层次进行频繁模式树的层次建立（步骤\ref{minefp:tree}）；在建立模式树之后，挖掘出有效的频繁项集并且对结果进行一定的优化处理后发布（步骤\ref{minefp:fpgrowth}、\ref{minefp:optimize}）。
+算法\ref{alg:minefp}描述了minefp方案的总体框架，首先对整个用户数据进行预处理并分配隐私预算（步骤\ref{minefp:preprocessing}、\ref{minefp:group}）；然后为了建立频繁模式树，先聚合用户记录长度估计出树的最大层次（步骤\ref{minefp:iterNum}），最后以最大层次进行频繁模式树的层次建立（步骤\ref{minefp:tree}）；在建立模式树之后，挖掘出有效的频繁项集并且对结果进行一定的优化处理后发布（步骤\ref{minefp:fpgrowth}、\ref{minefp:optimize}）。
 
 
 
@@ -124,7 +124,29 @@ this is abstract
 
 \subsection{最大树层次}
 \label{section:MaxIter}
-由于本文是在LDP场景下层次建立频繁模式树，树的最大层次与隐私预算的分配直接相关
+由于本文是在LDP场景下层次建立频繁模式树，树的最大层次与隐私预算的分配直接相关。如图\ref{fig:fptree}所示模式树，最大层次为5。由于用户的记录长度也是敏感信息，其长度不固定且具有随机性。本文使用FO协议，聚合用户的记录长度，通过设置临界值$T=3.0 \cdot \frac{\sqrt{n}}{\epsilon}$,从而估计出有效的最大层次。
+
+\begin{algorithm}[h]
+\caption{FO\_MaxIter}
+\label{alg:MaxIter}
+\begin{algorithmic}[1]
+\REQUIRE 数据集$transaction_1$；\\
+隐私预算$\epsilon_1$;
+\ENSURE 最大迭代次数MaxIter
+
+\STATE 初始化临界值$T=3.0 \cdot \frac{\sqrt{n_1}}{\epsilon}$； //$n_1$为$transaction_1$的用户总数
+\label{T threshold}
+\STATE FO协议聚合用户记录长度，并且将长度人数不大于$T$的视作无效估计，置为0；
+
+\STATE 利用公式(8)在$\gamma=0.8$时的整数值$M$;
+\label{gamma=0.8}
+\RETURN 最大迭代次数$M$
+\end{algorithmic}
+\end{algorithm}
+
+ $$\varphi(X)=\prod_{x \in X} \mu(x) , \mu(x) = \frac{0.8\times \tilde{\theta}(x)}{\max \limits_{x \in S^{\prime}} \tilde{\theta}(x)}\eqno{(9)}$$
+
+其过程与文献\cite{wang2018locally}中对$L$值的确定相似，本文对其中一些参数值做了修改，具体见算法\ref{alg:iter}。
 
 \subsection{层次建树}
 \label{section:buildTree}
