@@ -2,6 +2,7 @@
 \usepackage{algorithm}
 \usepackage{algorithmic}
 \usepackage{graphicx}  %插入图片
+\usepackage{color} %字体颜色
 \renewcommand{\algorithmicrequire}{ \textbf{Input:}} %Use Input in the format of Algorithm
 \renewcommand{\algorithmicensure}{ \textbf{Output:}} %UseOutput in the format of Algorithm
 
@@ -27,6 +28,14 @@ this is abstract
 然而，传统差分隐私技术在收集聚合数据时，用户先将原始数据提交给第三方，由第三方完成对数据的加噪处理之后，将数据发布。整个过程中，需要认定第三方是可信的。
 
 现实生活中，找到一个可信的第三方是困难的。所以，本地化差分隐私被提出。其一方面继承了传统差分隐私技术的对敏感数据量化处理的优势，另一方面进一步细化隐私保证，将加噪过程由第三方转移至用户端，由用户独立完成对个人敏感数据的加噪处理。
+
+FP-growth算法根据数据集建立频繁模式树如图\ref{fig:fptree}。
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{123.pdf}
+    \caption{模式树}
+    \label{fig:fptree}
+  \end{figure}
 
 \section{本文工作}
 \label{section:fullstep}
@@ -64,13 +73,6 @@ this is abstract
 对于问题2，通过分析，我们发现模式树的层次建立能够更好的契合LDP场景，提出minefp方案收集$top-k$的$\alpha -itemset(\alpha>1)$集合$\tilde{IS_k}$，详见\ref{section:minefp}节。
 
 根据分析，整个机制是满足$\epsilon-LDP$的，不会泄露用户隐私。
-
-  \begin{figure}[h]
-    \centering
-    \includegraphics[width=0.8\textwidth]{123.pdf}
-    \caption{模式树}
-    \label{fig:fptree}
-  \end{figure}
 
 \subsection{minefp方案介绍}
 \label{section:minefp}
@@ -124,9 +126,15 @@ this is abstract
 
 \subsection{最大树层次}
 \label{section:MaxIter}
-由于本文是在LDP场景下层次建立频繁模式树，树的最大层次与隐私预算的分配直接相关。如图\ref{fig:fptree}所示模式树，最大层次为5。由于用户的记录长度也是敏感信息，其长度不固定且具有随机性。本文使用FO协议，聚合用户的记录长度，通过设置临界值$T=3.0 \cdot \frac{\sqrt{n}}{\epsilon}$,从而估计出有效的最大层次。
+本文是在LDP场景下层次建立频繁模式树，树的最大层次与隐私预算的分配直接相关。如图\ref{fig:fptree}所示模式树，最大层次为5。由于用户的记录长度也是敏感信息，其长度不固定且具有随机性。
 
-\begin{algorithm}[h]
+为了估计出有效的最大用户记录长度，本文使用FO协议对用户的长度进行一次聚合，并找到第80百分位长度值为$iterNum$，然后使用该值建立频繁模式树（\ref{section:buildTree}）。
+
+
+
+本文使用FO协议，聚合用户的记录长度，通过设置临界值$T=3.0 \cdot \frac{\sqrt{n}}{\epsilon}$,从而估计出有效的最大层次。
+
+\begin{algorithm}[!]
 \caption{FO\_MaxIter}
 \label{alg:MaxIter}
 \begin{algorithmic}[1]
@@ -134,22 +142,57 @@ this is abstract
 隐私预算$\epsilon_1$;
 \ENSURE 最大迭代次数MaxIter
 
-\STATE 初始化临界值$T=3.0 \cdot \frac{\sqrt{n_1}}{\epsilon}$； //$n_1$为$transaction_1$的用户总数
+\STATE 初始化误差临界值$error = 3.0 \cdot \frac{\sqrt{n_1}}{\epsilon}$； //$n_1$为$transaction_1$的用户总数
 \label{T threshold}
-\STATE FO协议聚合用户记录长度，并且将长度人数不大于$T$的视作无效估计，置为0；
-
-\STATE 利用公式(8)在$\gamma=0.8$时的整数值$M$;
+\STATE 对所有长度$l \in [1,2,\ldots,k]$使用FO协议聚合用户数$\Phi(l)$，并且剔除估计结果不大于$error$的项
+\STATE 计算出$iterNum$使得$\frac{ \sum_{l=1}^{iterNum} \Phi(l)}{\sum_{l=1}^k \Phi(l)} > 0.8$；
 \label{gamma=0.8}
-\RETURN 最大迭代次数$M$
+\RETURN 最大迭代次数$iterNum$
 \end{algorithmic}
 \end{algorithm}
 
- $$\varphi(X)=\prod_{x \in X} \mu(x) , \mu(x) = \frac{0.8\times \tilde{\theta}(x)}{\max \limits_{x \in S^{\prime}} \tilde{\theta}(x)}\eqno{(9)}$$
+其过程与文献\cite{wang2018locally}中对$L$值的确定相似，本文对其中一些参数值做了修改，具体见算法\ref{alg:MaxIter}。
 
-其过程与文献\cite{wang2018locally}中对$L$值的确定相似，本文对其中一些参数值做了修改，具体见算法\ref{alg:iter}。
-
+\newpage
 \subsection{层次建树}
 \label{section:buildTree}
+  本节详细介绍了minefp方案的具体建树过程，与FP-growth方法不同的是，本文在LDP场景下采用层次建树方式，构建模式树如图\ref{fig:fptree}。具体步骤如下：（记树中根节点为第$level = 0$层，向下依次递增）
+
+1、初始化树的根节点$root$，为树的$level=0$层；
+
+2、第$level=1$层树节点聚合；对预处理后的交易记录进行一次LDP频率估计，如下
+
+如用户$u_{1}$预处理后的交易为{\color{red}$c,f,a,p$}，则其当前阶段的隐私信息为其前$level=1$个项，即为$c$；
+
+用户$u_{2}$预处理后的交易为{\color{red}$c,f,a,b$}，则其隐私信息为$c$；
+
+用户$u_{3}$预处理后的交易为{\color{red}$f,b$}，则其隐私信息为$f$；用户$u_{4}$的隐私信息为$c$；用户$u_{5}$的隐私信息为$c$。
+
+则经过第三方聚合后，得到结果为$\{(c,4),(f,1)\}$，然后建第$level=1$层树节点，如图\ref{figure:levelone}所示，其中由于FO协议的特性，需要已知聚合的值域，也就是当前层的所有可能节点（见\ref{section:Q1}），图中计数为0的节点为无效节点。
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{level_1}
+    \caption{第$level=1$层树节点}
+    \label{figure:levelone}
+  \end{figure}
+
+3、第$level=2$层树节点聚合；
+
+用户$u_{1}$预处理后的交易为{\color{red}$c,f,a,p$}，则其当前阶段的隐私信息为其前$level=2$个项，即为$(c,f)$；
+
+用户$u_{2}$的隐私信息为$(c,f)$，用户$u_{3}$的隐私信息为$(f,b)$，用户$u_{4}$的隐私信息为$(c,b)$，用户$u_{5}$的隐私信息为$(c,f)$
+
+第三方聚合结果为$\left \{ (c,f,3) , (c,b,1) , (f,b,1) \right \}$，根据路径建立第$level=2$层树节点,如图\ref{figure:leveltwo}所示：
+
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{level_2}
+    \caption{第$level=2$层树节点}
+    \label{figure:leveltwo}
+  \end{figure}
+
+4、依层次$level$递增顺序，直到达到树的最大层数，建立模式树如图\ref{fi:fptree}所示。
 
 %建树算法修改
 \begin{algorithm}[htbp]
