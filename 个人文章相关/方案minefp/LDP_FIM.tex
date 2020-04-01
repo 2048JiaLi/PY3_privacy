@@ -3,6 +3,11 @@
 \usepackage{algorithmic}
 \usepackage{graphicx}  %插入图片
 \usepackage{color} %字体颜色
+\pdfoptionpdfminorversion=7  %插入pdf导致的版本问题
+
+%\usepackage{geometry} % 页边距
+%\geometry{a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm} 
+
 \renewcommand{\algorithmicrequire}{ \textbf{Input:}} %Use Input in the format of Algorithm
 \renewcommand{\algorithmicensure}{ \textbf{Output:}} %UseOutput in the format of Algorithm
 
@@ -78,7 +83,7 @@ this is abstract
 
 2、如何构建频繁模式树。
 
-对于问题1，其等同于LDP的PSFO任务，本文使用文献\cite{wang2018locally}所提的SVIM方法，收集$top-k$的频繁$1-itemset$集合$\tilde{S_k}=\left\{x^{1}: \tilde{\theta}^{1}, x^{2}: \tilde{\theta}^{2}, \ldots, x^{k}: \tilde{\theta}^{k}\right\}$，，更多算法细节参见文献；
+对于问题1，其等同于LDP的PSFO任务，本文使用文献\cite{wang2018locally}所提的SVIM方法，收集$top-k$的频繁$1-itemset$集合$\tilde{S_k}=\left\{x^{1}: \tilde{\theta}(x^1), x^{2}: \tilde{\theta}(x^2), \ldots, x^{k}: \tilde{\theta}(x^k)\right\}$，其中$\tilde{\theta}(x^i)$是项$x^i$的估计频数，$1\leq i \leq k$，更多算法细节参见文献；
 
 对于问题2，通过分析，我们发现模式树的层次建立能够更好的契合LDP场景，提出minefp方案收集$top-k$的$\alpha -itemset(\alpha>1)$集合$\tilde{IS_k}$，详见\ref{section:minefp}节。
 
@@ -115,7 +120,7 @@ this is abstract
                  \RETURN $\tilde{IS_k}$
         \end{algorithmic}
 \end{algorithm}
-
+%算法中是分组  还是  分预算 最后要明确
 %对上述算法简单介绍，引出下文
 
 算法\ref{alg:minefp}描述了minefp方案的总体框架，首先对整个用户数据进行预处理并分配隐私预算（步骤\ref{minefp:preprocessing}、\ref{minefp:epsilon}）；然后为了建立频繁模式树，先聚合用户记录长度估计出树的最大层次（步骤\ref{minefp:iterNum}），最后以最大层次进行频繁模式树的层次建立（步骤\ref{minefp:tree}）；在建立模式树之后，挖掘出有效的频繁项集并且对结果进行一定的优化处理后发布（步骤\ref{minefp:fpgrowth}、\ref{minefp:optimize}）。
@@ -200,18 +205,89 @@ $top-k$频繁$1-itemset$集合$\tilde{S_k}$;\\
 \STATE 初始化树根结点$root$为空；
 %\STATE 分配隐私预算$\epsilon^{\prime} = \epsilon_2 / iterNum$；
 \FOR{层次$j=1$ to $iterNum$}
-    \STATE 分配隐私预算$\epsilon^{\prime} = \epsilon_2 / iterNum$；
+    \STATE 均匀分配隐私预算为$\epsilon^{\prime}$；
+    \label{tree:epsilon}
     \STATE 根据第$j-1$层保留的树节点生成孩子为第$j$层树节点，并初始化节点计数为0；
+    \label{tree:child node}
     \STATE 以预算$\epsilon^{\prime}$使用FO协议聚合得到第$j$层节点信息信息；
+    \label{tree:FO}
     \STATE 初始化误差临界值为协议标准差$standard\_error$；
+    \label{tree:error bound}
     \STATE 删除估计的计数值不大于$standard\_error$的节点；
+    \label{tree:filter}
     \STATE 更新节点信息；
+    \label{tree:update}
 \ENDFOR
 \RETURN $root$
 \end{algorithmic}
 \end{algorithm}
 
 % 对算法中的具体过程详细介绍！！！！！因子这是本文的主要贡献——将Q1至Q4具体介绍
+
+算法\ref{alg:bulid tree}介绍了层次建树的基本流程，其中步骤\ref{tree:epsilon}至步骤\ref{tree:update}介绍了树层次节点的建立与信息更新。为了保证模式树的有效性与完整性，在使用LDP协议聚合用户信息以及更新树中节点时，需要对具体步骤进行细节优化。以下详细介绍了算法中的各步骤及其优化过程。
+
+\section{建树优化}
+
+\subsection{隐私预算分配}\label{section:Allocate privacy budget}
+层次建树过程中，本文均分隐私预算对树的层次节点LDP聚合。若给定最大层次$iterNum$（见\ref{section:MaxIter}节），共计有两种预算分配方式：
+
+a、将$\epsilon$均分为$\epsilon^{\prime} = \epsilon / iterNum$，所有用户共计参与LDP聚合$iterNum$次；
+
+b、将数据集均分为$iterNum$组，每组使用全部隐私预算$\epsilon^{\prime} = \epsilon$参与其中一次LDP聚合，且不重复参与。
+
+文献\cite{wang2018privtrie,wang2018locally}表明，分配方式b优于方式a，且能有效降低$O(\sqrt{iterNum})$倍误差。
+
+\subsection{层次节点初始化}
+  在使用FO协议聚合第$j$层节点信息时，根据FO协议特性，其输入输出值域$I$和隐私预算$\epsilon$需要是已知的。对于隐私预算的分配，见\ref{section:Allocate privacy budget}节，故而本节主要介绍协议在第$j$层聚合时，输入输出值域$I_j$的确定以及优化。
+
+  \textbf{基本方法}
+  根据模式树层次建立的特性，第$j$层的节点信息，不仅与FO协议的聚合结果相关，而且与第$j-1$层保留的节点有关（因为无效节点——节点计数为0——不会生成孩子节点）。所以，一种生成$I_j$的直接方法是根据上一层（第$j-1$层）保留的节点，生成其所有可能的孩子节点作为初始值域$I_j$，用以FO协议聚合。
+
+  以图\ref{fig:fptree}模式树为例，根节点$root$为第$j=0$层；
+
+  当$j = 1$时，其上一层为根节点，则$I_1$初始为$\tilde{S_k}$中所有的频繁项目，即$I_1 = \left\{ (c), (f), (a), (b) , (p)\right\}$；设此时FO协议聚合结果为$\{(c,4),(f,1)\}$，则保留节点$\left\{ (c), (f)\right\}$为有效节点。
+
+  当$j = 2$时，第$j = 1$层保留的有效节点为$\left\{(c),(f) \right\}$，则所有可能的孩子节点路径为$\left\{(c,f),(c,a),(c,b),(c,p),(f,a),(f,b),(f,p)\right\}$即为$I_2$；（孩子节点生成规则：根据$\tilde{S_k}$的项目顺序$c,f,a,b,p$，保证模式树中的节点的孩子所对应项目，其次序要小于其父节点对应项目的次序）。
+
+  同理可得，$I_3 =\left\{(c,f,a),(c,f,b),(c,f,p),(c,b,p) \right\}$；\\$I_4 = \left\{ (c,f,a,b),(c,f,a,p)\right\}$ ；$I_5 = \left\{ (c,f,a,b,p)\right\}$ 。
+
+  \textbf{优化方法}
+  上述基本方法的缺点在于，当$\tilde{S_k}$中确定的频繁项目较多或者上一层有效节点个数较多时，所生成的孩子节点会明显增多，从而使得值域$I_j$较大（即$|I_j|$较大）。而根据FO协议的特性，其估计误差与$| I_j |$直接相关，如GRR方法的估计方差与$d_j$呈线性关系，尽管OLH方法的方差与$|I_j|$无直接关系，但是其使用了$hash$函数将$|I_j|$映射至$g = \left \lceil e^{\epsilon}+1 \right \rceil$，随着$|I_j|$的增大，在统计聚合时，会导致$hash$碰撞明显增多，从而准确度降低。
+ 
+  为了有效缩小$|I_j|$，从而提高估计准确度，本文提出值域筛选方法，能够在不影响结果准确性的同时将$I_j$限制在大小为$3k \ll |I_j|$范围，且整个过程不消耗隐私预算。
+
+\begin{algorithm}[h]
+\caption{prune candidate}
+\label{alg:prune candidate}
+\begin{algorithmic}[1]
+\REQUIRE ~~\\
+候选值域$I_{j}$;\\
+$top-k$的$\tilde{S_k}$；\\
+正整数$k$；\\
+参数$\xi$；
+\ENSURE 筛选后值域$I^{\prime}_{j}$
+
+\IF{$ | I_{j} |$不大于$\xi \cdot k$}
+    \STATE $I^{\prime}_{j} = I_{j}$;
+\ELSE
+    \STATE 初始化$I^{\prime}_{j} = \emptyset$;
+    \FOR{each 候选值$X \in I_{j}$}
+        \STATE $\varphi(X)=\prod_{x \in X} \tilde{\theta}(x)$;    //$\tilde{\theta}(x)$表示$\tilde{S_k}$中项目$x$的估计频数。\label{prune:speculate the frequency}
+        \STATE $I^{\prime}_{j} = I^{\prime}_{j} \cup X$,并且记录$\varphi(X)$
+    \ENDFOR
+    \STATE 以$\varphi(X)$为标准，将$I^{\prime}_{j}$排序，最后选择前$\xi \cdot k$个赋值给$I^{\prime}_{j}$
+\ENDIF
+
+\RETURN $I^{\prime}_{j}$
+\end{algorithmic}
+\end{algorithm}
+
+算法\ref{alg:prune candidate}给出了值域筛选的具体过程，其中步骤\ref{prune:speculate the frequency}类似于文献\cite{wang2018locally}所提SVSM的推测频率方法，而在本算法中，候选值$X$中项目个数是相同的，故而本算法对项目频数直接相乘即可得到相对排序。
+
+\subsection{FO协议聚合}
+
+\subsection{筛选有效聚合结果并更新树}
+
 
 \section{结果优化}
 \label{section:optimize}
