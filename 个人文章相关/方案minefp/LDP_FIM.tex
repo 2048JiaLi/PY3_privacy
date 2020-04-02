@@ -215,8 +215,8 @@ $top-k$频繁$1-itemset$集合$\tilde{S_k}$;\\
     \label{tree:error bound}
     \STATE 删除估计的计数值不大于$standard\_error$的节点；
     \label{tree:filter}
-    \STATE 更新节点信息；
-    \label{tree:update}
+    \STATE 一致性约束并更新节点信息；
+    \label{tree:consistency and update}
 \ENDFOR
 \RETURN $root$
 \end{algorithmic}
@@ -282,12 +282,12 @@ $top-k$的$\tilde{S_k}$；\\
 \end{algorithmic}
 \end{algorithm}
 
-算法\ref{alg:prune candidate}给出了值域筛选的具体过程，其中步骤\ref{prune:speculate the frequency}类似于文献\cite{wang2018locally}所提SVSM的推测频率方法，而在本算法中，候选值$X$中项目个数是相同的，故而本算法对项目频数直接相乘即可得到相对排序。
+  算法\ref{alg:prune candidate}给出了值域筛选的具体过程，其中步骤\ref{prune:speculate the frequency}类似于文献\cite{wang2018locally}所提SVSM的推测频率方法，而在本算法中，候选值$X$中项目个数是相同的，故而本算法对项目频数直接相乘即可得到相对排序。
 
-\subsection{FO协议聚合}
+\subsection{筛选有效聚合结果}
+  通过算法\ref{alg:prune candidate}得到$I_j$之后，根据路径生成相应的树节点即为第$j$层初始节点，使用FO协议进行信息聚合。然而，由于LDP协议的存在估计误差，聚合结果中存在无效的估计值（如估计值不大于0等），应当在保留有效估计的同时，尽可能多的舍去无效估计。本方案通过设置误差临界值为标准差$standard\_error$，认为估计值不大于$standard\_error$的为无效估计，应当删除。
 
-\subsection{筛选有效聚合结果并更新树}
-
+\subsection{一致性约束}
 
 \section{结果优化}
 \label{section:optimize}
