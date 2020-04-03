@@ -1,8 +1,10 @@
 \documentclass[UTF8]{ctexart}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+\usepackage{amsmath}
 \usepackage{graphicx}  %插入图片
 \usepackage{color} %字体颜色
+\usepackage{amsfonts} % \mathbb{R}
 \pdfoptionpdfminorversion=7  %插入pdf导致的版本问题
 
 %\usepackage{geometry} % 页边距
@@ -237,6 +239,8 @@ b、将数据集均分为$iterNum$组，每组使用全部隐私预算$\epsilon^
 
 文献\cite{wang2018privtrie,wang2018locally}表明，分配方式b优于方式a，且能有效降低$O(\sqrt{iterNum})$倍误差。
 
+本文在实验中，均使用方式b分配隐私预算。
+
 \subsection{层次节点初始化}
   在使用FO协议聚合第$j$层节点信息时，根据FO协议特性，其输入输出值域$I$和隐私预算$\epsilon$需要是已知的。对于隐私预算的分配，见\ref{section:Allocate privacy budget}节，故而本节主要介绍协议在第$j$层聚合时，输入输出值域$I_j$的确定以及优化。
 
@@ -284,10 +288,45 @@ $top-k$的$\tilde{S_k}$；\\
 
   算法\ref{alg:prune candidate}给出了值域筛选的具体过程，其中步骤\ref{prune:speculate the frequency}类似于文献\cite{wang2018locally}所提SVSM的推测频率方法，而在本算法中，候选值$X$中项目个数是相同的，故而本算法对项目频数直接相乘即可得到相对排序。
 
+  参数$\xi$用以调节值域大小，呈线性正相关。本文在实验中选用$\xi = 3$，能够有效权衡误差与准确度（$\xi$越小，则值域越小，有可能会使得舍弃大量的有效信息，降低准确度）
+
 \subsection{筛选有效聚合结果}
-  通过算法\ref{alg:prune candidate}得到$I_j$之后，根据路径生成相应的树节点即为第$j$层初始节点，使用FO协议进行信息聚合。然而，由于LDP协议的存在估计误差，聚合结果中存在无效的估计值（如估计值不大于0等），应当在保留有效估计的同时，尽可能多的舍去无效估计。本方案通过设置误差临界值为标准差$standard\_error$，认为估计值不大于$standard\_error$的为无效估计，应当删除。
+  通过算法\ref{alg:prune candidate}得到$I_j$之后，根据路径生成相应的树节点即为第$j$层初始节点，使用FO协议进行信息聚合。当某用户在当前阶段的记录项目个数小于层次$j$或所得值域$I_j$中不包含用户的记录对应的路径，那么，则该用户以无效值$\perp$为原始数据参与聚合。此时的值域应为$I_j \cup \perp$，其大小为$\xi \cdot k + 1$
+
+  然而，由于LDP协议的存在估计误差，聚合结果中存在无效的估计值（如估计值不大于0等），应当在保留有效估计的同时，尽可能多的舍去无效估计。
+
+  \textbf{(类似误差值的设置有三种方法：)}
+
+1）、$standard\_error = \sqrt{Var}$，即标准差；
+
+2）、文献\cite{wang2017locally,wang2018locally}，$standard\_error = \mathrm{T}=F^{-1}\left(1-\frac{0.05}{2 k}\right) \sqrt{V a r}$，$F^{-1}$为标准正态分布的CDF的倒数。
+
+3）、文献\cite{wang2018privtrie}根据伯恩斯坦不等式求得最大误差边界，从而设置误差值。
+
+  为了简化操作，本文在建树过程中，设置误差值为协议的估计标准差，将所得估计值不大于标准差的项视为无效估计，舍弃。
 
 \subsection{一致性约束}
+\label{section:consistency}
+  设$v$表示树中某节点，其相应的计数值为$v.count$，$\tilde{C}(\cdot),C(\cdot)$分别表示估计值与真实值，则对于节点$v$应有以下约束规则：
+\begin{enumerate}
+  \item[1）、]无偏估计：$\mathbb{E} \left [ \tilde{C}(v.count) \right ] = \mathbb{E} \left [ C(v.count) \right ]$;即对节点的计数值的估计保证无偏（FO协议）
+  \item[2）、]父节点计数值不小于孩子节点计数之和，记$v.children$表示$v$的所有孩子节点集合，假设有$r$个：\\
+  $$\mathbb{E} \left [ \tilde{C}(v.count) \right ] \ge \sum_{y \in v.children} \mathbb{E} \left [ \tilde{C}(y.count) \right ] \eqno{(11)}$$
+\end{enumerate}
+
+  约束推理规则是后处理步骤，能够有效提高结果的准确性， 文献\cite{hay2010boosting,wang2018privtrie,lee2014top}等均研究了不同场景下的约束推理方式，其中文献\cite{wang2018privtrie}对两次的聚合结果进行矫正，不适用于本文场景；而文献\cite{hay2010boosting,lee2014top}均是DP机制下的约束推理。
+
+  在本文中，利用文献\cite{hay2010boosting}思想，采用以下方式对结果进行约束
+
+  \textbf{具体矫正步骤——{\color{red}unsure}}：
+
+  设$Y = (y_{1},y_{2},\ldots ,y_{r})$表示节点$v$的所有孩子节点（设$r$个）相应计数值，矫正的目的在于计算新的向量$Y^{\prime}$使其与$Y$的L2范式最小（文献\cite{hay2010boosting,lee2014top}），形式化表示为：
+  
+  $$\underset{Y^{\prime}}{\text{minimize}}  \left \| Y^{\prime} - Y \right \|^{2}_{2} \  ,\  subject to \left \| Y^{\prime} \right \| = v.count\eqno{(12)}$$
+
+  上式可根据拉格朗日求解法得到$Y^{\prime} = Y - \frac{1}{2}A \ , \ A = \frac{2(\sum{i=1}^{k}y_{i} - A)}{r}$,其中$r$表示$v$的孩子节点总个数，而$A = v.count$。
+
+  即，在更新当前第$j$层树节点的之后，若对于$j-1$层存在违背约束的节点，则根据上述结果进行一致性矫正。
 
 \section{结果优化}
 \label{section:optimize}
