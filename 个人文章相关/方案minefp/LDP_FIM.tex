@@ -6,6 +6,12 @@
 \usepackage{color} %字体颜色
 \usepackage{amsfonts} % \mathbb{R}
 \pdfoptionpdfminorversion=7  %插入pdf导致的版本问题
+\usepackage[numbers]{natbib} %参考文献
+
+\usepackage{geometry} % 页边距
+\geometry{a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm} 
+
+%\usepackage{cite}
 
 %\usepackage{geometry} % 页边距
 %\geometry{a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm} 
@@ -25,10 +31,11 @@ this is abstract
 \end{abstract}
 
 \section{背景简介}
+差分隐私，量子优越性，微型人工智能等被《麻省理工科技评论》评为2020全球十大突破技术
 
 2020年2月26日，差分隐私技术被全球知名科技评论期刊《麻省理工学院技术评论》评为“全球十大突破性技术”，并指出该技术将被美国政府用于进行3.3 亿美国居民的2020年人口普查，同时还要对他们的身份数据进行保密。
 
-差分隐私是一种数学技术，它能够在给数据添加噪声的同时，量化计算隐私提升的程度，从而使得增加“噪音”的过程变得更加严谨。苹果和Facebook已经使用这种方法来收集聚合数据，而不需要识别特定的用户。
+差分隐私是密码学中的一种手段，旨在提供一种当从统计数据库查询时，最大化数据查询的准确性，同时最大限度减少识别其记录的机会。作为一种数学技术，它能够在给数据添加噪声的同时，量化计算隐私提升的程度，从而使得增加“噪音”的过程变得更加严谨。苹果和Facebook已经使用这种方法来收集聚合数据，而不需要识别特定的用户。
 
 差分隐私技术因其独特的优势，被学术界及工业界广泛的研究，谷歌、微软、苹果等公司使用该技术在保护用户隐私的同时，手机聚合数据，从而提升服务质量。
 
@@ -36,6 +43,8 @@ this is abstract
 
 现实生活中，找到一个可信的第三方是困难的。所以，本地化差分隐私被提出。其一方面继承了传统差分隐私技术的对敏感数据量化处理的优势，另一方面进一步细化隐私保证，将加噪过程由第三方转移至用户端，由用户独立完成对个人敏感数据的加噪处理。
 
+
+\subsection{传统FP-growth算法}
 传统的FP-growth算法通过两次直接扫描数据集，将用户记录信息压缩存储在频繁模式树中，用以挖掘频繁模式。如图\ref{fig:DB}为5位用户的交易记录，图\ref{fig:fptree}为所建频繁模式树。
 
   \begin{figure}[h]
@@ -52,6 +61,11 @@ this is abstract
     \caption{模式树}
     \label{fig:fptree}
   \end{figure}
+
+\subsection{本地化差分隐私（LDP）}
+  FO协议
+
+  PSFO协议
 
 
 \section{本文工作}
@@ -299,7 +313,7 @@ $top-k$的$\tilde{S_k}$；\\
 
 1）、$standard\_error = \sqrt{Var}$，即标准差；
 
-2）、文献\cite{wang2017locally,wang2018locally}，$standard\_error = \mathrm{T}=F^{-1}\left(1-\frac{0.05}{2 k}\right) \sqrt{V a r}$，$F^{-1}$为标准正态分布的CDF的倒数。
+2）、文献\cite{wang2017locally,wang2018locally}，$standard\_error = \mathrm{T}=F^{-1}\left(1-\frac{0.05}{2 k}\right) \sqrt{Var}$，$F^{-1}$为标准正态分布的CDF的倒数；
 
 3）、文献\cite{wang2018privtrie}根据伯恩斯坦不等式求得最大误差边界，从而设置误差值。
 
@@ -308,11 +322,11 @@ $top-k$的$\tilde{S_k}$；\\
 \subsection{一致性约束}
 \label{section:consistency}
   设$v$表示树中某节点，其相应的计数值为$v.count$，$\tilde{C}(\cdot),C(\cdot)$分别表示估计值与真实值，则对于节点$v$应有以下约束规则：
-\begin{enumerate}
-  \item[1）、]无偏估计：$\mathbb{E} \left [ \tilde{C}(v.count) \right ] = \mathbb{E} \left [ C(v.count) \right ]$;即对节点的计数值的估计保证无偏（FO协议）
-  \item[2）、]父节点计数值不小于孩子节点计数之和，记$v.children$表示$v$的所有孩子节点集合，假设有$r$个：\\
+
+  1）、无偏估计：$\mathbb{E} \left [ \tilde{C}(v.count) \right ] = \mathbb{E} \left [ C(v.count) \right ]$；即对节点的计数值的估计保证无偏（FO协议）。
+
+  2）、父节点计数值不小于孩子节点计数之和：记$v.children$表示$v$的所有孩子节点集合，假设共有$r$个孩子：\\
   $$\mathbb{E} \left [ \tilde{C}(v.count) \right ] \ge \sum_{y \in v.children} \mathbb{E} \left [ \tilde{C}(y.count) \right ] \eqno{(11)}$$
-\end{enumerate}
 
   约束推理规则是后处理步骤，能够有效提高结果的准确性， 文献\cite{hay2010boosting,wang2018privtrie,lee2014top}等均研究了不同场景下的约束推理方式，其中文献\cite{wang2018privtrie}对两次的聚合结果进行矫正，不适用于本文场景；而文献\cite{hay2010boosting,lee2014top}均是DP机制下的约束推理。
 
@@ -320,7 +334,7 @@ $top-k$的$\tilde{S_k}$；\\
 
   \textbf{具体矫正步骤——{\color{red}unsure}}：
 
-  设$Y = (y_{1},y_{2},\ldots ,y_{r})$表示节点$v$的所有孩子节点（设$r$个）相应计数值，矫正的目的在于计算新的向量$Y^{\prime}$使其与$Y$的L2范式最小（文献\cite{hay2010boosting,lee2014top}），形式化表示为：
+  设$Y = (y_{1},y_{2},\ldots ,y_{r})$表示节点$v$的所有孩子节点（共$r$个）相应计数值，矫正的目的在于计算新的向量$Y^{\prime}$使其与$Y$的L2范式最小（文献\cite{hay2010boosting,lee2014top}），形式化表示为：
   
   $$\underset{Y^{\prime}}{\text{minimize}}  \left \| Y^{\prime} - Y \right \|^{2}_{2} \  ,\  subject to \left \| Y^{\prime} \right \| = v.count\eqno{(12)}$$
 
@@ -333,4 +347,9 @@ $top-k$的$\tilde{S_k}$；\\
 
 \section{实验}
 
+
+%设置文献的样式
+\bibliographystyle{plainnat}      %unsrt表示PDF文末的参考文献列表是按照文中的引用顺序排序
+%添加自己的bib文件
+\bibliography{reference} 
 \end{document}
