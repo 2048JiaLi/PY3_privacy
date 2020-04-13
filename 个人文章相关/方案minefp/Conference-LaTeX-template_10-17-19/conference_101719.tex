@@ -86,9 +86,16 @@ In \cite{a2}, the SVSM protocol first selected $2k$ itemsets with highest guessi
 
 %介绍本文工作_______________________之前需要介绍以下与FPtree的结合
 Inspiringly, we propose {\color{red}minefp} protocol, which aims at finding $top-k$ itemsets under the LDP setting and provides similar accuracy while providing lower overhead than existing protocol(SVSM) within the same privacy constraints.
-First, the SVIM protocol is used to estimate the $k$ most frequent items and their frequencies. Second, users report the number of frequent items they have; the analyst estimates the distribution user reported and figure out the right $M$ as the maximum iteration of the tree. Third, users interact with the analyst to build effectively the FP-tree\cite{xxxx}. Fourth, the analyst optimizes and mines the FP-tree(post-processing). Fifth, the analyst publishes $top-k$ itemsets.Experimental results how that {\color{red}minefp
+First, the SVIM protocol is used to estimate the $k$ most frequent items and their frequencies. Second, users report the number of frequent items they have; the analyst estimates the distribution user reported and figure out the right $M$ as the maximum iteration of the tree. Third, users interact with the analyst to build effectively the FP-tree\cite{fp}. Fourth, the analyst optimizes and mines the FP-tree(post-processing). Fifth, the analyst publishes $top-k$ itemsets.Experimental results how that {\color{red}minefp
 outperforms SVSM in that it identifies quickly frequent itemsets as well as estimates the frequencies more accurately.}
 
+{\color{red}
+To summarize, the main contributions of this paper are:
+\begin{itemize}
+\item We study the application of fp-growth algorithm in the LDP setting and we design minefp to find frequent itemsets as well as their frequencies. Experimental results on real-world datasets show the significant improvement over previous techniques.
+\item We investigate guessing frequency(GF) to construct candidate set and point out that it is beneficial to build hierarchically FP-tree. 
+\end{itemize}
+}
 
 
 %SVSM的主要缺点然后引出本文方案
@@ -96,10 +103,16 @@ outperforms SVSM in that it identifies quickly frequent itemsets as well as esti
 
 \section{Background}
 \subsection{Local Differential Privacy(LDP)}
+\textbf{Definition}
 
-\subsection{FP-growth}
+\subsection{FP-growth algorithm}
+Frequent pattern growth(FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree(FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree that represents the frequent items is shown in Fig. \ref{fptree}.
 
-
+\begin{figure}[htbp]
+\centerline{\includegraphics[width=0.45\textwidth]{fptree.png}}
+\caption{Frequrnt pattern tree(FP-tree).}
+\label{fptree}
+\end{figure}
 
 \section{Ease of Use}
 
@@ -311,6 +324,7 @@ citation first, followed by the original foreign-language citation \cite{b6}.
 \bibitem{a5} Lee, Jaewoo, and Chris Clifton. "Top-k frequent itemsets via differentially private FP-trees." knowledge discovery and data mining (2014): 931-940.
 \bibitem{a6} Zeng, Chen, Jeffrey F. Naughton, and Jinyi Cai. "On differentially private frequent itemset mining." very large data bases (2012): 25-36.
 \bibitem{a7} C. Dwork. Differential privacy. In ICALP, pages 1–12, 2006.
+\bibitem{fp} Han J, Pei J, Yin Y, et al. Mining frequent patterns without candidate generation[C]. international conference on management of data, 2000, 29(2): 1-12.
 
 \bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
 \bibitem{b2} J. Clerk Maxwell, A Treatise on Electricity and Magnetism, 3rd ed., vol. 2. Oxford: Clarendon, 1892, pp.68--73.
