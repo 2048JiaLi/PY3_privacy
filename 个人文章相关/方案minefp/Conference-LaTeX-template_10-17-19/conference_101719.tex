@@ -84,6 +84,21 @@ where $\varphi(X)$ represents the speculative frequency of itemset $X$, $S^{\pri
 
 In \cite{a2}, the SVSM protocol first selected $2k$ itemsets with highest guessing frequencies to construct candidate set $IS$, then utilized SVIM protocol again with the domain $IS$ to mine $top-k$ itemsets.We observe that, the size of candidate set to construct $IS$ increase significantly with $k$. As a result, it is computationally expensive when $k$ is large(e.g., $k=100$). 
 
+\begin{table}[htbp]
+\caption{Sample of transactional data.}
+\begin{center}
+\begin{tabular}{|c|l|}\hline
+  TID&List of items \\\hline
+  T01&$a,f,c,g,p$ \\\hline
+  T02&$a,b,c,f,l,o$ \\\hline
+  T03&$b,f,h,o$ \\\hline
+  T04&$b,c,p$ \\\hline
+  T05&$f,a,c,l,p,n$ \\\hline
+\end{tabular}
+\label{trans table}
+\end{center}
+\end{table}
+
 %介绍本文工作_______________________之前需要介绍以下与FPtree的结合
 Inspiringly, we propose {\color{red}minefp} protocol, which aims at finding $top-k$ itemsets under the LDP setting and provides similar accuracy while providing lower overhead than existing protocol(SVSM) within the same privacy constraints.
 First, the SVIM protocol is used to estimate the $k$ most frequent items and their frequencies. Second, users report the number of frequent items they have; the analyst estimates the distribution user reported and figure out the right $M$ as the maximum iteration of the tree. Third, users interact with the analyst to build effectively the FP-tree\cite{fp}. Fourth, the analyst optimizes and mines the FP-tree(post-processing). Fifth, the analyst publishes $top-k$ itemsets.Experimental results how that {\color{red}minefp
@@ -106,7 +121,11 @@ To summarize, the main contributions of this paper are:
 \textbf{Definition}
 
 \subsection{FP-growth algorithm}
-Frequent pattern growth(FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree(FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree that represents the frequent items is shown in Fig. \ref{fptree}.
+Frequent pattern growth(FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree(FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree that represents the frequent items is shown in Fig. \ref{fptree}, where the minimum support count is set to 3.
+
+%A sample of transational data is shown in Table \ref{trans table}.
+
+The FP-growth algorithm solves the problem of identifying long frequent itemsets by searching through smaller conditional FP-tree repeatedly. The conditional pattern base is a “sub-database” which consists of every prefix path in the FP-Tree that co-occurs with every frequent length-1 item. It is used to construct the conditional FP-tree and generate all the frequent patterns related to every frequent length-1 item. In this way, the cost of searching for the frequent patterns is substantially reduced.
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.45\textwidth]{fptree.png}}
