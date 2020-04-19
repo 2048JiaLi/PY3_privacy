@@ -67,24 +67,13 @@ This is the keywords
 
 \section{Introduction}
 %2020年2月26日，差分隐私技术被全球知名科技评论期刊《麻省理工学院技术评论》评为“全球十大突破性技术”。差分隐私是密码学中的一种手段，旨在提供一种当从统计数据库查询时，最大化数据查询的准确性，同时最大限度减少识别其记录的机会。作为一种数学技术，它能够在给数据添加噪声的同时，量化计算隐私提升的程度，从而使得增加“噪音”的过程变得更加严谨。
-Differential privacy (DP)\cite{a7} is the state-of-the-art approach that is used to protect individual privacy in the process of data collection, which has been named one of the world's top 10 breakthrough technologies in 2020 by the MIT technology review. It is a means in cryptography that aims to provide a way to maximize the accuracy of data queries when querying from statistical databases while minimizing the chances of identifying their records. As a mathematical technique, it can add noise to the data while quantifying the extent of the increase in privacy, thus making the process of adding ``noise'' more rigorous.
+Differential privacy (DP)\cite{a7} is the state-of-the-art approach that is used to protect individual privacy in the process of data collection, which has been named one of the world's top 10 breakthrough technologies in 2020 by the MIT technology review. It is a means in cryptography that aims to provide a way to maximize the accuracy of data queries when querying from statistical databases while minimizing the chances of identifying their records. Meanwhile, as a mathematical technique, it can add noise to the data while quantifying the extent of the increase in privacy, thus making the process of adding ``noise'' more rigorous.
 
 %差分隐私技术因其独特的优势，被学术界及工业界广泛的研究。谷歌、微软、苹果等公司使用该技术在保护用户隐私的同时，手机聚合数据，从而提升服务质量。并且美国政府将要完成2020年对3.3亿美国居民的人口普查，同时还要对他们的身份数据进行保密。如果任务完成顺利，这将是迄今为止规模最大的应用。
-Due to its unique advantages, DP has been widely studied by the academia and industry. For example, Google, Microsoft, apple and other companies use this technology to protect users' privacy, and at the same time, mobile phones aggregate data, so as to improve service quality. And the U.S. government is to complete a census of 330 million U.S. residents by 2020, keeping their identities secret, in what would be the largest census ever.
+Due to its unique advantages, DP has been widely studied by the academia and industry. For example, Google, Microsoft, apple and other companies use this technology to protect users' privacy, and at the same time, mobile phones aggregate data, so as to improve service quality. And the U.S. government is to complete a census of 330 million U.S. residents by 2020, keeping their identities secret, in what would be the largest application of DP ever.
 
 %差分隐私可分为CDP和LDP。相对于CDP，LDP不需要可信第三方的假设条件并且提供了更强的隐私保证。LDP的研究涉及很多方面，近年来，在数据挖掘方面的工作引起了人们的关注。  简单介绍以下CDP的DM工作。
-There are two types of differential privacy - Centralized differential privacy (CDP) and Local differential privacy (LDP). Compared with CDP, the LDP does not require the assumptions of a trusted third party and provides stronger privacy guarantees.  {\color{red}DP's research has involved many aspects, in recent years, the work in frequent itemset mining (FIM) has attracted the attention, which is one of  the most important techniques because of its ability to locate the repeating relationships between different items in a data set and plays an essential role in mining association rules\cite{apriori}. A lot of work\cite{a3,a4,a5,a6} has been done to solve DM problems in CDP. However, since the analyst holds the user's raw data in CDP setting, its main job is to add noise to the results to satisfy the DP definition.}
-
-%在本文中，我们考虑交易数据集下的FIM问题
-The LDP setting, by contrast, has no reliance on third party assumptions. The main challenge with the FIM task is that the data analyst does not hold the user's original sensitive information, so it is quite difficult to mine useful information with noise data. In this paper, we consider the FIM problem in transaction databases under LDP setting. Formally, let $I = \{x_1,x_2,...,x_d\}$ be a set of items and $D = <T_1,T_2,...,T_n>$ denote a sensitive transaction database, where $T_i(i \in [1...n])$ is a sensitive transaction that is a subset of $I$. The support of an itemset $X$, where $X \subset I$ is a set of items, is the number of transactions containing $X$ in $D$. Given a minimum support threshold $\delta$, the data analyst wants to find the complete set of itemsets that its support is no less than $\delta$; users are sensitive and unwilling to answer their real infomation.
-
-%引出LDP下的DM方法，然后给出SVSM的具体细节，并指出本文工作解决重点。
-Specifically for FIM in the local setting, Qin et al.\cite{a1} leave it as a future work but there is no clear solution. Wang et al.\cite{a2} solves  the $top-k$ frequent itemset mining (FIM) task for the first time with \textbf{padding-and-sampling-based frequency oracle} (PSFO). In \cite{a2}, the Set-Value Item Mining (SVIM) protocol has been proposed to handles set values under the LDP setting, with the purpose of finding the $k$ most frequent items and their frequencies. To mine frequent itemsets , a core technique is {\color{red}``Guessing Frequency (GF)''}. That is, the analyst first calculated  the frequency of a given itemset $X$ for all candidate itemsets by \eqref{gf},
-\begin{equation}
-\varphi(X)=\prod_{x \in X} \mu(x) , \mu(x) = \frac{0.9\times \tilde{\theta}(x)}{\max \limits_{x \in S^{\prime}} \tilde{\theta}(x)}\label{gf}
-\end{equation}
-where $\varphi(X)$ represents the speculative frequency of itemset $X$, $S^{\prime}$ and $\tilde{\theta}(x)$ are denoted separately the $top-k$ frequent items set and the frequency of a given item $x$. Then $2k$ itemsets with highest guessing frequencies are selected to construct candidate set $IS$. Finally, reference \cite{a2} utilized SVIM protocol again with the domain $IS$ to mine $top-k$ itemsets. We observe that, the size of candidate set to construct $IS$ increase significantly with $k$. As a result, it is computationally expensive when $k$ is large (e.g., $k=100$). 
-
+There are two types of differential privacy - Centralized differential privacy (CDP) and Local differential privacy (LDP). Compared with CDP, the LDP does not require the assumptions of a trusted third party and provides stronger privacy guarantees.  {\color{red}DP's research has involved many aspects, in recent years, the work in mining frequent itemsets has attracted the attention, which is one of  the most important techniques because of its ability to locate the repeating relationships between different items in a data set and plays an essential role in mining association rules\cite{apriori}. Formally, let $I = \{x_1,x_2,...,x_d\}$ be a set of items and $D = <T_1,T_2,...,T_n>$ denote a transaction database, where $T_i(i \in [1...n])$ is a transaction that is a subset of $I$. A sample of transational data is shown in Table \ref{trans table}. The support of an itemset $X$, where $X \subset I$ is a set of items, is the number of transactions containing $X$ in $D$. Given a minimum support threshold $\delta$, the problem of finding the complete set of frequent itemsets that supports no less than $\delta$ is called the frequent itemset mining (FIM) problem.}
 
 \begin{table}[htbp]
 \caption{{\color{red}Sample of transactional data.}}
@@ -101,6 +90,19 @@ where $\varphi(X)$ represents the speculative frequency of itemset $X$, $S^{\pri
 \end{center}
 \end{table}
 
+%CDP的FIM简单介绍
+A lot of work\cite{a3,a4,a5,a6} has been done to solve DM problems in CDP. However, since the analyst holds the user's raw data in CDP setting, its main job is to add noise to the results to satisfy the DP definition.
+
+%在本文中，我们考虑交易数据集下的FIM问题
+In this paper, we consider the $top-k$ FIM problem in transaction databases under LDP setting.However, there is no reliance on third party assumptions in LDP. The data analyst wants to find $k$ itemsets with highest support while while users are sensitive and unwilling to answer their real infomation. The main challenge is that the analyst does not hold the user's original sensitive information, which makes it quite difficult to mine useful information with sanitized data. Qin et al.\cite{a1} point out that if utlize directly existing FIM algorithm (e.g. Apriori\cite{apriori,apr}, FP-growth\cite{fp}, Eclat\cite{eclat}) would result in accumulation of dramatic noise because of multi-iteration between users and analyst.
+
+%引出LDP下的DM方法，然后给出SVSM的具体细节，并指出本文工作解决重点。
+Specifically for FIM in the local setting, Qin et al.\cite{a1} leave it as a future work but there is no clear solution. Wang et al.\cite{a2} solves  the $top-k$ frequent itemset mining (FIM) task for the first time with \textbf{padding-and-sampling-based frequency oracle} (PSFO). In \cite{a2}, the Set-Value Item Mining (SVIM) protocol has been proposed to handles set values under the LDP setting, with the purpose of finding the $k$ most frequent items and their frequencies. To mine frequent itemsets , a core technique is {\color{red}``Guessing Frequency (GF)''}. That is, the analyst first calculated  the frequency of a given itemset $X$ for all candidate itemsets by \eqref{gf},
+\begin{equation}
+\varphi(X)=\prod_{x \in X} \mu(x) , \mu(x) = \frac{0.9\times \tilde{\theta}(x)}{\max \limits_{x \in S^{\prime}} \tilde{\theta}(x)}\label{gf}
+\end{equation}
+where $\varphi(X)$ represents the speculative frequency of itemset $X$, $S^{\prime}$ and $\tilde{\theta}(x)$ are denoted separately the $top-k$ frequent items set and the frequency of a given item $x$. Then $2k$ itemsets with highest guessing frequencies are selected to construct candidate set $IS$. Finally, reference \cite{a2} utilized SVIM protocol again with the domain $IS$ to mine $top-k$ itemsets. We observe that, the size of candidate set to construct $IS$ increase significantly with $k$. As a result, it is computationally expensive when $k$ is large (e.g., $k=100$). 
+
 %介绍本文工作_______________________之前需要介绍以下与FPtree的结合
 Inspiringly, we propose {\color{red}minefp} protocol, which aims at finding $top-k$ itemsets under the LDP setting and provides similar accuracy while providing lower overhead than existing SVSM protocol within the same privacy constraints.
 First, the SVIM protocol is used to estimate the $k$ most frequent items and their frequencies. Second, users report the number of frequent items they have; the analyst estimates the distribution user reported and figure out the right $M$ as the maximum iteration of the tree. Third, users interact with the analyst to build effectively the FP-tree\cite{fp}. Fourth, the analyst optimizes and mines the FP-tree. Fifth, the analyst publishes $top-k$ itemsets.Experimental results how that {\color{red}minefp
@@ -109,7 +111,7 @@ outperforms SVSM in that it identifies quickly frequent itemsets as well as esti
 {\color{red}
 To summarize, the main contributions of this paper are:
 \begin{itemize}
-\item We study the application of fp-growth algorithm and design the FP-tree-based-mine (minefp) protocol to find frequent itemsets as well as their frequencies in the LDP setting. Experimental results on real-world datasets show the significant improvement over previous techniques.
+\item We study the application of FP-growth algorithm and design the FP-tree-based-mine (minefp) protocol to find frequent itemsets as well as their frequencies in the LDP setting. Experimental results on real-world datasets show the significant improvement over previous techniques.
 \item We investigate GF to construct candidate set and point out that it is beneficial to build hierarchically FP-tree. 
 \end{itemize}
 }
@@ -126,23 +128,28 @@ Formally, let $D$ denote the whole  transaction databases. $\epsilon$-local diff
 
 \newtheorem{Definition}{\bf Definition}
 \begin{Definition}
-($\epsilon$-local differential privacy). A randomized algorithm $\mathcal{A}$ satisfies $\epsilon$-local differential privacy ($\epsilon$-LDP), if and only if for (1) all pairs of input $v_i,v_j \in D$, and (2) any possible output $\mathcal{O}$ of $\mathcal{A}$, we have:\\
+($\epsilon-LDP$). A randomized algorithm $\mathcal{A}$ satisfies $\epsilon$-local differential privacy ($\epsilon$-LDP), if and only if for (1) all pairs of input $v_i,v_j \in D$, and (2) any possible output $\mathcal{O}$ of $\mathcal{A}$, we have:\\
 $$\frac{\mathbf{Pr}[\mathcal{A}(v_i)=\mathcal{O}]}{\mathbf{Pr}[\mathcal{A}(v_j)=\mathcal{O}]} \leq e^{\epsilon}$$
 \end{Definition}
 
-An important property of differential privacy is $sequential\  composability$\cite{a9}, which also applies to the local setting:
-\newtheorem{thm}{\bf Theorem}[section]
-\begin{thm}\label{sequential composability}
-$(sequential\  composability)$. Given $m$ randomized algorithms $\mathcal{A}_i(1 \leq i \leq m)$, each of which satisfies $\epsilon_i$-local differential privacy. Then the sequence of $\mathcal{A}_i$ collectively provides $(\sum_{i=1}^{m} \epsilon_i)$-local differential privacy. 
-\end{thm}
+$Sequential\  composability$\cite{a9} and $post-processing$\cite{post-processing} are vitally important properties of differential privacy. The former allows each user to divide privacy budget into multiple portions and use each portion to execute independent LDP protocols on the same input while the sequential executions provide $\sum \epsilon_i$-LDP; the latter guarantees that any processing of the noisy data do not disclose the privacy.
 
-According to sequential composability, given a privacy budget $\epsilon$, we can partition it into multiple portions, each satisfying $\epsilon_i$-LDP, then the whole process provides $\sum_{\epsilon_i}$-LDP.
+\newtheorem{theorem}{\bf Theorem}[section]
+\begin{theorem}\label{sequential composability}
+$(sequential\ composability)$. Given $m$ randomized algorithms $\mathcal{A}_i(1 \leq i \leq m)$, each of which satisfies $\epsilon_i$-local differential privacy. Then the sequence of $\mathcal{A}_i$ collectively provides $(\sum_{i=1}^{m} \epsilon_i)$-local differential privacy. 
+\end{theorem}
+
+\begin{theorem}\label{post processing}
+$(post-processing)$. For any method $\phi$ which works on the output of a $\epsilon$-LDP algorithm $\mathcal{A}$ without accessing the raw data, the procedure $\phi \big(\mathcal{A(\cdot)} \big)$ remains $\epsilon$-LDP.
+\end{theorem}
+
 
 \subsection{LDP Protocols}
-A frequency oracle (FO) protocol enables the estimation of the frequency of any given value $v $ 
+A frequency oracle (FO) protocol enables the estimation of the frequency of any given value $v \in D$ under LDP. In \cite{a8}, the two best performing FO protocols are Generalized Random Response (GRR) or Optimized Local Hash (OLH). The former inherits and extends the randomized response (RR) technique\cite{rr}, which is an old technique developed for the interviewees in a survey to give random answer to a sensitive boolean question so that they can achieve plausible deniability; the latter deals with a large domain size $|I|$ by hashing a large domain size $|I|$ to a smaller size $g$ and applying RR to the hashed value. It was found that GRR offers the best accuracy than OLH when $|I| < 3e^{\epsilon} + 2$, where $|I|$ is the size of the domain of items under consideration. Therefore, in  \cite{a2}, an adaptive FO protocol can be proposed from the known $I$ as well as $\epsilon$.\\
+\textbf{Generalized Random Response (GRR)}
 
 \subsection{FP-growth algorithm}
-Frequent pattern growth (FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree (FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree that represents the frequent items is shown in Fig. \ref{fptree}, where the minimum support count is set to 3.
+Frequent pattern growth (FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree (FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree that represents the frequent items is shown in Fig. \ref{fptree}, where the minimum support threshold is set to 3.
 
 %A sample of transational data is shown in Table \ref{trans table}.
 
@@ -366,9 +373,13 @@ citation first, followed by the original foreign-language citation \cite{b6}.
 \bibitem{a7} C. Dwork. Differential privacy. In ICALP, pages 1–12, 2006.
 \bibitem{fp} Han J, Pei J, Yin Y, et al. Mining frequent patterns without candidate generation[C]. international conference on management of data, 2000, 29(2): 1-12.
 \bibitem{apriori} Agrawal R, Imielinski T, Swami A N, et al. Mining association rules between sets of items in large databases[C]. international conference on management of data, 1993, 22(2): 207-216.
+\bibitem{apr} Agrawal R, Srikant R. Fast Algorithms for Mining Association Rules in Large Databases[C]. very large data bases, 1994: 487-499.
 \bibitem{a8} Wang T, Blocki J, Li N, et al. Locally Differentially Private Protocols for Frequency Estimation[C]. usenix security symposium, 2017: 729-745.
 \bibitem{a9} F. D. McSherry. Privacy integrated queries: an extensible platform for privacy-preserving data
 analysis. In SIGMOD, pages 19–30, 2009.
+\bibitem{eclat} Zaki M J. Scalable algorithms for association mining[J]. IEEE Transactions on Knowledge and Data Engineering, 2000, 12(3): 372-390.
+\bibitem{post-processing} C. Dwork, F. McSherry, K. Nissim, and A. Smith, “Calibrating noise to sensitivity in private data analysis,” in Theory of Cryptography Conference. Springer, 2006, pp. 265–284.
+\bibitem{rr} S. L. Warner. Randomized response: A survey technique for eliminating evasive answer bias. Journal of the American Statistical Association, 60(309):63–69, 1965.
 
 
 \bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
