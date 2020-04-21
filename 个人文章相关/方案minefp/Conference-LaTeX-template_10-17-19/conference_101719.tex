@@ -145,7 +145,23 @@ $(post-processing)$. For any method $\phi$ which works on the output of a $\epsi
 
 
 \subsection{LDP Protocols}
-A frequency oracle (FO) protocol enables the estimation of the frequency of any given value $v \in D$ under LDP. In \cite{a8}, the two best performing FO protocols are Generalized Random Response (GRR) or Optimized Local Hash (OLH). The former inherits and extends the randomized response (RR) technique\cite{rr}, which is an old technique developed for the interviewees in a survey to give random answer to a sensitive boolean question so that they can achieve plausible deniability; the latter deals with a large domain size $|I|$ by hashing a large domain size $|I|$ to a smaller size $g$ and applying RR to the hashed value. It was found that GRR offers the best accuracy than OLH when $|I| < 3e^{\epsilon} + 2$, where $|I|$ is the size of the domain of items under consideration. Therefore, in  \cite{a2}, an adaptive FO protocol can be proposed from the known $I$ as well as $\epsilon$.\\
+A frequency oracle (FO) protocol enables the estimation of the frequency of any given value $v \in D$ under LDP. Randomized response (RR)\cite{rr} is a traditional technique for estimating unbiasedly a population proprotion, which is the building block of many LDP protocols, such as RAPPOR\cite{rappor}, GRR and OLH\cite{a8}. Suppose the respondents were asked to answer a sensitive Boolean question (e.g. have you ever cheated on your partner?) in a survey and provisions made for each person to be interviewed. That is, each respondent gives the raw answer with probability $p$ and gives the opposite answer with probabilit $q = 1-p$. Specially, to satisfy $\epsilon$-LDP, the probability p is set to $\frac{e^{\epsilon}}{1+e^{\epsilon}}$. 
+
+Then, the agregator calculates the estimated percentage of ``Yes'' (denote as $\tilde{\theta}$) as example  from all sanitized answers, which is unbiased, as follows: 
+$$\tilde{\theta}(Yes) = \frac{\mathcal{C}(answer=Yes) - nq}{p-q}$$
+where $n$ is the total number of respondents and $\mathcal{C}(answer=Yes)$ denotes the number of occurrences respondents answered ``Yes''. Accordingly, the variance of it is 
+$$Var \big[\tilde{\theta}(Yes) \big] = $$
+
+However, the RR protocol only applies to binary Boolean problems, which greatlt limits its application. Therefore, in \cite{a8}, two effective protocols, Generalized Random Response (GRR) and Optimized Local Hash (OLH), are proposed for the purpose of solving problems with large domain size $\mathcal{D}$. Specially, GRR extends the RR protocol by setting probability $p = \frac{e^{\epsilon}}{e^{\epsilon} + \mathcal{D} - 1}$ to give the raw answer $y = v$ and probability $q = \frac{1-p}{\mathcal{D}-1}$ (i.e. $q =\frac{1}{e^{\epsilon} + \mathcal{D} - 1}$) to give the perturbed answer $y \neq v$. It is shown that RR is the special case while $\mathcal{D} = 2$. 
+
+In \cite{a8}, it turns out that when d is large, the OLH protocol provides the best accuracy while maintaining a low communication cost.  In this paper, we use the OLH protocol as a primitive and describe it below.
+
+$Optimized\ Local\ Hashing\ (OLH)$
+
+$------------$
+
+%%%%%%
+{\color{red}In \cite{a8}, the two best performing FO protocols are Generalized Random Response (GRR) and Optimized Local Hash (OLH). The former extends the randomized response (RR) technique\cite{rr}, which is an old technique developed for the interviewees in a survey to give random answer to a sensitive boolean question so that they can achieve plausible deniability; the latter deals with a large domain size $|I|$ by hashing a large domain size $|I|$ to a smaller size $g$ and applying RR to the hashed value. It was found that GRR offers the best accuracy than OLH when $|I| < 3e^{\epsilon} + 2$, where $|I|$ is the size of the domain of items under consideration. Therefore, in  \cite{a2}, an adaptive FO protocol can be proposed from the known $I$ as well as $\epsilon$.\\}
 \textbf{Generalized Random Response (GRR)}
 
 \subsection{FP-growth algorithm}
@@ -380,6 +396,7 @@ analysis. In SIGMOD, pages 19–30, 2009.
 \bibitem{eclat} Zaki M J. Scalable algorithms for association mining[J]. IEEE Transactions on Knowledge and Data Engineering, 2000, 12(3): 372-390.
 \bibitem{post-processing} C. Dwork, F. McSherry, K. Nissim, and A. Smith, “Calibrating noise to sensitivity in private data analysis,” in Theory of Cryptography Conference. Springer, 2006, pp. 265–284.
 \bibitem{rr} S. L. Warner. Randomized response: A survey technique for eliminating evasive answer bias. Journal of the American Statistical Association, 60(309):63–69, 1965.
+\bibitem{rappor} U. Erlingsson, V. Pihur, and A. Korolova. Rappor: Randomized aggregatable privacy-preserving ordinal response. In CCS, pages 1054–1067. ACM, 2014.
 
 
 \bibitem{b1} G. Eason, B. Noble, and I. N. Sneddon, ``On certain integrals of Lipschitz-Hankel type involving products of Bessel functions,'' Phil. Trans. Roy. Soc. London, vol. A247, pp. 529--551, April 1955.
