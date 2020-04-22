@@ -156,7 +156,29 @@ However, the RR protocol only applies to binary Boolean problems, which greatlt 
 
 In \cite{a8}, it turns out that when d is large, the OLH protocol provides the best accuracy while maintaining a low communication cost.  In this paper, we use the OLH protocol as a primitive and describe it below.
 
-$Optimized\ Local\ Hashing\ (OLH)$
+$Optimized\ Local\ Hashing\ (OLH)$\cite{a8}: In order to deal with a large domain size $\mathcal{D}$ as well as reduce the communication cost, OLH protocol applys a hash function to map each input value into a value in $[g]$, where $g \geq 2$ and $g \ll \mathcal{D}$. Then randomized response is used to the hashed value in the smaller domain. In \cite{a8}, the optimal choice of the parameter $g$ is $\lceil e^{\epsilon}+1 \rceil$ which meets the minimal variance.
+
+Let $H$ is randomly chosen from a family of hash functions that outputs a value in $[g]$ and $x = H(v)$. The perturbing protocol in OLH is $Perturb \big(\langle H,x \rangle \big) = \langle H,y \rangle$, where
+$$\forall_{i\in [g]} \mathbf{Pr} [y=i] = 
+\begin{cases}
+p = \frac{e^{\epsilon}}{e^{\epsilon}+g-1},&\text{if $x=i$} \\
+q = \frac{1}{e^{\epsilon}+g-1},&\text{if $x\neq i$}
+\end{cases}
+$$
+
+Accordingly, the aggregator first calculates the number of perturbed values that ``supports'' that the input is $v$ (denote as $\mathcal{C}(v)$), then transforms $\mathcal{C}(v)$ to its unbiased estimation
+\begin{equation}
+\tilde{\theta}(v) := \frac{\mathcal{C}(v) - n/g}{p-1/g}
+\label{olh aggregate}
+\end{equation}
+
+The variance of this estimation is 
+\begin{equation}
+Var\big[\tilde{\theta}(v)\big] =n \cdot \frac{4e^{\epsilon}}{{(e^{\epsilon}-1)}^2}
+\label{olh variance}
+\end{equation}
+
+In \cite{a8}, it suggests that when $\mathcal{D}<3e^{\epsilon} +2$, GRR is the best among all approaches; but for large domain size $\mathcal{D}$, OLH meets better performance and has a variance that does not depend on $\mathcal{D}$.
 
 $------------$
 
