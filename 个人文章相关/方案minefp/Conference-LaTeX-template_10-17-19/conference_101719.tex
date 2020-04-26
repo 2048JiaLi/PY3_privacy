@@ -73,9 +73,9 @@ Differential privacy (DP)\cite{a7} is the state-of-the-art approach that is used
 Due to its unique advantages, DP has been widely studied by the academia and industry. For example, Google, Microsoft, apple and other companies use this technology to protect users' privacy, and at the same time, mobile phones aggregate data, so as to improve service quality. And the U.S. government is to complete a census of 330 million U.S. residents by 2020, keeping their identities secret, in what would be the largest application of DP ever.
 
 %差分隐私可分为CDP和LDP。相对于CDP，LDP不需要可信第三方的假设条件并且提供了更强的隐私保证。LDP的研究涉及很多方面，近年来，在数据挖掘方面的工作引起了人们的关注。  简单介绍以下CDP的DM工作。
-There are two types of differential privacy - Centralized differential privacy (CDP) and Local differential privacy (LDP). Compared with CDP, the LDP does not require the assumptions of a trusted third party and provides stronger privacy guarantees.  {\color{red}DP's research has involved many aspects, in recent years, the work in mining frequent itemsets has attracted the attention, which is one of  the most important techniques because of its ability to locate the repeating relationships between different items in a data set and plays an essential role in mining association rules\cite{apriori}. Formally, let $I = \{x_1,x_2,...,x_d\}$ be a set of items and $D = <T_1,T_2,...,T_n>$ denote a transaction database, where $T_i(i \in [1...n])$ is a transaction that is a subset of $I$. A sample of transational data is shown in Table \ref{trans table}. The support of an itemset $X$, where $X \subset I$ is a set of items, is the number of transactions containing $X$ in $D$. Given a minimum support threshold $\delta$, the problem of finding the complete set of frequent itemsets that supports no less than $\delta$ is called the frequent itemset mining (FIM) problem.}
+There are two types of differential privacy - Centralized differential privacy (CDP) and Local differential privacy (LDP). Compared with CDP, the LDP does not require the assumptions of a trusted third party and provides stronger privacy guarantees.  {\color{red}DP's research has involved many aspects, in recent years, the work in mining frequent itemsets has attracted the attention, which is one of  the most important techniques because of its ability to locate the repeating relationships between different items in a data set and plays an essential role in mining association rules\cite{apriori}. Formally, let $\mathcal{X} = \{x_1,x_2,...,x_d\}$ be the global domain of items with size is $d$ and $\mathcal{T} = \langle T_1,T_2,...,T_n \rangle$ denote a transaction database for $n$ users, where $T_i(i \in [1...n])$ denotes a transaction that is a subset of $\mathcal{X}$. For example, a sample of transational data is shown in Table \ref{trans table}. The support of an itemset $X$, where $X \subseteq \mathcal{X}$ is a set of items, is the number of transactions containing $X$ in $\mathcal{T}$. Then, given a minimum support threshold $\delta$, the problem of finding the complete set of frequent itemsets that supports no less than $\delta$ is called the frequent itemset mining (FIM) problem.}
 
-\begin{table}[htbp]
+\begin{table}[bp]
 \caption{{\color{red}Sample of transactional data.}}
 \begin{center}
 \begin{tabular}{|c|l|}\hline
@@ -101,7 +101,7 @@ Specifically for FIM in the local setting, Qin et al.\cite{a1} leave it as a fut
 \begin{equation}
 \varphi(X)=\prod_{x \in X} \mu(x) , \mu(x) = \frac{0.9\times \tilde{\theta}(x)}{\max \limits_{x \in S^{\prime}} \tilde{\theta}(x)}\label{gf}
 \end{equation}
-where $\varphi(X)$ represents the speculative frequency of itemset $X$, $S^{\prime}$ and $\tilde{\theta}(x)$ are denoted separately the $top-k$ frequent items set and the frequency of a given item $x$. Then $2k$ itemsets with highest guessing frequencies are selected to construct candidate set $IS$. Finally, reference \cite{a2} utilized SVIM protocol again with the domain $IS$ to mine $top-k$ itemsets. We observe that, the size of candidate set to construct $IS$ increase significantly with $k$. As a result, it is computationally expensive when $k$ is large (e.g., $k=100$). 
+where $\varphi(X)$ represents the speculative frequency of itemset $X$, $S^{\prime}$ and $\tilde{\theta}(x)$ are denoted separately the $top-k$ frequent items set and the frequency of a given item $x$. Then $2k$ itemsets with highest guessing frequencies are selected to construct candidate set $IS$. Finally, it utilizes SVIM protocol again with the domain $IS$ to mine $top-k$ itemsets. We observe that, the size of candidate set to construct $IS$ increase significantly with $k$. As a result, it is computationally expensive when $k$ is large (e.g., $k=100$). 
 
 %介绍本文工作_______________________之前需要介绍以下与FPtree的结合
 Inspiringly, we propose {\color{red}minefp} protocol, which aims at finding $top-k$ itemsets under the LDP setting and provides similar accuracy while providing lower overhead than existing SVSM protocol within the same privacy constraints.
@@ -120,16 +120,16 @@ To summarize, the main contributions of this paper are:
 %SVSM的主要缺点然后引出本文方案
 \textbf{Roadmap.}
 
-\section{Background}
+\section{Preliminaries}
 \subsection{Local Differential Privacy (LDP)}
 In the local setting, there is no trusted third party and an aggregator wants to gather information from users, where each user possesses an input $v$. The privacy of the data contributor is protected by perturbing her/his original data at the data contributor’s side; thus, the agregator cannot access the original data, but is still able to obtain population statistics.
 
-Formally, let $D$ denote the whole  transaction databases. $\epsilon$-local differential privacy (or $\epsilon$-LDP) is defined on an algorithm $\mathcal{A}$ and a privacy budget $\epsilon \geq 0$ as follows.
+Formally, let $\mathcal{T}$ denote the whole  transaction databases. $\epsilon$-local differential privacy (or $\epsilon$-LDP) is defined on an algorithm $\mathcal{A}$ and a privacy budget $\epsilon \geq 0$ as follows.
 
 \newtheorem{Definition}{\bf Definition}
 \begin{Definition}
-($\epsilon-LDP$). A randomized algorithm $\mathcal{A}$ satisfies $\epsilon$-local differential privacy ($\epsilon$-LDP), if and only if for (1) all pairs of input $v_i,v_j \in D$, and (2) any possible output $\mathcal{O}$ of $\mathcal{A}$, we have:\\
-$$\frac{\mathbf{Pr}[\mathcal{A}(v_i)=\mathcal{O}]}{\mathbf{Pr}[\mathcal{A}(v_j)=\mathcal{O}]} \leq e^{\epsilon}$$
+($\epsilon-LDP$). A randomized algorithm $\mathcal{A}$ satisfies $\epsilon$-local differential privacy ($\epsilon$-LDP), if and only if for (1) all pairs of input $t_i,t_j \in \mathcal{T}$, and (2) any possible output $\mathcal{O}$ of $\mathcal{A}$, we have:\\
+$$\frac{\mathbf{Pr}[\mathcal{A}(t_i)=\mathcal{O}]}{\mathbf{Pr}[\mathcal{A}(t_j)=\mathcal{O}]} \leq e^{\epsilon}$$
 \end{Definition}
 
 $Sequential\  composability$\cite{a9} and $post-processing$\cite{post-processing} are vitally important properties of differential privacy. The former allows each user to divide privacy budget into multiple portions and use each portion to execute independent LDP protocols on the same input while the sequential executions provide $\sum \epsilon_i$-LDP; the latter guarantees that any processing of the noisy data do not disclose the privacy.
@@ -143,20 +143,25 @@ $(sequential\ composability)$. Given $m$ randomized algorithms $\mathcal{A}_i(1 
 $(post-processing)$. For any method $\phi$ which works on the output of a $\epsilon$-LDP algorithm $\mathcal{A}$ without accessing the raw data, the procedure $\phi \big(\mathcal{A(\cdot)} \big)$ remains $\epsilon$-LDP.
 \end{theorem}
 
-
-\subsection{LDP Protocols}
-A frequency oracle (FO) protocol enables the estimation of the frequency of any given value $v \in D$ under LDP. Randomized response (RR)\cite{rr} is a traditional technique for estimating unbiasedly a population proprotion, which is the building block of many LDP protocols, such as RAPPOR\cite{rappor}, GRR and OLH\cite{a8}. Suppose the respondents were asked to answer a sensitive Boolean question (e.g. have you ever cheated on your partner?) in a survey and provisions made for each person to be interviewed. That is, each respondent gives the raw answer with probability $p$ and gives the opposite answer with probabilit $q = 1-p$. Specially, to satisfy $\epsilon$-LDP, the probability p is set to $\frac{e^{\epsilon}}{1+e^{\epsilon}}$. 
+\subsection{Frequency Oracle in the LDP setting}
+A frequency oracle (FO) protocol under LDP enables aggregator to estimate the frequency of any given value $v \in \mathcal{X}$ from all sanitized data recived from the users. A fundamental FO protocol is Randomized Response (RR)\cite{rr}, which is a traditional technique for estimating unbiasedly a population proprotion. It is the building block of many sophisticated LDP protocols, such as RAPPOR\cite{rappor}, GRR and OLH\cite{a8}. Suppose the respondents were asked to answer a sensitive Boolean question (e.g. have you ever cheated on your partner?) in a survey, then RR makes provisions for each person to be interviewed. That is, each respondent gives the raw answer with probability $p$ and gives the opposite answer with probabilit $q = 1-p$. Specially, to satisfy $\epsilon$-LDP, the probability p is set to $\frac{e^{\epsilon}}{1+e^{\epsilon}}$. 
 
 Then, the agregator calculates the estimated percentage of ``Yes'' (denote as $\tilde{\theta}$) as example  from all sanitized answers, which is unbiased, as follows: 
 $$\tilde{\theta}(Yes) = \frac{\mathcal{C}(answer=Yes) - nq}{p-q}$$
 where $n$ is the total number of respondents and $\mathcal{C}(answer=Yes)$ denotes the number of occurrences respondents answered ``Yes''. Accordingly, the variance of it is 
-$$Var \big[\tilde{\theta}(Yes) \big] = $$
+{\color{red}$$Var \big[\tilde{\theta}(Yes) \big] = $$}
 
-However, the RR protocol only applies to binary Boolean problems, which greatlt limits its application. Therefore, in \cite{a8}, two effective protocols, Generalized Random Response (GRR) and Optimized Local Hash (OLH), are proposed for the purpose of solving problems with large domain size $\mathcal{D}$. Specially, GRR extends the RR protocol by setting probability $p = \frac{e^{\epsilon}}{e^{\epsilon} + \mathcal{D} - 1}$ to give the raw answer $y = v$ and probability $q = \frac{1-p}{\mathcal{D}-1}$ (i.e. $q =\frac{1}{e^{\epsilon} + \mathcal{D} - 1}$) to give the perturbed answer $y \neq v$. It is shown that RR is the special case while $\mathcal{D} = 2$. 
+However, the RR protocol only applies to binary Boolean problems, which greatlt limits its application. Therefore, in \cite{a8}, two effective protocols, Generalized Random Response (GRR) and Optimized Local Hash (OLH), are proposed for the purpose of solving problems with large domain size $d = |\mathcal{X}|$.
 
-In \cite{a8}, it turns out that when d is large, the OLH protocol provides the best accuracy while maintaining a low communication cost.  In this paper, we use the OLH protocol as a primitive and describe it below.
+$Generalized\ Random\ Response\ (GRR)$\cite{a8}: GRR extends the RR protocol in case of $d \neq 2$ by setting probability $p = \frac{e^{\epsilon}}{e^{\epsilon} + d - 1}$ to give the raw answer $y = v$ and probability $q = \frac{1-p}{d-1}$ (i.e. $q =\frac{1}{e^{\epsilon} + d - 1}$) to give the perturbed answer $y \neq v$. Specially, it has been shown that RR is the special case while $d = 2$. The shortage of GRR is that its estimated variance is linear with $d$, which makes poor perform when $d$ is large: 
+\begin{equation}
+Var\big[\tilde{\theta}_{GRR}(v)\big] = n \cdot \frac{d - 2+e^{\epsilon}}{(e^{\epsilon}-1)^2} 
+\label{grr variance}
+\end{equation}
 
-$Optimized\ Local\ Hashing\ (OLH)$\cite{a8}: In order to deal with a large domain size $\mathcal{D}$ as well as reduce the communication cost, OLH protocol applys a hash function to map each input value into a value in $[g]$, where $g \geq 2$ and $g \ll \mathcal{D}$. Then randomized response is used to the hashed value in the smaller domain. In \cite{a8}, the optimal choice of the parameter $g$ is $\lceil e^{\epsilon}+1 \rceil$ which meets the minimal variance.
+%In \cite{a8}, it turns out that OLH is the best protocol with high accuracy as well as low communication cost when $d$ is large. In this paper, we use the OLH protocol as a primitive and describe it below.
+
+$Optimized\ Local\ Hashing\ (OLH)$\cite{a8}: In order to deal with a large domain size $d$ as well as reduce the communication cost, OLH protocol applys a hash function to map each input value into a value in $[g]$, where $g \geq 2$ and $g \ll d$. Then randomized response is used to the hashed value in the smaller domain. In \cite{a8}, the optimal choice of the parameter $g$ is $\lceil e^{\epsilon}+1 \rceil$ which meets the minimal variance.
 
 Let $H$ is randomly chosen from a family of hash functions that outputs a value in $[g]$ and $x = H(v)$. The perturbing protocol in OLH is $Perturb \big(\langle H,x \rangle \big) = \langle H,y \rangle$, where
 $$\forall_{i\in [g]} \mathbf{Pr} [y=i] = 
@@ -174,30 +179,66 @@ Accordingly, the aggregator first calculates the number of perturbed values that
 
 The variance of this estimation is 
 \begin{equation}
-Var\big[\tilde{\theta}(v)\big] =n \cdot \frac{4e^{\epsilon}}{{(e^{\epsilon}-1)}^2}
+Var\big[\tilde{\theta}_{OLH}(v)\big] =n \cdot \frac{4e^{\epsilon}}{{(e^{\epsilon}-1)}^2}
 \label{olh variance}
 \end{equation}
 
-In \cite{a8}, it suggests that when $\mathcal{D}<3e^{\epsilon} +2$, GRR is the best among all approaches; but for large domain size $\mathcal{D}$, OLH meets better performance and has a variance that does not depend on $\mathcal{D}$.
+Intuitively, OLH has a variance that does not depend on $d$. In \cite{a8}, it suggests that when domain size $d<3e^{\epsilon} +2$, GRR is the best among all approaches; but for large $d$, OLH meets high accuracy as well as low communication cost
+
 
 $------------$
-
 %%%%%%
 {\color{red}In \cite{a8}, the two best performing FO protocols are Generalized Random Response (GRR) and Optimized Local Hash (OLH). The former extends the randomized response (RR) technique\cite{rr}, which is an old technique developed for the interviewees in a survey to give random answer to a sensitive boolean question so that they can achieve plausible deniability; the latter deals with a large domain size $|I|$ by hashing a large domain size $|I|$ to a smaller size $g$ and applying RR to the hashed value. It was found that GRR offers the best accuracy than OLH when $|I| < 3e^{\epsilon} + 2$, where $|I|$ is the size of the domain of items under consideration. Therefore, in  \cite{a2}, an adaptive FO protocol can be proposed from the known $I$ as well as $\epsilon$.\\}
-\textbf{Generalized Random Response (GRR)}
+$------------$
 
 \subsection{FP-growth algorithm}
 Frequent pattern growth (FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree (FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree that represents the frequent items is shown in Fig. \ref{fptree}, where the minimum support threshold is set to 3.
 
-%A sample of transational data is shown in Table \ref{trans table}.
+The FP-growth algorithm solves the problem of identifying long frequent itemsets by searching through smaller conditional FP-tree repeatedly. The conditional pattern base is a “sub-database” which consists of every prefix path in the FP-Tree that co-occurs with every frequent length-1 itemset. It is used to construct the conditional FP-tree and generate all the frequent patterns related to the length-1 items. In this way, the cost of searching for the frequent patterns is substantially reduced.
 
-The FP-growth algorithm solves the problem of identifying long frequent itemsets by searching through smaller conditional FP-tree repeatedly. The conditional pattern base is a “sub-database” which consists of every prefix path in the FP-Tree that co-occurs with every frequent length-1 item. It is used to construct the conditional FP-tree and generate all the frequent patterns related to every frequent length-1 item. In this way, the cost of searching for the frequent patterns is substantially reduced.
+\begin{Definition}
+($length-\alpha \ itemset$).  {\color{red} is this necessary? }
+\end{Definition}
 
 \begin{figure}[htbp]
 \centerline{\includegraphics[width=0.45\textwidth]{fptree.png}}
 \caption{Frequrnt pattern tree(FP-tree).}
 \label{fptree}
 \end{figure}
+
+\section{Problem Overview}
+
+\subsection{Problem Definition}
+In this paper, we study the FIM problem while fully considering users' personal privacy. Or rather, we look at privacy preserving frequent itemset mining under the LDP setting. In general, let $\mathcal{X} = \{x_1,x_2,...,x_d\ \}$ denote the whole domain of items, $X$ is a length-$|X|$ itemset where $X \subseteq \mathcal{X}$ is a subset of $\mathcal{X}$ and $|X|$ denote the cardinality of it.
+
+There are $n$ users, and each user has a sensitive transaction, which is a subset of $\mathcal{X}$. Formally, the transaction of $i$-th user is $T_i(i \in [1,n])$ and $\mathcal{T} = \langle T_1,T_2,...,T_n \rangle$ denote the whole transaction database. An untrusted data analyst (or aggregator) is going to mining $top-k$ most tfrequent itemsets and their frquencies among all users under $\epsilon$-LDP. More specifically, we aim to mine $k$ length-$\alpha$ itemset with highest frequencies, where $\alpha \geq 2$.
+%如果将方案中改为 选择top-2k的 length-1集合，去收集任意长度的集合 其效果怎么样
+
+{\color{red}Table \ref{notations} lists the notations used in this paper}
+
+\begin{table}[tbp]
+\caption{Notations.}
+\begin{center}
+\begin{tabular}{|c|c|}\hline
+  Symbol&Description \\\hline
+  $n$ & the number of users \\\hline
+  $X$ & the itemset \\\hline
+  $|X|$ & the cardinality of itemset $X$ \\\hline
+  $\mathcal{T}$ & the transaction database \\\hline
+  $T_i$ & the transaction of user $i$ \\\hline
+  $\mathcal{X}$ & the set of items \\\hline
+  $d$ & the number of items, $d = |\mathcal{X}|$ \\\hline
+\end{tabular}
+\label{notations}
+\end{center}
+\end{table}
+
+\subsection{Existing Approaches to FIM under LDP}
+\textbf{SVIM}
+
+\textbf{SVSM}
+
+\section{A Simple FP-tree-Based Approach}
 
 \section{Ease of Use}
 
