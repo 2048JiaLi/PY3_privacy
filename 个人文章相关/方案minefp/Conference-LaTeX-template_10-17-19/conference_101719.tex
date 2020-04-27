@@ -93,11 +93,13 @@ There are two types of differential privacy - Centralized differential privacy (
 %CDP的FIM简单介绍
 A lot of work\cite{a3,a4,a5,a6} has been done to solve DM problems in CDP. However, since the analyst holds the user's raw data in CDP setting, its main job is to add noise to the results to satisfy the DP definition.
 
+%
+
 %在本文中，我们考虑交易数据集下的FIM问题
-In this paper, we consider the $top-k$ FIM problem in transaction databases under LDP setting.However, there is no reliance on third party assumptions in LDP. The data analyst wants to find $k$ itemsets with highest support while while users are sensitive and unwilling to answer their real infomation. The main challenge is that the analyst does not hold the user's original sensitive information, which makes it quite difficult to mine useful information with sanitized data. Qin et al.\cite{a1} point out that if utlize directly existing FIM algorithm (e.g. Apriori\cite{apriori,apr}, FP-growth\cite{fp}, Eclat\cite{eclat}) would result in accumulation of dramatic noise because of multi-iteration between users and analyst.
+In this paper, we consider the $top-k$ FIM problem in transaction databases under LDP. Although LDP is similar to CDP, the LDP has no reliance on third party. The data analyst wants to find $k$ itemsets with highest support while while users are sensitive and unwilling to answer their real infomation. The main challenge is that the analyst does not hold the user's original sensitive information, which makes it quite difficult to mine useful information with sanitized data. Qin et al.\cite{a1} point out that if utlize directly existing FIM algorithm (e.g. Apriori\cite{apriori,apr}, FP-growth\cite{fp}, Eclat\cite{eclat}) would result in accumulation of dramatic noise because of multi-iteration between users and analyst.
 
 %引出LDP下的DM方法，然后给出SVSM的具体细节，并指出本文工作解决重点。
-Specifically for FIM in the local setting, Qin et al.\cite{a1} leave it as a future work but there is no clear solution. Wang et al.\cite{a2} solves  the $top-k$ frequent itemset mining (FIM) task for the first time with \textbf{padding-and-sampling-based frequency oracle} (PSFO). In \cite{a2}, the Set-Value Item Mining (SVIM) protocol has been proposed to handles set values under the LDP setting, with the purpose of finding the $k$ most frequent items and their frequencies. To mine frequent itemsets , a core technique is {\color{red}``Guessing Frequency (GF)''}. That is, the analyst first calculated  the frequency of a given itemset $X$ for all candidate itemsets by \eqref{gf},
+Specifically for FIM in the local setting, Qin et al.\cite{a1} leave it as a future work but there is no clear solution. Wang et al.\cite{a2} solves  the $top-k$ frequent itemset mining (FIM) task for the first time with \textbf{padding-and-sampling-based frequency oracle} (PSFO). In \cite{a2}, the Set-Value Item Mining (SVIM) protocol is proposed to handles set values under the LDP setting, with the purpose of finding the $k$ most frequent items and their frequencies. To mine frequent itemsets , a core technique is {\color{red}``Guessing Frequency (GF)''}. That is, the analyst first calculated  the frequency of a given itemset $X$ for all candidate itemsets by \eqref{gf},
 \begin{equation}
 \varphi(X)=\prod_{x \in X} \mu(x) , \mu(x) = \frac{0.9\times \tilde{\theta}(x)}{\max \limits_{x \in S^{\prime}} \tilde{\theta}(x)}\label{gf}
 \end{equation}
@@ -147,9 +149,9 @@ $(post-processing)$. For any method $\phi$ which works on the output of a $\epsi
 A frequency oracle (FO) protocol under LDP enables aggregator to estimate the frequency of any given value $v \in \mathcal{X}$ from all sanitized data recived from the users. A fundamental FO protocol is Randomized Response (RR)\cite{rr}, which is a traditional technique for estimating unbiasedly a population proprotion. It is the building block of many sophisticated LDP protocols, such as RAPPOR\cite{rappor}, GRR and OLH\cite{a8}. Suppose the respondents were asked to answer a sensitive Boolean question (e.g. have you ever cheated on your partner?) in a survey, then RR makes provisions for each person to be interviewed. That is, each respondent gives the raw answer with probability $p$ and gives the opposite answer with probabilit $q = 1-p$. Specially, to satisfy $\epsilon$-LDP, the probability p is set to $\frac{e^{\epsilon}}{1+e^{\epsilon}}$. 
 
 Then, the agregator calculates the estimated percentage of ``Yes'' (denote as $\tilde{\theta}$) as example  from all sanitized answers, which is unbiased, as follows: 
-$$\tilde{\theta}(Yes) = \frac{\mathcal{C}(answer=Yes) - nq}{p-q}$$
+$$\tilde{\theta}_{RR}(Yes) = \frac{\mathcal{C}(answer=Yes) - nq}{p-q}$$
 where $n$ is the total number of respondents and $\mathcal{C}(answer=Yes)$ denotes the number of occurrences respondents answered ``Yes''. Accordingly, the variance of it is 
-{\color{red}$$Var \big[\tilde{\theta}(Yes) \big] = $$}
+{\color{red}$$Var \big[\tilde{\theta}_{RR}(Yes) \big] = $$}
 
 However, the RR protocol only applies to binary Boolean problems, which greatlt limits its application. Therefore, in \cite{a8}, two effective protocols, Generalized Random Response (GRR) and Optimized Local Hash (OLH), are proposed for the purpose of solving problems with large domain size $d = |\mathcal{X}|$.
 
@@ -163,7 +165,7 @@ Var\big[\tilde{\theta}_{GRR}(v)\big] = n \cdot \frac{d - 2+e^{\epsilon}}{(e^{\ep
 
 $Optimized\ Local\ Hashing\ (OLH)$\cite{a8}: In order to deal with a large domain size $d$ as well as reduce the communication cost, OLH protocol applys a hash function to map each input value into a value in $[g]$, where $g \geq 2$ and $g \ll d$. Then randomized response is used to the hashed value in the smaller domain. In \cite{a8}, the optimal choice of the parameter $g$ is $\lceil e^{\epsilon}+1 \rceil$ which meets the minimal variance.
 
-Let $H$ is randomly chosen from a family of hash functions that outputs a value in $[g]$ and $x = H(v)$. The perturbing protocol in OLH is $Perturb \big(\langle H,x \rangle \big) = \langle H,y \rangle$, where
+Let $H$ is randomly chosen from a family of hash functions that outputs a value in $[g]$ and $x = H(v)$. The perturbing protocol in OLH is $Perturb_{OLH} \big(\langle H,x \rangle \big) = \langle H,y \rangle$, where
 $$\forall_{i\in [g]} \mathbf{Pr} [y=i] = 
 \begin{cases}
 p = \frac{e^{\epsilon}}{e^{\epsilon}+g-1},&\text{if $x=i$} \\
@@ -173,7 +175,7 @@ $$
 
 Accordingly, the aggregator first calculates the number of perturbed values that ``supports'' that the input is $v$ (denote as $\mathcal{C}(v)$), then transforms $\mathcal{C}(v)$ to its unbiased estimation
 \begin{equation}
-\tilde{\theta}(v) := \frac{\mathcal{C}(v) - n/g}{p-1/g}
+\tilde{\theta}_{OLH}(v) := \frac{\mathcal{C}(v) - n/g}{p-1/g}
 \label{olh aggregate}
 \end{equation}
 
@@ -234,9 +236,22 @@ There are $n$ users, and each user has a sensitive transaction, which is a subse
 \end{table}
 
 \subsection{Existing Approaches to FIM under LDP}
-\textbf{SVIM}
+Since Qin et al.\cite{a1} first introduces set-valued data to differential privacy in the local setting for the purpose of discovering heavy hitters as well as their frequencies, it has been a challenge that mining frequent itemsets from all sanitized data. To the best of our konwledge, only SVSM\cite{a2} protocol that implements effectively FIM task in context of LDP. Particularly, it focuses on mining $top-k$ most frequent length-$\alpha$ ($\alpha>1$) itemsets while utilizing SVIM\cite{a2} protocol that obtains the frequent items (or length-1 itemsets) as initial condition to construct candidate set. Details as follows. 
 
-\textbf{SVSM}
+$Set-Value\ Item\ Mining\ (SVIM)$: SVIM is a PSFO protocol with the same problem setting as LDPMiner\cite{a1}, which aimming at discovering the $k$ frequent items with highest frequencies. It has four steps and {\color{red}splits the privacy budget $\epsilon$ into three parts.}
+
+\textbf{1. Prune the Domain.} The goal is to identify a candidate set for items so that it can reduce the domian size into $2k$, which is greatly less than the domain $d$. In this step, each user uses FO to perturb a randomly sampled item from his raw data. Then, the analyst estimates the frequency of each value in the domain and selects the $2k$ frequent items with highest frequencies. The analyst broadcasts the domain set $S$ pruned to all users.
+
+\textbf{2. Size Estimation.} In order to further estimate the frequency of the set $S$. It is necessary to approximate the distribution of the number of frequent items that users hold. Thus, the perturbing data of each user is the size of the raw of intersected with the set $S$. After the perturbing of users finishes, the alalyst estimates the length distribution and calculates the $\beta = 90\%$ length $L$ by  
+\begin{equation}
+\frac{\sum_{i=1}^{L} \tilde{\theta}(i)}{\sum_{i=1}^{2k} \tilde{\theta}(i)} > \beta
+\end{equation}
+
+
+
+%Summarily, we summarize it in three phases: Prune the Domain and Frequency Estimation. The fomer identifies a candidate set for items so that it can reduce the domian size into $2k$, which is greatly less than $d$ when $d$ is large; Then, the latter focuses on the frequent items identified to estimate precisely their frquencies in small domain.
+
+\textbf{}
 
 \section{A Simple FP-tree-Based Approach}
 
