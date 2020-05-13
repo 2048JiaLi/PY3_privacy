@@ -8,6 +8,12 @@
 \usepackage{graphicx}
 \usepackage{textcomp}
 \usepackage{xcolor}
+
+\newtheorem{theorem}{\bf Theorem}[section]
+\newtheorem{Definition}{\bf Definition}
+\newtheorem{lemma}{Lemma}[section]
+\newtheorem*{proof}{\text{$Proof.$}}
+
 \def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
     T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
 
@@ -16,7 +22,7 @@
 \begin{document}
 
 %LDP机制下的快速FIM方法-    标题
-\title{Fast top-k frequent itemset mining under Local Differential Privacy*\\
+\title{FPmine: Fast FP-tree-based $top-k$ frequent itemset mining under Local Differential Privacy*\\
 {\footnotesize \textsuperscript{*}Note: Sub-titles are not captured in Xplore and
 should not be used}
 \thanks{Identify applicable funding agency here. If none, delete this.}
@@ -71,15 +77,22 @@ This is the keywords
 
 \section{Introduction}
 %2020年2月26日，差分隐私技术被全球知名科技评论期刊《麻省理工学院技术评论》评为“全球十大突破性技术”。差分隐私是密码学中的一种手段，旨在提供一种当从统计数据库查询时，最大化数据查询的准确性，同时最大限度减少识别其记录的机会。作为一种数学技术，它能够在给数据添加噪声的同时，量化计算隐私提升的程度，从而使得增加“噪音”的过程变得更加严谨。
-Differential privacy (DP)\cite{a7} is the state-of-the-art approach that is used to protect individual privacy in the process of data collection, which has been named one of the world's top 10 breakthrough technologies in 2020 by the MIT technology review. It is a means in cryptography that aims to provide a way to maximize the accuracy of data queries when querying from statistical databases while minimizing the chances of identifying their records. Meanwhile, as a mathematical technique, it can add noise to the data while quantifying the extent of the increase in privacy, thus making the process of adding ``noise'' more rigorous.
+Differential privacy (DP)\cite{a7} is the state-of-the-art technique that is used to protect individual privacy in the process of data collection, which has been named one of the world's top 10 breakthrough technologies in 2020 by the MIT technology review\cite{MITreview}. It is a means in cryptography that aims to provide a way to maximize the accuracy of data queries from statistical databases while minimizing the chances of identifying their records. Meanwhile, as a mathematical technique, DP adds noise to the data while quantifying the level of privacy protection, thus making the process of adding ``noise'' more rigorous. Generally, there are two types of differential privacy - Centralized differential privacy (CDP) and Local differential privacy (LDP). Compared with CDP, such the most topical LDP does not require the assumptions of a trusted third party and provides stronger privacy guarantees. And there are many practical applications such as Apple\cite{apple,apple new words}, Google\cite{rappor} and Microsoft\cite{microsoft}. Addtionally, the U.S. government has a task to complete a census of 330 million residents in 2020 while keeping their identities secret, which might be the biggest application ever.
 
-%差分隐私技术因其独特的优势，被学术界及工业界广泛的研究。谷歌、微软、苹果等公司使用该技术在保护用户隐私的同时，手机聚合数据，从而提升服务质量。并且美国政府将要完成2020年对3.3亿美国居民的人口普查，同时还要对他们的身份数据进行保密。如果任务完成顺利，这将是迄今为止规模最大的应用。
-Due to its unique advantages, DP has been widely studied by the academia and industry. For example, Google, Microsoft, apple and other companies use this technology to protect users' privacy, and at the same time, mobile phones aggregate data, so as to improve service quality. And the U.S. government is to complete a census of 330 million U.S. residents by 2020, keeping their identities secret, in what would be the largest application of DP ever.
+In order to discover more valueable konwledeg from big data, data mining (DM) has been developed rapidly. The task of frequent itemset mining (FIM) is a vital area of DM, and plays an essential role in mining association rules because if its ability to locate the repeating relationships between different items\cite{apriori,apr}. Formally, let $\mathcal{X} = \{x_1,x_2,...,x_d\}$ be the global domain of items with size is $d = |\mathcal{X}|$ and $\mathcal{T} = \langle T_1,T_2,...,T_n \rangle$ denote a transaction database of $n$ users, where $T_i(i \in [1...n])$ is $i$-th user's transaction, which is a subset of $\mathcal{X}$. For example, a sample of transational data is shown in Table \ref{trans table}. The support (or frequency) of an itemset $X$ is the number (or percentage) of transactions containing $X$ in $\mathcal{T}$, where $X \subseteq \mathcal{X}$ is a set of items. Then, given a minimum support threshold $\delta$, the problem of finding the complete set of frequent itemsets that supports no less than $\delta$ is called the frequent itemset mining (FIM).
 
-%差分隐私可分为CDP和LDP。相对于CDP，LDP不需要可信第三方的假设条件并且提供了更强的隐私保证。LDP的研究涉及很多方面，近年来，在数据挖掘方面的工作引起了人们的关注。  简单介绍以下CDP的DM工作。
-There are two types of differential privacy - Centralized differential privacy (CDP) and Local differential privacy (LDP). Compared with CDP, the LDP does not require the assumptions of a trusted third party and provides stronger privacy guarantees.  {\color{red}DP's research has involved many aspects, in recent years, the work in mining frequent itemsets has attracted the attention, which is one of  the most important techniques because of its ability to locate the repeating relationships between different items in a data set and plays an essential role in mining association rules\cite{apriori}. Formally, let $\mathcal{X} = \{x_1,x_2,...,x_d\}$ be the global domain of items with size is $d$ and $\mathcal{T} = \langle T_1,T_2,...,T_n \rangle$ denote a transaction database for $n$ users, where $T_i(i \in [1...n])$ denotes a transaction that is a subset of $\mathcal{X}$. For example, a sample of transational data is shown in Table \ref{trans table}. The support of an itemset $X$, where $X \subseteq \mathcal{X}$ is a set of items, is the number of transactions containing $X$ in $\mathcal{T}$. Then, given a minimum support threshold $\delta$, the problem of finding the complete set of frequent itemsets that supports no less than $\delta$ is called the frequent itemset mining (FIM) problem.}
+In recent years, with the extensive attention to privacy-preserving frequent itemset mining (PPFIM), differential privacy has achieved better performance in this field due to its unique advantages in privacy protection. {\color{red}In the CDP setting, Bhaskar et al.\cite{a3}  . Li et al.\cite{a4} and Zeng et al.\cite{a5} . Lee et al.\cite{a5} .
 
-\begin{table}[!t]
+However, since the analyst holds the user's raw data under CDP so that they cannot be applied in the local setting.
+} 
+%从这里开始介绍相关工作 ：   CDP的工作，LDP的工作 
+
+In this paper, we consider the question that discover $top-k$ frequent itemsets in transaction databases under LDP. Specifically, there are $n$ users with sensitive transactions, and an analyst wants to discover $k$ itemsets with heghest frequencies while provides strong guratantees of privacy to the users. Although LDP has attracted much reserch attention\cite{a1,a2,a8,privtrie,privkv,b1,b2,b3,b4,b5}, FIM is still challengting in the local setting due to the fact that the analyst has no right to access users raw data and it is difficult to mine valuable information of itemsets from sanitized data. Qin et al.\cite{a1} point out that if utlize directly existing FIM algorithm (e.g. Apriori\cite{apriori,apr}, FP-growth\cite{fp}, Eclat\cite{eclat}) would result in accumulation of dramatic noise because of multi-iteration between users and analyst.
+
+%引出LDP下的DM方法，然后给出SVSM的具体细节，并指出本文工作解决重点。
+Specifically for FIM in the local setting, Qin et al.\cite{a1} leave it as a future work but there is no clear solution. Wang et al.\cite{a2} solve the $top-k$ frequent itemset mining (FIM) task for the first time with \textbf{padding-and-sampling-based frequency oracle} (PSFO). In \cite{a2}, the Set-Value Item Mining (SVIM) protocol is proposed to handles set values under LDP for the purpose of finding the $k$ most frequent items and their frequencies. Meanwhile, to mine frequent itemsets, the core technique of latest Set-Value itemSet Mining (SVSM) protocol is ``Guessing Frequency (GF)'' to construct the candidate set of itemsets. Particularly, the analyst first computes the guessing frequency of each candidate itemset. Then $2k$ itemsets with highest guessing frequencies are selected to construct candidate set $IS$, which is the domain of SVSM. Finally, it utilizes SVIM protocol again with the domain $IS$ to identify $top-k$ itemsets. However, we observe that the number of possible itemsets to construct $IS$ increases significantly with $k$. As a result, it is computationally expensive for guessing considerable frequencies especially when $k$ is large (e.g., $k > 64$). 
+
+\begin{table}[tb]
 \caption{{\color{red}Sample of transactional data.}}
 \label{trans table}
 \centering
@@ -93,36 +106,27 @@ There are two types of differential privacy - Centralized differential privacy (
 \end{tabular}
 \end{table}
 
-%CDP的FIM简单介绍
-A lot of work\cite{a3,a4,a5,a6} has been done to solve DM problems in CDP. However, since the analyst holds the user's raw data in CDP setting, its main job is to add noise to the results to satisfy the DP definition.
-
-%
-
-%在本文中，我们考虑交易数据集下的FIM问题
-In this paper, we consider the $top-k$ FIM problem in transaction databases under LDP. Although LDP is similar to CDP, the LDP has no reliance on third party. The data analyst wants to find $k$ itemsets with highest support while while users are sensitive and unwilling to answer their real infomation. The main challenge is that the analyst does not hold the user's original sensitive information, which makes it quite difficult to mine useful information with sanitized data. Qin et al.\cite{a1} point out that if utlize directly existing FIM algorithm (e.g. Apriori\cite{apriori,apr}, FP-growth\cite{fp}, Eclat\cite{eclat}) would result in accumulation of dramatic noise because of multi-iteration between users and analyst.
-
-%引出LDP下的DM方法，然后给出SVSM的具体细节，并指出本文工作解决重点。
-Specifically for FIM in the local setting, Qin et al.\cite{a1} leave it as a future work but there is no clear solution. Wang et al.\cite{a2} solves  the $top-k$ frequent itemset mining (FIM) task for the first time with \textbf{padding-and-sampling-based frequency oracle} (PSFO). In \cite{a2}, the Set-Value Item Mining (SVIM) protocol is proposed to handles set values under LDP for the purpose of finding the $k$ most frequent items and their frequencies. Meanwhile, to mine frequent itemsets, the core technique of Set-Value itemSet Mining (SVSM) is ``Guessing Frequency (GF)'' to construct the candidate set of itemsets. Particularly, the analyst first calculates the guessing frequency of each candidate itemset. Then $2k$ itemsets with highest guessing frequencies are selected to construct candidate set $IS$, which is the domain of SVSM. Finally, it utilizes SVIM protocol again with the domain $IS$ to identify $top-k$ itemsets. However, we observe that the number of possible itemsets to construct $IS$ increases significantly with $k$. As a result, it is computationally expensive for guessing considerable frequencies when $k$ is large (e.g., $k > 64$). 
-
-% a given itemset $X$ for all candidate itemsets by
-%\begin{equation}
-%\mathbb{G}(X)=\prod_{x \in X} \mu(x) , \mu(x) = \frac{0.9\times \tilde{\theta}(x)}{\max \limits_{x \in S^{\prime}} \tilde{\theta}(x)}\label{gf}%\end{equation}
-%where $\mathbb{G}(X)$ represents the guessing frequency of itemset $X$, $S^{\prime}$ and $\tilde{\theta}(x)$ are denoted separately the $top-k$ frequent items set and the frequency of a given item $x$. 
-
-
-
-
 %介绍本文工作_______________________之前需要介绍以下与FPtree的结合
 %It provides lower computation overhead as well as similar accuracy than existing SVSM protocol.
-Inspiringly, to reduce the expensive computational cost caused by guessing frequencies of exponentially possible itemsets, we introduce the frequent-pattern tree (FP-tree)\cite{fp} structure to store compactly sensitive transactions of users, and then FP-growth\cite{fp} is awakened to mine frequent itemsets over the tree. Summarily, we propose {\color{red}Frequent-Pattern-based mine (fpmine)} protocol to discover $top-k$ most frequent itemsets and their frequencies in the local setting. {\color{red}It has five steps. First, the SVIM protocol is used to estimate the $k$ most frequent items and their frequencies. Second, users report the number of frequent items they have; the analyst estimates the distribution user reported and figure out the right $M$ as the maximum iteration of the tree. Third, users interact with the analyst to build effectively the FP-tree\cite{fp}. Fourth, the analyst optimizes and mines the FP-tree. Fifth, the analyst publishes $top-k$ itemsets.}
+Inspiringly, to reduce the expensive computational cost caused by guessing frequencies of exponentially possible itemsets, we introduce the frequent-pattern tree (FP-tree)\cite{fp} structure to store compactly sensitive informations, and then mine the noisy FP-tree by pattern fragment growth to discover frequent itemsets. Specifically, we find that it is suitable to construct a noisy FP-tree by breadth-first in the local setting. However there is a flaw that the large size of candidate domain in each iteration increases the noise as well as the cost so that degrades the utility. Therefore, we propose the optimization approach called $CutdownCandidate$ to effectively cut down the candadidate into a fixed size as presented in Section \ref{narrowcandidate}. The main idea is to save the candidates that most likely to be frequent with the guessing frequency (GF). In summary, we propose a novel {\color{red}Frequent-Pattern-based mining (FPmine)} approach to discover $top-k$ most frequent itemsets as well as their frequencies in the local setting. {\color{red}It has three steps. First, a set of frequent items are identified. Second, approximate the maximum number of frequent items that user holds. Third, a noisy FP-tree is constructed in a breadth-first manner and then mined for frequent itemsets.}
 
-Experimental results show that {\color{red}minefp outperforms SVSM in that it identifies quickly frequent itemsets as well as estimates the frequencies more accurately. Notably, when $k$ is large, it provides significantly lower computation overhead as well as similar accuracy than existing SVSM protocol .}
+Experimental results show that {\color{red}FPmine outperforms SVSM in that it identifies quickly frequent itemsets and accurate frequencies with low computational cost. Notably, when $k$ is large, it provides significantly lower computational cost than existing SVSM protocol with similar accuracy .}
 
 {\color{red}
 To summarize, the main contributions of this paper are:
 \begin{itemize}
-\item We study the application of FP-growth algorithm and design the FP-tree-based-mine (minefp) protocol to find frequent itemsets as well as their frequencies in the LDP setting. Experimental results on real-world datasets show the significant improvement over previous techniques.
-\item We investigate GF to construct candidate set and point out that it is beneficial to build hierarchically FP-tree. 
+%\item We investigate the guessing frequency (GF) to construct the set of itemsets and point out that it is beneficial for cutting down the size of candidate set. Then, we propose an optimization approach 
+
+%\item Benefit from GF, we propose a novel FP-tree-based mining approach to discover $top-k$ frequent itemsets as well as their frequencies in the local setting. Unlike the original algorithm, we construct a noisy but accurate FP-tree in a breadth-first manner and modify the mining step.
+
+%\item  We propose a novel FP-tree-based mining approach to discover $top-k$ frequent itemsets as well as their frequencies in the local setting. 
+
+
+\item We propose a novel FP-tree-based mining approach to discover $top-k$ frequent itemsets as well as their frequencies in the local setting. Unlike the original FP-growth alforithm, we construct effectively a noisy FP-tree in a breadth-first manner and modify the mining precedure of pattern fragment growth so that it the estimated variance is minimized.
+
+\item We investigate the guessing frequency (GF) to construct the set of itemsets. Then, we propose an optimization approach to further cut down candidates at each iteration of constructing noisy tree, which can siginifically reduce the noise as well as cost.
+
+\item Experimental results on both synthetic and real-world datasets show the significant improvement over previous methods, espsically when $k$ is large.
 \end{itemize}
 }
 
@@ -132,11 +136,8 @@ To summarize, the main contributions of this paper are:
 
 \section{Preliminaries}
 \subsection{Local Differential Privacy (LDP)}
-In the local setting, there is no trusted third party and an aggregator wants to gather information from users, where each user possesses an input $t$. The privacy of the data contributor is protected by perturbing her/his original data at the data contributor’s side; thus, the agregator cannot access the original data, but is still able to obtain population statistics.
-
-Formally, let $\mathcal{T}$ denote the whole  transaction databases. $\epsilon$-local differential privacy (or $\epsilon$-LDP) is defined on an algorithm $\mathcal{A}$ and a privacy budget $\epsilon \geq 0$ as follows.
-
-\newtheorem{Definition}{\bf Definition}
+In the local setting, there is no trusted third party and the untrusted analyst wants to gather information from users, where each user possesses a sensitive input. The privacy of each contributor is protected by randomly perturbing the input to provide plausible deniability of her data. Formally, let $\mathcal{T}$ denote a sensitive transaction database. $\epsilon$-local differential privacy (or $\epsilon$-LDP) is defined on an algorithm $\mathcal{A}$ and a privacy budget $\epsilon \geq 0$ as follows.
+% thus, the analyst cannot access users' raw data, but still needs to aggregate statistics. 
 \begin{Definition}
 ($\epsilon-LDP$). A randomized algorithm $\mathcal{A}$ satisfies $\epsilon$-local differential privacy ($\epsilon$-LDP), if and only if for (1) all pairs of input $t_i,t_j \in \mathcal{T}$, and (2) any possible output $\mathcal{O}$ of $\mathcal{A}$, we have:\\
 $$\frac{\mathbf{Pr}[\mathcal{A}(t_i)=\mathcal{O}]}{\mathbf{Pr}[\mathcal{A}(t_j)=\mathcal{O}]} \leq e^{\epsilon}$$
@@ -144,7 +145,6 @@ $$\frac{\mathbf{Pr}[\mathcal{A}(t_i)=\mathcal{O}]}{\mathbf{Pr}[\mathcal{A}(t_j)=
 
 $Sequential\  composability$\cite{a9} and $post-processing$\cite{post-processing} are vitally important properties of differential privacy. The former allows each user to divide privacy budget into multiple portions and use each portion to execute independent LDP protocols on the same input while the sequential executions provide $\sum \epsilon_i$-LDP; the latter guarantees that any processing of the noisy data do not disclose the privacy.
 
-\newtheorem{theorem}{\bf Theorem}[section]
 \begin{theorem}\label{sequential composability}
 \textbf{(sequential composability).} Given $m$ randomized algorithms $\mathcal{A}_i(1 \leq i \leq m)$, each of which satisfies $\epsilon_i$-local differential privacy. Then the sequence of $\mathcal{A}_i$ collectively provides $(\sum_{i=1}^{m} \epsilon_i)$-local differential privacy. 
 \end{theorem}
@@ -154,16 +154,18 @@ $Sequential\  composability$\cite{a9} and $post-processing$\cite{post-processing
 \end{theorem}
 
 \subsection{Frequency Oracle in the LDP setting}
-A frequency oracle (FO) protocol under LDP enables aggregator to estimate the frequency of any given value $t \in \mathcal{X}$ from all sanitized data recived from the users. A fundamental FO protocol is Randomized Response (RR)\cite{rr}, which is a traditional technique for estimating unbiasedly a population proprotion. It is the building block of many sophisticated LDP protocols, such as RAPPOR\cite{rappor}, GRR and OLH\cite{a8}. Suppose the respondents were asked to answer a sensitive Boolean question (e.g. have you ever cheated on your partner?) in a survey, then RR makes provisions for each person to be interviewed. That is, each respondent gives the raw answer with probability $p$ and gives the opposite answer with probabilit $q = 1-p$. Specially, to satisfy $\epsilon$-LDP, the probability p is set to $\frac{e^{\epsilon}}{1+e^{\epsilon}}$. 
+A frequency oracle (FO) protocol enables analyst to estimate the frequency of any given value $t \in \mathcal{X}$ from all sanitized data recived from the users. The fundamental protocol called Randomized Response (RR)\cite{rr} is a traditional technique for estimating unbiasedly a population proprotion. It is the building block of many sophisticated LDP protocols, such as RAPPOR\cite{rappor}, GRR and OLH\cite{a8}. Suppose that $n$ respondents were asked to answer a sensitive Boolean question (e.g. have you ever cheated on your partner?) in a survey, and RR makes provisions for each person to be interviewed. That is, each respondent gives the raw answer with probability $p$ and gives the opposite answer with probability $q = 1-p$. More specially, RR satisfies $\epsilon$-LDP by setting the probability p to $\frac{e^{\epsilon}}{1+e^{\epsilon}}$. 
 
-Then, the agregator calculates the estimated percentage of ``Yes'' (denote as $\tilde{\theta}$) as example  from all sanitized answers, which is unbiased, as follows: 
+Then, the analyst will compute the unbiased percentage of ``Yes'', denoted by $\tilde{\theta}_{RR}(Yes)$, as follows:
 $$\tilde{\theta}_{RR}(Yes) = \frac{\mathcal{C}(answer=Yes) - nq}{p-q}$$
-where $n$ is the total number of respondents and $\mathcal{C}(answer=Yes)$ denotes the number of occurrences respondents answered ``Yes''. Accordingly, the variance of it is 
+where $\mathcal{C}(answer=Yes)$ denotes the number of occurrences respondents answered ``Yes''. 
+
+Accordingly, we have the estimated variance
 {\color{red}$$Var \big[\tilde{\theta}_{RR}(Yes) \big] = $$}
 
-However, the RR protocol only applies to binary Boolean problems, which greatlt limits its application. Therefore, in \cite{a8}, two effective protocols, Generalized Random Response (GRR) and Optimized Local Hash (OLH), are proposed for the purpose of solving problems with large domain size $d = |\mathcal{X}|$.
+However, the RR protocol only applies to binary Boolean problems, which greatly limits its application in practice. In \cite{a8}, two effective protocols, Generalized Random Response (GRR) and Optimized Local Hash (OLH), are proposed for the purpose of solving problems with large domain size $d = |\mathcal{X}|$.
 
-$Generalized\ Random\ Response\ (GRR)$\cite{a8}: GRR extends the RR protocol in case of $d \neq 2$ by setting probability $p = \frac{e^{\epsilon}}{e^{\epsilon} + d - 1}$ to give the raw answer $y = t$ and probability $q = \frac{1-p}{d-1}$ (i.e. $q =\frac{1}{e^{\epsilon} + d - 1}$) to give the perturbed answer $y \neq t$. Specially, it has been shown that RR is the special case while $d = 2$. The shortage of GRR is that its estimated variance is linear with $d$, which makes poor perform when $d$ is large: 
+$Generalized\ Random\ Response\ (GRR)$\cite{a8}: GRR extends the RR protocol to $d \geq 2$ by setting probability $p = \frac{e^{\epsilon}}{e^{\epsilon} + d - 1}$ for raw answer $y = t$ and probability $q = \frac{1-p}{d-1}$ (i.e. $q =\frac{1}{e^{\epsilon} + d - 1}$) for perturbed answer $y \neq t$. Specially, it has been shown that RR is the special case while $d = 2$. The shortage of GRR is that the estimated variance is linear with $d$, which makes poor performance when $d$ is large: 
 \begin{equation}
 Var\big[\tilde{\theta}_{GRR}(t)\big] = n \cdot \frac{d - 2+e^{\epsilon}}{(e^{\epsilon}-1)^2} 
 \label{grr variance}
@@ -171,9 +173,9 @@ Var\big[\tilde{\theta}_{GRR}(t)\big] = n \cdot \frac{d - 2+e^{\epsilon}}{(e^{\ep
 
 %In \cite{a8}, it turns out that OLH is the best protocol with high accuracy as well as low communication cost when $d$ is large. In this paper, we use the OLH protocol as a primitive and describe it below.
 
-$Optimized\ Local\ Hashing\ (OLH)$\cite{a8}: In order to deal with a large domain size $d$ as well as reduce the communication cost, OLH protocol applys a hash function to map each input value into a value in $[g]$, where $g \geq 2$ and $g \ll d$. Then randomized response is used to the hashed value in the smaller domain. In \cite{a8}, the optimal choice of the parameter $g$ is $\lceil e^{\epsilon}+1 \rceil$ which meets the minimal variance.
+$Optimized\ Local\ Hashing\ (OLH)$\cite{a8}: In order to deal with larger size $d$ as well as reduce the communication cost, OLH protocol applys a hash function to map each input value into a value in $[g]$, where $g \geq 2$ and $g \ll d$. Then randomized response is used to the hashed value in the smaller domain. In \cite{a8}, the optimal choice of the parameter $g$ is $\lceil e^{\epsilon}+1 \rceil$ which meets the minimal variance.
 
-Let $H$ is randomly chosen from a family of hash functions that outputs a value in $[g]$ and $x = H(t)$. The perturbing protocol in OLH is $Perturb_{OLH} \big(\langle H,x \rangle \big) = \langle H,y \rangle$, where
+Let $H$ is randomly chosen from a family of hash functions that outputs a value in $[g]$ and $x = H(t)$. The perturbing step in OLH is $Perturb_{OLH} \big(\langle H,x \rangle \big) = \langle H,y \rangle$, where
 $$\forall_{i\in [g]} \mathbf{Pr} [y=i] = 
 \begin{cases}
 p = \frac{e^{\epsilon}}{e^{\epsilon}+g-1},&\text{if $x=i$} \\
@@ -181,9 +183,9 @@ q = \frac{1}{e^{\epsilon}+g-1},&\text{if $x\neq i$}
 \end{cases}
 $$
 
-Accordingly, the aggregator first calculates the number of perturbed values that ``supports'' that the input is $t$ (denote as $\mathcal{C}(t)$), then transforms $\mathcal{C}(t)$ to its unbiased estimation
+Then, the analyst calculates the number of perturbed values that ``supports'' the input $t$, denoted by $\mathcal{C}(t)$, and transforms $\mathcal{C}(t)$ to its unbiased estimation
 \begin{equation}
-\tilde{\theta}_{OLH}(t) := \frac{\mathcal{C}(t) - n/g}{p-1/g}
+\tilde{\theta}_{OLH}(t) = \frac{\mathcal{C}(t) - n/g}{p-1/g}
 \label{olh aggregate}
 \end{equation}
 
@@ -193,10 +195,10 @@ Var\big[\tilde{\theta}_{OLH}(t)\big] =n \cdot \frac{4e^{\epsilon}}{{(e^{\epsilon
 \label{olh variance}
 \end{equation}
 
-Intuitively, OLH has a variance that does not depend on $d$. However, the bigger $d$ is, the more hash collisions there are, resulting in large errors. In \cite{a8}, it suggests that when domain size $d<3e^{\epsilon} +2$, GRR is the best among all approaches; but for large $d$, OLH meets high accuracy as well as low communication cost.
+Intuitively, OLH has a variance that does not depend on $d$. However, the bigger $d$ is, the more hash collisions there are, which degrades the utility. In \cite{a8}, it suggests that when domain size $d<3e^{\epsilon} +2$, GRR is the best among all approaches; but for larger $d$, OLH meets high accuracy as well as low communication cost.
 
 \subsection{FP-growth algorithm}
-Frequent pattern growth (FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree (FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree that represents the frequent items is shown in Fig. \ref{fptree}, where the minimum support threshold is set to 3.
+Frequent pattern growth (FP-growth)\cite{fp} is an algorithm that mines the complete set of frequent patterns without a costly candidate generation process, which based on the frequent pattern tree (FP-tree) structure that is an extended prefix-tree structure for storing compressed, crucial information about frequent patterns. The FP-Tree is further divided into a set of Conditional FP-Trees for each frequent item so that they can be mined separately. An example of the FP-Tree based on transactions in Table \ref{trans table} is shown in Fig. \ref{fptree}, where the minimum support threshold $\delta$ is set to 3.
 
 The FP-growth algorithm solves the problem of identifying long frequent itemsets by searching through smaller conditional FP-tree repeatedly. The conditional pattern base is a “sub-database” which consists of every prefix path in the FP-Tree that co-occurs with every frequent length-1 itemset. It is used to construct the conditional FP-tree and generate all the frequent patterns related to the length-1 items. In this way, the cost of searching for the frequent patterns is substantially reduced.
 
@@ -213,9 +215,9 @@ The FP-growth algorithm solves the problem of identifying long frequent itemsets
 \section{Problem Overview}
 
 \subsection{Problem Definition}
-In this paper, we study the FIM problem while fully consider users' personal privacy. Or rather, we look at privacy preserving frequent itemset mining in the local setting. Formally, let $\mathcal{X} = \{x_1,x_2,...,x_d\ \}$ be a set of items, the length-$|X|$ itemset $X$ is a subset of $\mathcal{X}$, i.e.,$X \subseteq \mathcal{X}$, where $|X|$ denote its cardinality.
+In this paper, we look at the privacy preserving frequent itemset mining problem in the local setting and discover $top-k$ frequent itemsets as well as their frequencies while fully consider users' personal privacy. Formally, let $\mathcal{X} = \{x_1,x_2,...,x_d\}$ be a set of items, the length-$|X|$ itemset $X$ is a subset of $\mathcal{X}$, i.e.,$X \subseteq \mathcal{X}$, where $|X|$ denote its cardinality.
 
-In general, there are $n$ users, and each user has a sensitive transaction, which is a subset of $\mathcal{X}$. The transaction of $i$-th user is $T_i(i \in [1,n])$ and $\mathcal{T} = \langle T_1,T_2,...,T_n \rangle$ denote the whole transaction database. An untrusted data analyst (or aggregator) is aimming to mine $top-k$ most frequent itemsets and their frquencies among all users under $\epsilon$-LDP. More specifically, we focus on discovering $k$ length-$\alpha$ itemsets with highest frequencies, where $\alpha \geq 2$, while discovering length-1 itemsets (or items) under LDP may take advantage of PSFO protocol.
+In general, there are $n$ users, and each user has a sensitive transaction (or set value), which is a subset of $\mathcal{X}$. The transaction of $i$-th user is $T_i(i \in [1,n])$ and $\mathcal{T} = \langle T_1,T_2,...,T_n \rangle$ denote the whole transaction database. An untrusted data analyst (or aggregator) is aimming to mine $top-k$ most frequent itemsets and their frquencies among all users under LDP. More specifically, we focus on discovering $k$ length-$\alpha$ itemsets with highest frequencies, where $\alpha \geq 2$, while discovering length-1 itemsets (or items) under LDP may take advantage of PSFO protocol (such as SVIM).
 %如果将方案中改为 选择top-2k的 length-1集合，去收集任意长度的集合 其效果怎么样
 
 {\color{red}Table \ref{notations} lists the notations used in this paper}
@@ -232,8 +234,8 @@ In general, there are $n$ users, and each user has a sensitive transaction, whic
   $\tilde{\theta}(X)$ & the estimated frequency of $X$ \\\hline
   $\mathcal{T}$ & the transaction database \\\hline
   $T_i$ & the transaction of user $i$ \\\hline
-  $\mathcal{X}$ & the set of items \\\hline
-  $d$ & the number of items, $d = |\mathcal{X}|$ \\\hline
+  $\mathcal{X}$ & the item domain \\\hline
+  $d$ & the size of item domain, $d = |\mathcal{X}|$ \\\hline
   $\mathcal{N}$ & the noisy FP-tree \\\hline
 
 \end{tabular}
@@ -242,33 +244,30 @@ In general, there are $n$ users, and each user has a sensitive transaction, whic
 \end{table}
 
 \subsection{Existing Approaches to FIM under LDP}\label{svim and svsm}
-Since Qin et al.\cite{a1} first introduce set-valued data to differential privacy in the local setting for the purpose of discovering heavy hitters as well as their frequencies, it has been a challenge that mining frequent itemsets from all sanitized data. To the best of our konwledge, only SVSM\cite{a2} protocol that implements effectively FIM task in context of LDP. Particularly, it focuses on mining $top-k$ most frequent length-$\alpha$ ($\alpha>1$) itemsets while utilizing SVIM\cite{a2} protocol that obtains the frequent items (or length-1 itemsets) as initial condition to construct candidate set. Details as follows. 
+Since Qin et al.\cite{a1} first introduce set-valued setting to differential privacy in the local setting for the purpose of discovering heavy hitters as well as their frequencies, it has been a challenge that mining frequent itemsets from all sanitized data. To the best of our konwledge, only SVSM\cite{a2} protocol that implements effectively FIM task in context of LDP. Particularly, it focuses on mining $top-k$ most frequent length-$\alpha$ ($\alpha\geq2$) itemsets while applying SVIM\cite{a2} protocol to obtain the $k$ frequent items (or length-1 itemsets) as initial condition to construct candidate set. Details as follows. 
 
-$Set-Value\ Item\ Mining\ (SVIM)$: SVIM is a PSFO protocol with the same problem setting as LDPMiner\cite{a1}, which aimming at discovering the $k$ frequent items with highest frequencies. It has four steps and divide proportionally all users into three groups $G_1,G_2,G_3$ so that each user is protected by $\epsilon$-LDP.
+$Set-Value\ Item\ Mining\ (SVIM)$: SVIM is a PSFO protocol with the same problem setting as LDPMiner\cite{a1}, which focus on discovering the $k$ frequent items with highest frequencies. It has four steps and divide proportionally all users into three mutually disjoint groups $G_1,G_2,G_3$ so that each user is protected by $\epsilon$-LDP.
 
-\textbf{1. Prune the Domain --- $G_1$.} The goal is to identify a candidate set for items so that it can reduce the domian size into $2k$, which is greatly less than the domain $d$. In this step, each user uses FO to perturb a randomly sampled item from his raw data. Then, the analyst estimates the frequency of each value in the domain and selects the $2k$ frequent items with highest frequencies. The analyst broadcasts the domain set $S$ pruned to all users.
+\textbf{1. Prune the Domain --- $G_1$.} The goal is to identify a candidate set of items so that it can narrow down the domian size into $2k$, which is greatly less than $d$. In this step, each user uses FO to perturb a randomly sampled item from her raw data. Then, the analyst estimates the frequency of each value in the whole domain $\mathcal{X}$ and selects the $2k$ items with highest frequencies as pruned domian $S$. The analyst broadcasts the set $S$ pruned to all users.
 
-\textbf{2. Size Estimation --- $G_2$.} To further estimate the frequency of the set $S$, it is necessary to approximate the distribution of the number of frequent items that users hold. Thus, the perturbing data of each user is the size of the raw data intersected with OLH protocol. After the perturbing of users finishes, the alalyst estimates the length distribution and calculates the $\gamma = 90\%$ length $L$ by  
+\textbf{2. Size Estimation --- $G_2$.} To further estimate the frequency of items in $S$, it is necessary to approximate the distribution of the number of frequent items that users hold due to the technique that padding-and-sampling (PS). Thus, with OLH protocol, the data of each user in this step is the size of the raw data intersected with $S$. After the perturbing finishes, the alalyst estimates the length distribution and computes the $\gamma = 90\%$ length $L$ by  
 \begin{equation}
 \frac{\sum_{i=1}^{L} \tilde{\theta}(i)}{\sum_{i=1}^{2k} \tilde{\theta}(i)} > \gamma \label{length}
 \end{equation}
+where $\tilde{\theta}(i)$ denote the estimated number of users' data length is $i$. 
 
-\textbf{3. Frequencies Estimation --- $G_3$.} Once the analyst gets $S$ and $L$, it will use PSFO protocol to precisely estimate the frequencies of the items in small domian $S$. That is, each user in this step first pads his pruned data, which is the raw data intersected with $S$, to length $L$, then
-utilizes FO protocol for perturbing the item that randomly choose to report. 
+\textbf{3. Frequencies Estimation --- $G_3$.} Once the analyst gets $S$ and $L$, it will use PSFO protocol to precisely estimate the frequencies of the items in small domian $S$. That is, each user first pads his pruned data, which is the raw data intersected with $S$, to length $L$, then applies FO protocol to perturb an item that randomly choose. 
 
-Finally, the analyst estimates the frequency of each item in $S$ from all sanitized data. To ensure the estimation is unbiased, the estimated frequency needs to be multiplied by the length $L$.
+Finally, for each item in $S$, the analyst computes its estimated frequency over all sanitized data. Note that the estimated frequency needs to be multiplied by $L$ to ensure it is unbiased.
 
-\textbf{4. Estimation Update.} Due to the length is the 90th percentile length, which may lead to an underestimate. In order to improve the accuracy of the estimations, an update factor $u(L)$ is defined for correcting this under estimation. Practically, in this step, every frequency estimated is multiplied with the update factor,
+\textbf{4. Estimation Update.} Due to $L$ is the 90th percentile length, which may lead to an underestimate. In order to improve the accuracy of the estimations, an update factor $u(L)$ is defined for correcting this under estimation. Practically, in this step, every frequency estimated is multiplied with the update factor $u(L)$.
 $$u(L) := \frac{\sum_{i=1}^{2k} \tilde{\theta}(i)}{\sum_{i=1}^{2k} \tilde{\theta}(i) - \sum_{i=L+1}^{2k} \tilde{\theta}(i)(i-L) }$$
-where $\tilde{\theta}(i)$ is the length distribution of length $i$ estimated from step two.
 
-Additionally, it is important to note that this step is the post-processing (Theorem \ref{post processing}) in differential privacy and does not consume the privacy budget because informations are obtained from previous steps and there is no user involved. 
-
-When all the steps are done, the $k$ items with highest frequencies are selected with high confidence.
+Note that step 4 is does not consume the privacy budget because informations are obtained from previous steps and there is no user involved. When all the steps are done, the $k$ items with highest frequencies are selected with high confidence. However, SVIM cannot be used directly ro mine itemsets that has exponential domian. Therefore, Set-Value itemSet Mining (SVSM) is proposed with the core technique named ``Guessing Frequency (GF)'' to construct a pony-sized domian of itemsets.
 
 %Summarily, we summarize it in three phases: Prune the Domain and Frequency Estimation. The fomer identifies a candidate set for items so that it can reduce the domian size into $2k$, which is greatly less than $d$ when $d$ is large; Then, the latter focuses on the frequent items identified to estimate precisely their frquencies in small domain.
 
-$Set-Value\ itemSet\ Mining\ (SVSM)$: As mentioned above, SVSM protocol needs to know the set of $top-k$ frequent items, denoted by $S^{\prime}$. Then, to construct candidate set of itemsets, the guessing frequency of each  exponentially possible itemset that made up of items in $S^{\prime}$ is calculated by \eqref{gf}, and the domain set $IS$ is constructed by selecting $top-2k$ itemsets with highest guessing frequencies.
+$Set-Value\ itemSet\ Mining\ (SVSM)$: As mentioned above, SVSM needs to know the set of $top-k$ frequent items, denoted by $S^{\prime}$. Then, to construct candidate set of itemsets, the guessing frequency of each  exponentially possible itemset that made up of items in $S^{\prime}$ is calculated by \eqref{gf}, and the pony-sized domain set $IS$ is constructed by selecting $2k$ itemsets with highest guessing frequencies.
 
 \begin{Definition}
 (GF). Let itemset $X$ is a subset of a set of items $\{{x_1,x_2,...,x_m} \}$, and the support of the item $x_i$ is denoted by $\theta(x_i)$. The guessing frequency (GF) of $X$ is $\mathbb{G}(X)$, defined as follows,\\
@@ -279,23 +278,25 @@ where $\theta_{max}$ is the maximum support of all items, $0 \leq \lambda \leq 1
 
 \end{Definition}
 
-While the domain of candidate itemsets is pruned, it may use following steps of SVIM to discover frequent itemsets. In particular, every user's sensitive data in SVSM is the power set of his raw data intersected with the set $S^{\prime}$, which identified by SVIM.
+When the domain of candidate itemsets is pruned, it may use following steps of SVIM to discover frequent itemsets. Note that every user's sensitive data is the power set of her raw data intersected with $S^{\prime}$.
 
 {\color{red}introduce flaw of SVSM}
 
 \textbf{Flaw.} However, it is obvious that there are exponentially more possible itemsets during constructing candidate set. For example, such $k$ items produce $2^{k}$ possible itemsets, leaving considerable computational cost in guessing frequencies. Although it is persuasive that the cardinality of frequent itemset would not be greater than $\log_{2} k$, the computation space $O\left(\sum_{i=2}^{\lfloor \log_{2}k \rfloor} \dbinom{k}{i} \right)$ is not acceptable when $k$ is large.
 
 \section{fpmine: the FP-tree-based Approach}
-In this section, we propose a novel FP-tree-based mining approach called fpmine that discovers the $top-k$ most frequent itemsets under LDP with low computational cost as well as high accuracy. The main idea is to constrcut a noisy FP-tree, and then discover itemsets over the tree. In the following, Section \ref{fpmine} overviews the framework of fpmine. Section \ref{construct and mine} describes the details of constructing and mining the nosiy FP-tree. Sections \ref{nc} and \ref{optimize} further optimize the proposed approach, respectively.
+In this section, we propose a novel FP-tree-based mining approach called $FPmine$ that discovers the $top-k$ most frequent itemsets under LDP with low computational cost as well as high accuracy. The main idea is to constrcut a noisy FP-tree, and then discover itemsets over the tree. In the following, Section \ref{fpmine} overviews the framework of $FPmine$. Section \ref{construct and mine} describes the details of constructing and mining the nosiy FP-tree. Sections \ref{cutdown candidate} and \ref{optimize} further optimize the proposed approach, respectively.
 
-\subsection{fpmine}
+\subsection{FPmine}
 \label{fpmine}
-As described in Section \ref{svim and svsm}, the existing solutions incur considerable computational cost duo to the exponential growth of candidate itemsets. We observe that the original FP-growth algorithm can mines frequent itemsets without a costly candidate generation process. However, in the local setting, the analyst's inability to access users' raw data makes it difficult to constrcut a noisy FP-tree. Note that if we can reduce the noise introduced, then we can efficiently reduce the computational cost as well as achieve better accuracy. Algorithm \ref{alg fpmine} presents the procedure of FPmine.
+As described in Section \ref{svim and svsm}, the existing solutions incur considerable computational cost duo to the exponential growth of candidate itemsets. We observe that the FP-growth algorithm can mines frequent itemsets without a costly candidate generation process, which significally reduce the cost. However, in the local setting, the analyst's inability to access users' raw data makes it difficult to constrcut a noisy FP-tree over sanitized data. Note that if we can decrease the scale of the added noise, then we can efficiently reduce the computational cost as well as achieve better accuracy. Algorithm \ref{alg fpmine} presents the procedure of FPmine.
 
-Specifically, FPmine first constructs a noisy FP-tree in a breadth-first manner for the purpose of storing informations without compromising privacy, and then mines frequent itemsets by pattern fragment growth. Note that the domain size $d$ of items might be large in practice and only a combination of frequent items are possible to be a frequent itemset. Therefore, it is necessary and meaningful to identify the $k$ frequent items, which may significantly cut down the size of itemsets ($2^k \ll 2^d$). In short, FPmine works as follows: First, a set of frequent items are identified. Second, approximate the maximum number of frequent items that user holds. Third, a noisy FP-tree is constructed in a breadth-first manner and then discover frequent itemsets.
+Specifically, FPmine first constructs a noisy FP-tree in a breadth-first manner for the purpose of storing informations without compromising privacy, and then mines frequent itemsets by pattern fragment growth. Observe that the domain size $d$ of items might be large in practice and only a set (or combination) of frequent items is possible to be a frequent itemset. For instance, there are five transactions in Table \ref{trans table}. While no transaction appears more than once, as items $a,b,c,f$ and $p$ are identified as frequent, the possible frequent itemset must be a set of frequent items, such as $\{c,f\},\{a,b,c\}$ and $\{f,p\}$. Therefore, it is necessary and meaningful to identify the $k$ frequent items, which may significantly narrow the candidate itemsets. 
+
+In short, FPmine works as follows: First, a set of frequent items are identified with SVIM protocol. Second, OLH is used to approximate the maximum number of frequent items that user holds. Third, it constructs a noisy FP-tree in a breadth-first manner, and then mines the tree for frequent itemsets.
 
 \begin{algorithm}[htbp]
-  \caption{fpmine($\mathcal{T},\mathcal{X},k,\epsilon$)}
+  \caption{FPmine($\mathcal{T},\mathcal{X},k,\epsilon$)}
   \label{alg fpmine}
   \begin{algorithmic}[1]
   \REQUIRE transactional database $\mathcal{T}$, set of items $\mathcal{X}$, top $k$, privacy budget $\epsilon$
@@ -324,9 +325,19 @@ Specifically, FPmine first constructs a noisy FP-tree in a breadth-first manner 
 
 As shown in algorithm \ref{alg fpmine}, given the privacy budget $\epsilon$, similar to SVSM is that we divide all users into three groups $G_1,G_2,G_3$ to participate in each step (line \ref{fpmine group}), which provides $\epsilon$-LDP for each user. That is, the first step is aiming to identify the set $S^{\prime}$ of $k$ frequent items from users in $G_1$ with SVIM protocol (line \ref{fpmine items}). And then the second is to approximate the maximum number of frequent items that user holds (line \ref{fpmine length first}-\ref{fpmine Lm}). In this step, the 80th percentile length $L_m$ is calculate by \eqref{length} while the differences are that we set $\gamma=80\%$ (line \ref{fpmine Lm}) and initialize a threshold {\color{red}$\mathcal{L} = $} (line \ref{fpmine T}) to filter the estimates. Finally, on receiving $S^{\prime}$ and $L_m$, the noisy FP-tree {\color{red}$\mathcal{N}$} is constrcuted by ConstructNoisyTree (Algorithm \ref{alg ConstructNoisyTree} in Section \ref{construct and mine}), and then the analyst can discover accurate itemsets by pattern fragment growth (line \ref{fpmine mine}), which follows the procedure of the FP-growth except accumulating frequencies of conditional patter bases as explained in Section \ref{construct and mine}. 
 
+Note that FPmine divides all users into three groups, groip $G_1$ for frequent items, group $G_2$ for maximum length and $G_3$ for noisy FP-tree. Each group provides $\epsilon$-LDP for each user, thus the whole process satisfies $\epsilon$-LDP.
+
+\begin{lemma}
+Algorithm \ref{alg fpmine} satisfies $\epsilon$-LDP.
+\end{lemma}
+
+%\begin{proof}
+%Note that FPmine divides all users into three groups, group $G_1$ for frequent items, group $G_2$ for maximum length and $G_3$ for noisy FP-tree. Each group provides $\epsilon$-LDP for each user, thus the whole process satisfies $\epsilon$-LDP.
+%\end{proof}
+
 \subsection{Constructing and mining the noisy FP-tree}
 \label{construct and mine}
-In the local setting, the main challenge of constructing a noisy FP-tree is that the analyst has no right to access users' raw data, and that leads to introduce considerable noise when the tree is constructed. In \cite{fp}, the non-privacy FP-tree is constructed by scanning unconcealed transactions and {\color{red}updating nodes with frequent items that user holds in a depth-first manner}. We observe that it enables to construct the FP-tree in a breadth-first manner if the final count of each node at same level is known in advance. Inspired by this, we propose a breadth-first approach {\color{red}called ConstructNoisyTree} to costruct a noisy FP-tree layer by layer. Specifically, let $L_m$ is the maximum length, and $x_1 \succ x_2 \succ \cdots  \succ x_k$ is the ordered sequence of $k$ frequent items, denoted by $S^{\prime}$, where $x_i \succ x_{i+1}$ means that $x_i$ is more frequent than $x_{i+1}$ and $x_i$ comes before $x_{i+1}$. The {\color{red} ConstructNoisyTree} has two phase:
+In the local setting, the main challenge of constructing a noisy FP-tree is that the analyst has no right to access users' raw data, and that leads to introduce considerable noise when the tree is constructed. In \cite{fp}, the non-privacy FP-tree is constructed by scanning unconcealed transactions and {\color{red}updating nodes with frequent items that user holds in a depth-first manner}. We observe that it enables to construct the FP-tree in a breadth-first manner if the final count of each node at same level is known in advance. Inspired by this, we propose a breadth-first approach {\color{red}called $ConstructNoisyTree$} to costruct a noisy FP-tree layer by layer. Specifically, let $L_m$ is the maximum length, and $x_1 \succ x_2 \succ \cdots  \succ x_k$ is the ordered sequence of $k$ frequent items, denoted by $S^{\prime}$, where $x_i \succ x_{i+1}$ means that $x_i$ is more frequent than $x_{i+1}$ and $x_i$ comes before $x_{i+1}$. The {\color{red} $ConstructNoisyTree$} has two phase:
 
 %$S^{\prime} = \left [ x^1 : \tilde{\theta}(x^1),  x^2 : \tilde{\theta}(x^2),...,x^k : \tilde{\theta}(x^k) \right ]$ denote the sorted sequence of $k$ frequent items as well as their frequencies, where $\tilde{\theta}(x^i)$ denote the frequency of a frequent item $x^i$ and for any $i>j$, it has $\tilde{\theta}(x^i) \geq \tilde{\theta}(x^j)$. For convenience, we abuse notation and use $S^{\prime}$ to denote the set of frequent items that identified.
 
@@ -346,11 +357,13 @@ In the local setting, the main challenge of constructing a noisy FP-tree is that
 \end{table}
 
 %不需要介绍先用SVIM获得频繁单项，可以当作BSL就是之后的步骤去介绍
-\textbf{Phase \uppercase\expandafter{\romannumeral1} Preprocessing.} All participating users first delete infrequent items in their transactions and then rearrange the rest in order of $S^{\prime}$. For example, the frequent items in Table \ref{trans table} is sorted to $c\succ f\succ a\succ b\succ p$ while the minimum support threshold is set to 3, and then the preprocessed transactional data is shown in Table \ref{preprocessed trans}.
+\textbf{Phase \uppercase\expandafter{\romannumeral1} Preprocessing.} All participating users first delete infrequent items in their transactions and then rearrange the rest in order of $S^{\prime}$. For example, while the frequent items in Table \ref{trans table} is sorted to $c\succ f\succ a\succ b\succ p$, then the preprocessed transactional data is shown in Table \ref{preprocessed trans}.
 
-Additionally, after the preprocessing step finishes, there are many infrequent items discarded, which significantly cuts down the size of candidate sets and achieves good performance because of the Apriori property\cite{apr}:{\color{red} $only\ if\ the\ length-\alpha\ itemset\ is\ frequent\ are\ its\ length-(\alpha +1)\ supersets\ likely\ to\ be\ frequent.$}
+Additionally, after the preprocessing step finishes, there are many infrequent items discarded, which significantly cuts down the size of candidate sets and achieves good performance because of the Apriori property\cite{apr}: {\color{red} $only\ if\ the\ length-\alpha\ itemset\ is\ frequent\ are\ its\ length-(\alpha +1)\ supersets\ likely\ to\ be\ frequent.$}
 
-\textbf{Phase \uppercase\expandafter{\romannumeral2} Constructing the FP-tree} In contrast to FP-growth, we propose a breadth-first approach to construct the FP-tree layer by layer in the local setting. Details described in Algorithm \ref{alg ConstructNoisyTree}. Note that we omit the mining procedure duo to the fact that it is similar to the original algorithm and remark on the differences.
+\textbf{Phase \uppercase\expandafter{\romannumeral2} Constructing the FP-tree} In contrast to FP-growth, we propose a breadth-first approach to construct a noisy FP-tree layer by layer in the local setting. Details described in Algorithm \ref{alg ConstructNoisyTree}. 
+
+Note that we omit the mining procedure duo to the fact that it is similar to the original algorithm and remark on the differences.
 
 \begin{itemize}
 \item A node $v$ in the FP-tree has two fields: $v.item$ and $v.count$, where denote the indicated item of node $v$ and the number of its prefix $pre(v)$ in transactions respectively.
@@ -373,6 +386,27 @@ Additionally, after the preprocessing step finishes, there are many infrequent i
 
 %the existing FO protocol (e.g. OLH) is used to collect information for updating the tree nodes 
 \end{itemize}
+
+\begin{theorem}\label{minimized noisy count}
+Given $m$ noisy counts $\tilde{\theta}(b_1),\tilde{\theta}(b_2),...,\tilde{\theta}(b_m)$ with variances of $r_1,r_2,...,r_m$. The variance of $X = \sum_{i=1}^{m}\omega_i\tilde{\theta}(b_i)$ with constrain $\sum_{i=1}^{m}\omega_i = m$ is minimized by setting $\omega_i = m \cdot \frac{r_i^{-1} }{\sum_{j=1}^{m} r_j^{-1}}$.
+\end{theorem}
+
+\begin{proof}
+Obviously, with $\sum_{i=1}^{m}\omega_i = m$, finding the minimized variance of $X = \sum_{i=1}^{m}\omega_i\tilde{\theta}(b_i)$ is equivalent to solve
+\begin{equation}
+\min{\sum_{i=1}^{m}\omega_i r_i , s.t. \sum_{i=1}^{m}\omega_i = m } \label{weigh mine}
+\end{equation}
+
+Then, we have the Lagrangian function
+$$\mathcal{L} = \sum_{i=1}^{m}\omega_i r_i + B(m - \sum_{i=1}^{m}\omega_i)$$
+
+Let $\frac{\partial {\mathcal{L}}}{ \partial{\omega_i}} = 2r_i \omega_i - B$ be zero, we have $\omega_i = \frac{B}{2r_i}$. And according to the condition $\sum_{i=1}^{m}\omega_i = m$, we get the constant $B = \frac{2m}{\sum_{i=1}^{m} r_i^{-1}}$.
+
+Finally, we have the optimal solution is $\omega_i = m \cdot \frac{r_i^{-1} }{\sum_{j=1}^{m} r_j^{-1}}$.
+
+\end{proof}
+
+
 
 \begin{algorithm}[htbp]
   \caption{ConstructNoisyTree($G_3,S^{\prime},L_m,\epsilon$)}
@@ -417,34 +451,8 @@ Additionally, after the preprocessing step finishes, there are many infrequent i
 %举例介绍图中模式树的建立过程。
 For example, lets consider the processed transactions in Table \ref{preprocessed trans}, where the frequnet items and their supports is denoted by $S^{\prime} = \left[c:4 , f:4 , a:3 , b:3, p:3  \right]$ (for simplicity, we use the real support below). Then, the root node $v_0$ is initialized firstly as the 0-th level of the tree $\mathcal{N}$ (line \ref{ConstructNoisyTree tree}-\ref{ConstructNoisyTree root}) and the constructing process is as follows.
 
-At the 1-st level, the children $v_1,v_2,v_3,v_4,v_5$ of $v_0$ are added to form the candidate node at the 1-st level of the tree, which initialized each count is zero (line \ref{ConstructNoisyTree child}). And then according to the candidate prefix set $C_1 = \left\{ (c),(f),(a),(b),(p) \right\}$, their estimated informations are collected for the purpose of updating nodes' counts (line \ref{ConstructNoisyTree estimate}-\ref{ConstructNoisyTree update}), that is, the counts of $v_1,v_2$ are updated to 4 and 1 while $v_3,v_4,v_5$ are pruned according to the collected information $\left\{ (c,4),(f,1),(a,0),(b,0),(p,0) \right\}$. After the 1-st level are updated, the candidate set $C_2 = \left\{ (c,f),(c,a),(c,b),(c,p),(f,a),(f,b),(f,p) \right\}$ at the 2-nd level is constructed. Then it can update the tree nodes in the same way while the transaction of each user is the first two items in his pre-processed data (e.g. the input value of first user  is $(c,f)$). BSmine continues to the next iteration until the tree reaches its maximum level $L_m$ or there are no node is valid. The final FP-tree is constructed as show in Fig. \ref{fptree}.
+At the 1-st level, the children $v_1,v_2,v_3,v_4,v_5$ of $v_0$ are added to form the candidate node at the 1-st level of the tree, which initialized each count is zero (line \ref{ConstructNoisyTree child}). And then according to the candidate prefix set $C_1 = \left\{ (c),(f),(a),(b),(p) \right\}$, their estimated informations are collected for the purpose of updating nodes' counts (line \ref{ConstructNoisyTree estimate}-\ref{ConstructNoisyTree update}), that is, the counts of $v_1,v_2$ are updated to 4 and 1 while $v_3,v_4,v_5$ are pruned according to the collected information $\left\{ (c,4),(f,1),(a,0),(b,0),(p,0) \right\}$. After the 1-st level are updated, the candidate set $C_2 = \left\{ (c,f),(c,a),(c,b),(c,p),(f,a),(f,b),(f,p) \right\}$ at the 2-nd level is constructed. Then it can update the tree nodes in the same way while the transaction of each user is the first two items in his pre-processed data (e.g. the input value of first user  is $(c,f)$). $ConstructNoisyTree$ continues to the next iteration until the tree reaches its maximum level $L_m$ or there are no node is valid. The final FP-tree is constructed as show in Fig. \ref{fptree}.
 
-
-\begin{theorem}\label{minimized noisy count}
-Given $m$ noisy counts $\tilde{\theta}(b_1),\tilde{\theta}(b_2),...,\tilde{\theta}(b_m)$ with variances of $r_1,r_2,...,r_m$. The variance of $X = \sum_{i=1}^{m}\omega_i\tilde{\theta}(b_i)$ with constrain $\sum_{i=1}^{m}\omega_i = m$ is minimized by setting $\omega_i = m \cdot \frac{r_i^{-1} }{\sum_{j=1}^{m} r_j^{-1}}$.
-\end{theorem}
-
-\newtheorem*{proof}{\text{$Proof.$}}
-\begin{proof}
-Obviously, with $\sum_{i=1}^{m}\omega_i = m$, finding the minimized variance of $X = \sum_{i=1}^{m}\omega_i\tilde{\theta}(b_i)$ is equivalent to solve
-\begin{equation}
-\min{\sum_{i=1}^{m}\omega_i r_i , s.t. \sum_{i=1}^{m}\omega_i = m } \label{weigh mine}
-\end{equation}
-
-Then, we have the Lagrangian function
-$$\mathcal{L} = \sum_{i=1}^{m}\omega_i r_i + B(m - \sum_{i=1}^{m}\omega_i)$$
-
-Let $\frac{\partial {\mathcal{L}}}{ \partial{\omega_i}} = 2r_i \omega_i - B$ be zero, we have $\omega_i = \frac{B}{2r_i}$. And according to the condition $\sum_{i=1}^{m}\omega_i = m$, we get the constant $B = \frac{2m}{\sum_{i=1}^{m} r_i^{-1}}$.
-
-Finally, we have the optimal solution is $\omega_i = m \cdot \frac{r_i^{-1} }{\sum_{j=1}^{m} r_j^{-1}}$.
-
-\end{proof}
-
-%, let the root node $v_0$ is the 0-th level of the tree and its children $v_1,v_2,v_3,v_4,v_5$ form the 1-st level, which are initialized as corresponding items with count is zero in the first iteration. Once the informations of users are obtained 
-
-%At the 1-th level, the candidate prefix set $C_1$ is defined as $\left\{ (c),(f),(a),(b),(p)\right\}$. 
-
-\newtheorem{lemma}{Lemma}[section]
 \begin{lemma}
 Algorithm \ref{alg ConstructNoisyTree} satisfies $\epsilon$-LDP.
 \end{lemma}
@@ -458,8 +466,8 @@ For any node $v$ in the tree, let $\tilde{\theta}(v)$ denote its estiamted count
 $$|\tilde{\theta}(v) - \theta(v) | = O \left(\frac{L_m...}{\epsilon} \right)$$
 \end{lemma}
 
-\subsection{Narrowing the cadidate prefix set}
-\label{nc}
+\subsection{Cutting down the cadidate prefix set}
+\label{cutdown candidate}
 We observer that the biggest limitation of ConstructNoisyTree is that the size of candidate prefix set $C_l$ constructed during $l$-th iteration is indisciplinable and large. Deu to $C_l$ is the prefixes domian of OLH to gather estimations, the large size affects not noly accuracy but also computational cost. Observe that the size of $C_l$ is linearly related to nodes reserved in the upper $(l-1)$-th level. That is, the fewer nodes are reserved in $(l-1)$-th level, the fewer children are generated in $l$-th level, which makes up small $C_l$. However, it is inefficient since reserving fewer nodes may result in information loss and underestimation.  
 
 In view of this, {\color{red}we set a threshold $\mathcal{L}^{\prime}$ to remove as many invalid nodes as possible while retain effective estimations. Formally, let $v$ is a node of the tree while $v.count$ is initialized to zero before estimation. Once we obtain an estimated count $\tilde{\theta}(v)$ of its prefix $pre(v)$, $\mathcal{L}^{\prime}$ is used to determine if it is valid. Specifically, $v$ is valid when $\tilde{\theta}(v) > \mathcal{L}^{\prime}$ and invaild otherwise. Finally, we update $v.count=\tilde{\theta}(v)$ when $v$ is valid and $v.count=0$ when it is invalid. It is noted that the larger $\mathcal{L}^{\prime}$, the fewer invalid estimations, but more valid values may be lost. In this paper, we set $\mathcal{L}^{\prime} = $, which is the maximum error boundary of OLH.\\
@@ -467,7 +475,7 @@ In view of this, {\color{red}we set a threshold $\mathcal{L}^{\prime}$ to remove
 
 Sequentially, it is obvious that there are many redundant prefixes in $C_l$. For example, at the 3-rd level of the tree in Fig. \ref{fptree}, the initial set $C_3$ is made up of prefixes of $v_6,v_7,v_8,v_9,v_{10},v_{11},v_{12}$. However, as the information is collected, four invalid nodes $v_7,v_9,v_{10},v_{12}$ are removed. Recall from users' transanctions that there are no prefixes for these nodes. Therefore, if we can remove beforehand as many of these as possible, then the size will be significantly narrowed.
 
-Similar to SVSM\cite{a2} is to limit the candidate set to a fixed size. We propose NarrowCandidate (Algorithm \ref{alg:narrow candidate}) to further narrow the set $C_l$ down to fixed size $\xi \cdot k \ll |C_l|$, where $\xi$ is a predefined adiustable parameter. Specifically, when the size is greater than $\xi \cdot k$, we first guess each candidate prefix in $C_l$. And then select the $top-\xi k$ prefixes with highest guessing frequencies to construct a pony-size set $C^{\prime}_{l}$. Note that each prefix in $C_l$ has the same cardinality and we just need to get their relative order. Therefore, we use the simplified guessing frequency $\mathbb{G}^{\prime}(P)$ of prefix $P \in C_l$ to construct $C^{\prime}_{l}$,
+Similar to SVSM\cite{a2} is to limit the candidate set to a fixed size. We propose $CutdownCandidate$ (Algorithm \ref{alg:cutdown candidate}) to further narrow the set $C_l$ down to fixed size $\xi \cdot k \ll |C_l|$, where $\xi$ is a predefined adiustable parameter. Specifically, when the size is greater than $\xi \cdot k$, we first guess each candidate prefix in $C_l$. And then select the $top-\xi k$ prefixes with highest guessing frequencies to construct a pony-size set $C^{\prime}_{l}$. Note that each prefix in $C_l$ has the same cardinality and we just need to get their relative order. Therefore, we use the simplified guessing frequency $\mathbb{G}^{\prime}(P)$ of prefix $P \in C_l$ to construct $C^{\prime}_{l}$,
 \begin{equation}
 \mathbb{G}^{\prime}(P)=\prod_{x \in P} \tilde{\theta}(x) \label{simply gf}
 \end{equation}
@@ -476,8 +484,8 @@ where $\tilde{\theta}(x)$ is the frequency in $S^{\prime}$ of item $x$.
 %we guess the frequency of candidate itemsets in $C_i$, and then select the $\xi \cdot k$ itemsets with highest guessing frequency. Details in algorithm \ref{alg:narrow candidate}.
 
 \begin{algorithm}[]
-\caption{NarrowCandidate($S^{\prime},C_l,\xi$)}
-\label{alg:narrow candidate}
+\caption{CutdownCandidate($S^{\prime},C_l,\xi$)}
+\label{alg:cutdown candidate}
 \begin{algorithmic}[1]
 
 \STATE Initialize $d_c \gets C_l$;
@@ -503,21 +511,26 @@ where $\tilde{\theta}(x)$ is the frequency in $S^{\prime}$ of item $x$.
 
 \subsection{Imposing consistency and weighted combination}
 \label{optimize}
-\textbf{Consistency.} Without loss of generality, let $\tilde{\theta}(v)$ is the noisy count of a node $v$ in the tree that constructed, and $\theta(v)$ is its ground-truth count. For each node $v$, we have the following constraints
+\textbf{Consistency.} Without loss of generality, let $\tilde{\theta}(v)$ denote the noisy count of a node $v$ in the noisy FPtree $\mathcal{N}$ that constructed, and $\theta(v)$ is the ground truth. For each node $v$, we have the following constraints:
 \begin{itemize}
 \item The noisy count $\tilde{\theta}(v)$ is unbiased, and its expectation satisfies $\mathbb{E}[\tilde{\theta}(v)] = \mathbb{E}[\theta(v)]$.
 \item If $v$ has a set $S_c$ of children, then\\
 $$\mathbb{E}[\tilde{\theta}(v)] \geq \sum_{v_c \in S_c} \mathbb{E}[\tilde{\theta}(v_c)]$$
 \end{itemize} 
 
+We consider the problem of finding the minimum $L_2$ solution, that is, to find another tree that is closest to $\mathcal{N}$ and also satisfies the constraints.
+
+{\color{red}In \cite{a5}, understand the solution and it can directly apply. }
+
 {\color{red}--- introduce a solution or cite a paper ---}
 
-\textbf{Weighted combination.} In order to obtain better accuracy, we propose the weighted combination, which satisfies post-processing property. Specifically, we weight the results that discovered through the tree with guessing frequencies, and then release the $top-k$ most frequent itemsets. Let $\tilde{P}$ denote the set of itemsets that discovered throught the tree. For each itemset $X$ in $\tilde{P}$, we have its weighted frequency $\Omega (X)$.
-\begin{equation}
-\Omega (X) = \omega \cdot \tilde{\theta}(X) + (1-\omega)\cdot \mathbb{G}(X) \label{weighted frequency}
-\end{equation}
+\textbf{Weighted.} In order to achieve better accuracy, we propose the weighted method, which satisfies post-processing property. Specifically, we weight the results discovered over the tree with guessing frequencies, and then publish the $top-k$ most frequent itemsets. Let $\tilde{P}$ denote the set of itemsets mined from the noisy tree. And for each itemset $X$ in $\tilde{P}$, we have its weighted frequency $\Omega (X) = \omega \cdot \tilde{\theta}(X) + (1-\omega)\cdot \mathbb{G}(X)$, where $\omega \in [0,1]$ is the weighted parameter and $ \tilde{\theta}(X)$ denote the estimated frequency.
 
-Then, the $k$ itemsets is selceted as 
+%\begin{equation}
+%\Omega (X) = \omega \cdot \tilde{\theta}(X) + (1-\omega)\cdot \mathbb{G}(X) \label{weighted frequency}
+%\end{equation}
+
+Then, the final $k$ itemsets is obtained by selecting the $k$ itemsets in $\tilde{P}$ with highest weighted frequency.
 
 %\subsection{The weighted combination}
 
@@ -526,20 +539,27 @@ Then, the $k$ itemsets is selceted as
 
 %\section{FPmine: the Optimal Approach}
 
-\section{Ease of Use}
+\section{Experiments}
+\subsection{Setup}
+\textbf{Metrics}
+\begin{itemize}
+\item NCR
+\item MSE
+\end{itemize}
 
-\subsection{Maintaining the Integrity of the Specifications}
+\textbf{Datasets.}
+\begin{itemize}
+\item Synthetic datasets. {\color{red} generate one or two synthetic datasets following some( normal or Laplace) distributions}
+\item Kosarak.
+\item POS.
+\end{itemize}
 
-The IEEEtran class file is used to format your paper and style the text. All margins, 
-column widths, line spaces, and text fonts are prescribed; please do not 
-alter them. You may note peculiarities. For example, the head margin
-measures proportionately more than is customary. This measurement 
-and others are deliberate, using specifications that anticipate your paper 
-as one part of the entire proceedings, and not as an independent document. 
-Please do not revise any of the current designations.
+\textbf{Parameters}
+
 
 
 \begin{thebibliography}{00}
+\bibitem{MITreview} MIT Technology Review. https://www.technologyreview.com/10-breakthrough-technologies/2020.
 \bibitem{a1} Qin, Zhan, et al. "Heavy Hitter Estimation over Set-Valued Data with Local Differential Privacy." computer and communications security (2016): 192-203.
 \bibitem{a2} Wang, Tianhao, Ninghui Li, and Somesh Jha. "Locally Differentially Private Frequent Itemset Mining." ieee symposium on security and privacy (2018): 127-143.
 \bibitem{a3} Bhaskar, Raghav, et al. "Discovering frequent patterns in sensitive data." knowledge discovery and data mining (2010): 503-512.
@@ -565,9 +585,16 @@ analysis. In SIGMOD, pages 19–30, 2009.
 A superset-first approach to frequent itemset mining under differential privacy,” in ICDE. IEEE, 2017.
 \bibitem{apple} J. Tang, A. Korolova, X. Bai, X. Wang, and X. Wang. Privacy loss in
 apple’s implementation of differential privacy on macos 10.12. arXiv preprint 1709.02753, 2017.
-\bibitem{} G. Cormode, S. Jha, T. Kulkarni, N. Li, D. Srivastava, and T. Wang.
+\bibitem{privacyatscal} G. Cormode, S. Jha, T. Kulkarni, N. Li, D. Srivastava, and T. Wang.
 Privacy at scale: Local differential privacy in practice. In SIGMOD, pages 1655–1658. ACM, 2018.
-\bibitem{} B. Ding, J. Kulkarni, and S. Yekhanin. Collecting telemetry data privately. In NIPS, pages 3574–3583, 2017.
+\bibitem{microsoft} B. Ding, J. Kulkarni, and S. Yekhanin. Collecting telemetry data privately. In NIPS, pages 3574–3583, 2017.
+\bibitem{apple new words} A. G. Thakurta, A. H. Vyrros, U. S. Vaishampayan, G. Kapoor, J. Freudiger, V. R.
+Sridhar, and D. Davidson. Learning new words, Mar. 14 2017. US Patent 9,594,741.
+\bibitem{b1} Wang N, Xiao X, Yang Y, et al. Collecting and analyzing multidimensional data with local differential privacy[C]//2019 IEEE 35th International Conference on Data Engineering (ICDE). IEEE, 2019: 638-649.
+\bibitem{b2} Yang J, Cheng X, Su S, et al. Collecting Preference Rankings Under Local Differential Privacy[C]//2019 IEEE 35th International Conference on Data Engineering (ICDE). IEEE, 2019: 1598-1601.
+\bibitem{b3} Jia J, Gong N Z. Calibrate: Frequency estimation and heavy hitter identification with local differential privacy via incorporating prior knowledge[C]//IEEE INFOCOM 2019-IEEE Conference on Computer Communications. IEEE, 2019: 2008-2016.
+\bibitem{b4} Wang D, Xu J. On sparse linear regression in the local differential privacy model[C]//International Conference on Machine Learning. 2019: 6628-6637.
+\bibitem{b5} Holohan N, Leith D J, Mason O. Optimal differentially private mechanisms for randomised response[J]. IEEE Transactions on Information Forensics and Security, 2017, 12(11): 2726-2735.
 
 
 \end{thebibliography}
